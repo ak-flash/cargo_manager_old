@@ -1,0 +1,3 @@
+<?php 
+    echo '<div style="float:right;margin:12px;margin-right:30px;"><fieldset style="margin-top:-15px;width:198px;padding-bottom:5px;"><form method="post" id="search_form"><div style="float:left;"><input name="q" id="search" placeholder="'.$description.'" class="input" style="width:135px;margin-right:5px;"><br>поиск</div><input type="submit" class="search_btn" id="search_btn" value=""></form></fieldset></div>';
+?>

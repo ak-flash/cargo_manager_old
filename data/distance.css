@@ -1,0 +1,299 @@
+/* 
+    Document   : distance.css
+    Created on : 07.07.2010, 15:58:26
+    Author     : belashov
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+body {
+    text-align: center;
+    font-family:verdana,arial;
+    font-size:11px;
+}
+body, form, p {
+    margin:0px;
+    padding:0px;
+    font-size:12px;
+}
+h1 {
+    font-size:14px;
+}
+p {
+    margin:10px 0px 5px 0px;
+}
+.tl , .tr, .bl, .br {
+    width:5px;
+    height:5px;
+    position:absolute;
+    font-size:1px;
+}
+.tl {
+    top:0px;
+    left:0px;
+}
+.tr {
+    top:0px;
+    right:0px;
+}
+.bl {
+    bottom:0px;
+    left:0px;
+}
+.br {
+    bottom:0px;
+    right:0px;
+}
+.inp {
+    background-color:#FFFFFF;
+    border:1px solid #777777;
+    font-family:verdana,arial;
+    font-size:10px;
+    width:230px;
+}
+.button {
+    display:inline-block;
+    line-height:22px;
+    padding:0 6px 0 0;
+    background:url(../images/bg-button-r.gif) right 0 no-repeat;
+    cursor:pointer;
+    margin:0px 5px 0px 0px;
+}
+.button input {
+    display:inline-block;
+    padding:0 0 0 6px;
+    font-family:Arial;
+    font-size:13px;
+    font-weight:normal;
+    color:#000;
+    text-decoration:none;
+    outline:none;
+    background:url(../images/bg-button-l.gif) left 0 no-repeat;
+    border:none;
+    cursor:pointer;
+}
+.button input {
+    height:22px;
+}
+
+.result_distance {
+    margin:20px auto 0px auto;
+    text-align:left;
+    width:600px;
+    position: relative;
+}
+.result_distance .block{
+    width:360px;
+    margin:auto;
+    position:relative;
+    color:#666666;
+    border:0px solid;
+    height:56px;
+}
+.result_distance .block div.title {
+    margin:0px 5px 0px 85px;
+    text-align:center;
+    background: url(../images/distance_bg.gif) right no-repeat;
+    width:200px;
+    float: left;
+    height:46px;
+    padding:10px 0px 0px 0px;
+}
+.result_distance .block div.title b{
+    color:#AA0000;
+}
+.result_distance .block .count {
+    background: url(../images/distance_bg.gif) no-repeat;
+    width:70px;
+    position:absolute;
+    left:10px;
+    top:0px;
+    color:#000;
+    line-height:56px;
+    font-weight:bold;
+    text-align: center;
+}
+.result_distance .block .checkbox {
+    background: url(../images/distance_bg.gif) no-repeat;
+    width:70px;
+    height:56px;
+    padding:13px 0px 0px 0px;
+    text-align: center;
+    float:right;
+}
+.result_distance .road {
+    background: url(../images/road_bg.gif) center center no-repeat;
+    width:200px;
+    height:28px;
+    margin:auto;
+    text-align:center;
+    padding:1px 0px;
+    color:#fff;
+
+}
+.dist-line {
+    width:1px;
+    height:7px;
+    margin: auto;
+    background: #b4b4b4;
+}
+.result_distance .road .count {
+    font-weight:bold;
+    line-height: 27px;
+}
+.road  img{
+    float:left;
+    margin-left:22px;
+}
+.road .type {
+    float:right;
+    margin-right:15px;
+    line-height: 29px;
+}
+.start-end {
+    font-weight:bold; color:#990000;
+}
+.distance_form{
+    margin:20px auto 10px auto;
+}
+.distance_form label {
+    width:200px;float:left;
+}
+.distance_form .button{
+    text-align:center; padding:10px 40px 10px 0px;
+}
+.distance_form  select, .distance_form  textarea {
+    width:280px;
+}
+.distance_form h2 {
+    text-align:left;
+}
+.distance-block {
+    width:320px;
+    margin:auto;
+}
+.result-block {
+    width:400px;
+    margin:0px auto 20px auto;
+}
+
+ .gray-block {
+    background: #dfdfdf;
+    padding:5px 10px 10px 10px;
+    width:580px;
+    position: relative;
+    margin-top:15px;
+}
+.gray-block .tl{
+    background: url(../images/gray-bg.gif) top left;
+}
+.gray-block .tr {
+    background: url(../images/gray-bg.gif) top right;
+}
+.gray-block .bl {
+    background: url(../images/gray-bg.gif) bottom left;
+}
+.gray-block .br {
+    background: url(../images/gray-bg.gif) bottom right;
+}
+.gray-block img {
+    float:left;
+    margin:10px 8px 10px 0px;
+}
+.gray-block .contaier {
+    background: #dfdfdf;
+}
+#dir, #map{
+    width:600px;
+    height:600px;
+    border:1px solid;
+    margin-top:10px;
+}
+#dir {
+    /*display:none;*/
+}
+.map-link a, .ex-city img, .ex-table img{
+    cursor: pointer;
+}
+
+.plus {
+    background: url(../images/small_plus.gif) left center no-repeat;
+    padding:0px 0px 0px 12px;
+    float:right;
+}
+.minus {
+    background: url(../images/small_minus.gif) left center no-repeat;
+    padding:0px 0px 0px 12px;
+    float:right;
+}
+.gray-border {
+    background: #f5f5f5;
+    border:1px solid #dddddd;
+    padding:5px 10px 20px 10px;
+    width:580px;
+    float:left;
+    clear: both;
+    position: relative;
+    margin-top:15px;
+}
+.gray-border .tl{
+    top:-1px;
+    left:-1px;
+    background: url(../images/gray-border-block.gif) top left;
+}
+.gray-border .tr {
+    top:-1px;
+    right:-1px;
+    background: url(../images/gray-border-block.gif) top right;
+}
+.gray-border .bl {
+    bottom:-1px;
+    left:-1px;
+    background: url(../images/gray-border-block.gif)  bottom left;
+}
+.gray-border .br {
+    bottom:-1px;
+    right:-1px;
+    background: url(../images/gray-border-block.gif) bottom right;
+}
+.gray-border .contaier {
+    background: #dfdfdf;
+}
+.ex-table {
+    width:260px;
+    margin:10px 40px 0px 0px;
+    float:left;
+    border-right:1px solid #dddddd;
+}
+#ex-block .inp_text, #city-block .inp_text {
+    width:194px;
+    margin:0px 5px 5px 0px;
+}
+.ex-city {
+    margin:10px 0px 0px 0px;
+}
+.footer {
+    border-top:1px solid #dddddd;
+    margin:10px 0px;
+    float:left;
+    width:600px;
+    text-align:center;
+}
+.another_track {
+    position: relative;
+    top:8px;
+}
+#dir-show {
+    color:#4465E7;
+    cursor: pointer;
+}
+.ac_results {
+     overflow: hidden;
+}
+.counters {
+    display: none;
+}

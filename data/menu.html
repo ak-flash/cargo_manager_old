@@ -1,0 +1,125 @@
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+
+
+$('#btnExit').button();
+$('#btn-slide').button();
+$('#btn-reload').button();$('#blueButton').button();
+
+function SMenu_show1 () {document.getElementById('sub1').style.visibility = "visible";} 
+function SMenu_hide1 () {document.getElementById('sub1').style.visibility = "hidden";} 
+
+$('#contents_menu').bind('mouseenter', SMenu_show1); 
+$('#contents_menu').bind('mouseleave', SMenu_hide1);
+
+function SMenu_show2 () {document.getElementById('sub2').style.visibility = "visible";} 
+function SMenu_hide2 () {document.getElementById('sub2').style.visibility = "hidden";} 
+
+$('#control_menu').bind('mouseenter', SMenu_show2); 
+$('#control_menu').bind('mouseleave', SMenu_hide2);
+
+function SMenu_show3 () {document.getElementById('sub3').style.visibility = "visible";} 
+function SMenu_hide3 () {document.getElementById('sub3').style.visibility = "hidden";} 
+
+$('#orders_menu').bind('mouseenter', SMenu_show3); 
+$('#orders_menu').bind('mouseleave', SMenu_hide3);
+
+$("#count_day_info").load('control/admin.php?mode=day&count_day=1',function(data) {
+var arr = data.split(/[|]/);
+$("#count_day_info").html('&nbsp;<b>'+arr[0]+'</b>&nbsp;');
+$("#all_day_info").html('&nbsp;<b>'+arr[1]+'</b>&nbsp;');
+});
+
+
+
+
+window.setInterval(function() {
+         
+    	$("#count_gruz").load('control/auto/gruz_count.php?mode=count',function(data) {
+if(data==0){document.getElementById('gruz_c').style.visibility = "hidden";} else {document.getElementById('gruz_c').style.visibility = "visible";}
+
+
+});
+
+
+    }, 120000);
+     
+     
+     
+});
+
+
+
+
+</script>
+<div id="panel"></div>
+
+
+
+<div id="vtl_menu">
+ <li><a href="main" id="main_menu">Инфо</a></li>
+<div id="orders_menu">
+ <li><a  href="orders" style="font-size: 28px;box-shadow: 0 1px 1px 0 #1d5061;
+width: 140px;height:40px;text-align:center;text-shadow: 1px 2px 2px #000;" id="orders_menu" class="red_menu">- Заявки -</a> 
+<!-- <div id="sub3" style="z-index:1001;visibility: hidden;position: absolute;">
+  <a href="international" id="international_menu">Международные</a>
+</div> -->
+</li></div>
+
+ <?php
+//if($_SESSION["group"]!=4)
+//echo '<li><a href="gruz" id="gruz_menu" onclick=\'$.post("control/auto/gruz_count.php?mode=status");\'>Рабочее место</a>
+//<span class="amNumber" id="gruz_c" style="left:130px;top:-50px;visibility:hidden;"><div id="count_gruz" style="display:inline;">+</div></span></li>';
+
+if($_SESSION["group"]==4) echo '<li><a href="docs" id="docs_menu">Документы</a></li>';
+
+
+echo ' <div id="contents_menu"> ';
+echo '<li><a href="#" id="list_menu_css">Справочники</a>
+ <div id="sub1" style="z-index:1001;visibility: hidden;position: absolute;">';
+
+  if($_SESSION["group"]!=4)  echo '<a href="docs" id="docs_menu">Документы</a>';
+
+ 
+ ?> 
+ <a href="clients">Клиенты</a>
+ <a href="transp">Перевозчики</a>
+<a href="adress">Адреса</a>
+ </div>
+ </li></div>
+ 
+ <?php if($_SESSION["group"]!=5){echo '<li><a  href="reports" id="reports_menu">Отчеты</a></li>';}?>
+ <?php if($_SESSION["group"]==3){echo '<li><a  href="notify" id="notify_menu" class="red_menu">Уведомления</a></li>';}?>
+ <li>
+<?php if(($_SESSION["group"]==1||$_SESSION["group"]==2||$_SESSION["group"]==4)&&$_SESSION["user_id"]!=51){
+echo '<li><a  href="pays" id="pays_menu" class="red_menu">Платежи</a>';
+
+if($_SESSION["group"]==4)echo '';
+
+ echo '</li><li><a  href="cash" id="cash_menu">Бюджет</a></li>';
+ }
+ 
+if($_SESSION["group"]==1||$_SESSION["group"]==2||$_SESSION["group"]==4){
+ if($_SESSION["user_id"]!=51) echo '<li><div  id="control_menu"><a href="#" class="red_menu" id="control_menu_css">Управление</a><div id="sub2" style="z-index:1001;visibility: hidden;position: absolute;"><a href="autopark">Автопарк</a><a href="company">Компании</a><a  href="workers">Сотрудники</a>'; else echo '<li><div  id="control_menu"><a href="#" class="red_menu" id="control_menu_css">Управление</a><div id="sub2" style="z-index:1001;visibility: hidden;position: absolute;"><a href="autopark">Автопарк</a>';
+
+
+if($_SESSION["group"]==1||$_SESSION["group"]==2)echo '<a href="settings">Настройки</a>';
+
+echo '</div></div></li>';}
+?>
+
+</li>
+</div>
+<?php if($_SESSION["group"]==3){echo '<span class="amNumber"><div id="count_pay" style="display:inline;">+</div><div class="amAngle"></div></span>';}?>
+
+
+<br>
+<div style="float:right;margin: 5px;"> <?php $pieces = explode(" ", $_SESSION["user"]);$print_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2)."."; echo $_SESSION["group_name"].': <a href="index.php" style="text-decoration:none;color:#000;font-size:22px;">'.$print_name.'</a>';?>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<input type="button" id="btnExit" onclick="window.location.href='index.php?mode=logout'" value="Выход" style="font-size: 14px;width: 80px;margin-right: 20px;">
+
+
+</div>
+<br><br><br><hr style="width: 97%; height: 2px;background: #A8A8A8;">
+
+<div id="body_mail" style="visibility:hidden;background: #A8A8A8;border: 2px solid #A0A0A0;z-index:1003;border-radius: 5px;position:absolute;padding: 15px;padding-top: 25px;bottom:10px;right:10px;font-size:23px;">Новых писем: <b><div id="count_mail" style="color:red;display:inline;font-size:27px;">0</div></b>&nbsp;<a href="http://vtl-server/mail.php?mode=mail" target="_new" style="text-decoration:none;display:inline;float:right;"><img src="data/img/mail.png" style=""></a></div>

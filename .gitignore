@@ -1,0 +1,7 @@
+*.rar
+*.zip
+*~
+/sxd
+config.php
+.idea
+/Uploads
