@@ -10,3 +10,6 @@ $db_host = "127.0.0.1";
 $db_name = "cargo_ak_vps_tk";
 $db_user = "cargo_ak_vps_tk";
 $db_pass = "TKteEKizGHJxGZFn";
+
+Export changed files: 
+git diff --diff-filter=ACMRT --name-only | xargs tar -rf update.tar
