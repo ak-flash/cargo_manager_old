@@ -289,15 +289,15 @@ $date_end=$end_elements[2]."-".$end_elements[1]."-".$end_elements[0];
 
 if((int)$_GET['group_cont']!=0)$group_cont=" AND `tr_cont`=".mysql_escape_string((int)$_GET['group_cont'])." "; else $group_cont="";
 
-if(@$_GET['mode_id']==1)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `delete`='0'".$group_cont." ORDER BY `Id` ASC";
+if(@$_GET['mode_id']==1)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' ".$group_cont." ORDER BY `Id` ASC";
 
-if(@$_GET['mode_id']==3)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' AND `client`='".mysql_escape_string($_GET['cl_all'])."'".$group_cont." AND `delete`='0' ORDER BY `Id` DESC";
+if(@$_GET['mode_id']==3)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' AND `client`='".mysql_escape_string($_GET['cl_all'])."'".$group_cont." ORDER BY `Id` DESC";
 
-if(@$_GET['mode_id']==4)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' AND (`manager`='".mysql_escape_string($_GET['user'])."' OR `tr_manager`='".mysql_escape_string($_GET['user'])."')".$group_cont." AND `delete`='0' ORDER BY `Id` DESC";
+if(@$_GET['mode_id']==4)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' AND (`manager`='".mysql_escape_string($_GET['user'])."' OR `tr_manager`='".mysql_escape_string($_GET['user'])."')".$group_cont." ORDER BY `Id` DESC";
 
-if(@$_GET['mode_id']==5)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' AND `client` IN (".mysql_escape_string($_GET['group']).")".$group_cont." AND `delete`='0' ORDER BY `Id` DESC";
+if(@$_GET['mode_id']==5)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' AND `client` IN (".mysql_escape_string($_GET['group']).")".$group_cont." ORDER BY `Id` DESC";
 
-if(@$_GET['mode_id']==6)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `delete`='0' AND `transp`!='2' ORDER BY `Id` DESC";
+if(@$_GET['mode_id']==6)$query = "SELECT * FROM `orders` WHERE DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `transp`!='2' ORDER BY `Id` DESC";
 }
 
 

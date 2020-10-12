@@ -23,7 +23,7 @@ $order=@$_POST['order_pay'][$i];
 if($cash!=0)
 {
   
-$query_order = "SELECT `tr_nds`,`tr_cont` FROM `orders` WHERE `delete`='0' AND `id`='".mysql_escape_string($order)."'";
+$query_order = "SELECT `tr_nds`,`tr_cont` FROM `orders` WHERE  `id`='".mysql_escape_string($order)."'";
 $result_order = mysql_query($query_order) or die(mysql_error());
 $get_order = mysql_fetch_row($result_order);
 

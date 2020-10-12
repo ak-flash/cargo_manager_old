@@ -33,7 +33,7 @@ else {
 if($_SESSION["group"]==3){
 $manager =$_SESSION["user_id"];
 $query = "SELECT `id`,`transp`,`tr_nds`,`tr_cash`,`tr_tfpay`,`tr_event`,`date_in1`,`date_out2`,`date_in2`,`client`,`cl_cash`,`date_out1` FROM `orders` WHERE `manager`='".mysql_escape_string($manager)."' AND `transp`!='2' AND `delete`='0' AND `data`>='2012-01-01'";
-} else {$query = "SELECT `id`,`transp`,`tr_nds`,`tr_cash`,`tr_tfpay`,`tr_event`,`date_in1`,`date_out2`,`date_in2`,`client`,`cl_cash`,`date_out1` FROM `orders` WHERE `delete`='0' AND `transp`!='2' AND `data`>='2012-01-01' ORDER BY `Id` DESC";}
+} else {$query = "SELECT `id`,`transp`,`tr_nds`,`tr_cash`,`tr_tfpay`,`tr_event`,`date_in1`,`date_out2`,`date_in2`,`client`,`cl_cash`,`date_out1` FROM `orders` WHERE `transp`!='2' AND `data`>='2012-01-01' ORDER BY `Id` DESC";}
 }
 
 

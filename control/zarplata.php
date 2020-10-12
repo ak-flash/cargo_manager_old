@@ -183,7 +183,7 @@ $date_end=(int)$_GET['year']."-".(int)$_GET['month']."-31";
 
 
 
-$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND (`client`='16' OR `client`='76')";
+$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND (`client`='16' OR `client`='76')";
 $result_nlk = mysql_query($query_nlk) or die(mysql_error());
 
 
@@ -218,7 +218,7 @@ $s++;
 }
 
 		
-$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."'";
+$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."'";
 $result_total = mysql_query($query_total) or die(mysql_error());
 
 
@@ -251,7 +251,7 @@ if($row_t['client']!=16&&$row_t['client']!=76){$t_order[$row_t['id']]=$cash;$tot
 $s++;
 }
 
-$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."'";
+$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."'";
 $result_tr = mysql_query($query_tr) or die(mysql_error());
 
 
@@ -280,7 +280,7 @@ if($row_tr['client']!=16&&$row_tr['client']!=76){$tr_order[$row_tr['id']]=$cash;
 
 }
 
-$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."'";
+$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."'";
 $result_tr_dop = mysql_query($query_tr_dop) or die(mysql_error());
 
 while($row_tr_dop = mysql_fetch_array($result_tr_dop)) {

@@ -130,7 +130,7 @@ $query = "SELECT * FROM `docs` WHERE `order` IN (SELECT `id` FROM `orders` WHERE
 
 
 if (@$_GET["doc_id"]!='') {
-if ($group=='1'||$group=='2'||$group=='4'){if(@$_GET['search']=='true')$query = "SELECT * FROM `docs` WHERE `order` IN (SELECT `id` FROM `orders`) AND `id`='".$_GET["doc_id"]."' ORDER BY `Id` DESC"; else $query = "SELECT * FROM `docs` WHERE `order` IN (SELECT `id` FROM `orders` WHERE `id`='".$_GET["doc_id"]."' ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;} else {$query = "SELECT * FROM `docs` WHERE `order` IN (SELECT `id` FROM `orders` WHERE (`manager`='".$manager."' OR `tr_manager`='".$manager."')) AND `id`='".$_GET["doc_id"]."' ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;}
+if ($group=='1'||$group=='2'||$group=='4'){if(@$_GET['search']=='true')$query = "SELECT * FROM `docs` WHERE `order` IN (SELECT `id` FROM `orders`) AND `id`='".$_GET["doc_id"]."' ORDER BY `Id` DESC"; else $query = "SELECT * FROM `docs` WHERE `order` IN (SELECT `id` FROM `orders`) AND `id`='".$_GET["doc_id"]."' ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;} else {$query = "SELECT * FROM `docs` WHERE `order` IN (SELECT `id` FROM `orders` WHERE (`manager`='".$manager."' OR `tr_manager`='".$manager."')) AND `id`='".$_GET["doc_id"]."' ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;}
 }
 
 }

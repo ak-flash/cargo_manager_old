@@ -238,7 +238,7 @@ $date_end=(int)$_GET['year']."-".(int)$_GET['month']."-".date("t", strtotime((in
 
 
 // Общая за месяц НЛК
-$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND (`client`='16' OR `client`='76')";
+$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND (`client`='16' OR `client`='76')";
 $result_nlk = mysql_query($query_nlk) or die(mysql_error());
 
 
@@ -274,7 +274,7 @@ $total_tr_dop_nlk=(int)$total_tr_dop_nlk+(int)$cash;
 $date_start_last=date('Y-m',strtotime('-1 month',strtotime($date_start)))."-01";
 $date_end_last=date('Y-m',strtotime('-1 month',strtotime($date_start)))."-".date("t", strtotime(date('Y-m',strtotime('-1 month',strtotime($date_start)))));
 
-$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND (`client`='16' OR `client`='76')";
+$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND (`client`='16' OR `client`='76')";
 $result_nlk = mysql_query($query_nlk) or die(mysql_error());
 
 
@@ -307,7 +307,7 @@ $s++;$tr_nlk_last1[$row_nlk['id']]=$cash;$total_nlk_last1=(int)$total_nlk_last1+
 $date_start_last=date('Y-m',strtotime('-2 month',strtotime($date_start)))."-01";
 $date_end_last=date('Y-m',strtotime('-2 month',strtotime($date_start)))."-".date("t", strtotime(date('Y-m',strtotime('-2 month',strtotime($date_start)))));
 
-$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND (`client`='16' OR `client`='76')";
+$query_nlk = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND (`client`='16' OR `client`='76')";
 $result_nlk = mysql_query($query_nlk) or die(mysql_error());
 
 
@@ -338,7 +338,7 @@ $s++;$tr_nlk_last2[$row_nlk['id']]=$cash;$total_nlk_last2=(int)$total_nlk_last2+
 }
 
 // Общая за месяц		
-$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `client` not in (16,76)";
+$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `client` not in (16,76)";
 $result_total = mysql_query($query_total) or die(mysql_error());
 
 while($row_t = mysql_fetch_array($result_total)) {
@@ -367,7 +367,7 @@ $date_end_last=date('Y-m',strtotime('-1 month',strtotime($date_start)))."-".date
 
 
 		
-$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client`,`data` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76) ORDER BY `id` ASC";
+$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client`,`data` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76) ORDER BY `id` ASC";
 $result_total = mysql_query($query_total) or die(mysql_error());
 
 
@@ -421,7 +421,7 @@ $date_end_last=date('Y-m',strtotime('-2 month',strtotime($date_start)))."-".date
 
 
 		
-$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client`,`data` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76) ORDER BY `id` ASC";
+$query_total = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client`,`data` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76) ORDER BY `id` ASC";
 $result_total = mysql_query($query_total) or die(mysql_error());
 
 
@@ -471,7 +471,7 @@ $s++;$t_order_last2[$row_t['id']]=$cash;$total_last2=(int)$total_last2+(int)$cas
 }
 
 // Общая за месяц
-$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `client` not in (16,76)";
+$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `client` not in (16,76)";
 $result_tr = mysql_query($query_tr) or die(mysql_error());
 
 
@@ -499,7 +499,7 @@ $tr_order[$row_tr['id']]=$cash;$total_tr=(int)$total_tr+(int)$cash;
 $date_start_last=date('Y-m',strtotime('-1 month',strtotime($date_start)))."-01";
 $date_end_last=date('Y-m',strtotime('-1 month',strtotime($date_start)))."-".date("t", strtotime(date('Y-m',strtotime('-1 month',strtotime($date_start)))));
 
-$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
+$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
 $result_tr = mysql_query($query_tr) or die(mysql_error());
 
 
@@ -545,7 +545,7 @@ $s++;$tr_order_last1[$row_tr['id']]=(int)$cash/2;$tr_last1=(int)$tr_last1+(int)$
 $date_start_last=date('Y-m',strtotime('-2 month',strtotime($date_start)))."-01";
 $date_end_last=date('Y-m',strtotime('-2 month',strtotime($date_start)))."-".date("t", strtotime(date('Y-m',strtotime('-2 month',strtotime($date_start)))));
 
-$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
+$query_tr = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
 $result_tr = mysql_query($query_tr) or die(mysql_error());
 
 
@@ -588,7 +588,7 @@ $s++;$tr_order_last2[$row_tr['id']]=(int)$cash/2;$tr_last2=(int)$tr_last2+(int)$
 }
 
 // Общая за месяц
-$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `client` not in (16,76)";
+$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start)."' AND '".mysql_escape_string($date_end)."' AND `client` not in (16,76)";
 $result_tr_dop = mysql_query($query_tr_dop) or die(mysql_error());
 
 while($row_tr_dop = mysql_fetch_array($result_tr_dop)) {
@@ -614,7 +614,7 @@ $tr_dop_order[$row_tr_dop['id']]=$cash;$total_tr_dop=(int)$total_tr_dop+(int)$ca
 $date_start_last=date('Y-m',strtotime('-1 month',strtotime($date_start)))."-01";
 $date_end_last=date('Y-m',strtotime('-1 month',strtotime($date_start)))."-".date("t", strtotime(date('Y-m',strtotime('-1 month',strtotime($date_start)))));
 
-$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
+$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
 $result_tr_dop = mysql_query($query_tr_dop) or die(mysql_error());
 
 while($row_tr_dop = mysql_fetch_array($result_tr_dop)) {
@@ -662,7 +662,7 @@ $date_end_last=date('Y-m',strtotime('-2 month',strtotime($date_start)))."-".date
 
 
 
-$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `delete`='0' AND `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
+$query_tr_dop = "SELECT `id`,`cl_cash`,`cl_minus`,`cl_plus`,`cl_nds`,`tr_cash`,`tr_minus`,`tr_plus`,`tr_nds`,`client` FROM `orders` WHERE `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_last)."' AND '".mysql_escape_string($date_end_last)."' AND `client` not in (16,76)";
 $result_tr_dop = mysql_query($query_tr_dop) or die(mysql_error());
 
 while($row_tr_dop = mysql_fetch_array($result_tr_dop)) {
@@ -891,7 +891,7 @@ $date_end_dolg=(int)$_GET['year']."-".((int)$_GET['month']-1)."-31";
 }
 
 
-$query_dolg = "SELECT `id`,`cl_cash`,`tr_cash`,`data` FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_dolg)."' AND '".mysql_escape_string($date_end_dolg)."' ORDER BY `data` ASC";
+$query_dolg = "SELECT `id`,`cl_cash`,`tr_cash`,`data` FROM `orders` WHERE `manager`='".$manager."' AND DATE(`data`) BETWEEN '".mysql_escape_string($date_start_dolg)."' AND '".mysql_escape_string($date_end_dolg)."' ORDER BY `data` ASC";
 $result_dolg = mysql_query($query_dolg) or die(mysql_error());
 
 $dolg_date='';

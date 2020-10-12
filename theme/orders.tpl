@@ -36,12 +36,12 @@ $('#btnNDSTr').button();
                   colNames:['№','№/дата','Загрузка','Выгрузка','Клиент','Дата','Ставка клиента','Оплачено клиент.','Перевозчик','Ставка перев.','Оплачено перев.','Блок','Менеджер заявки','Рентабельность','Stat_cl','Stat_tr','Stat_all','Взаимозачет','Претензия','Группа'],
                   colModel :[
                     {name:'id', width:0,hidden:true},
-                    {name:'id_d', index:'id', width:40,align:['center']},
+                    {name:'id_d', index:'id', width:35,align:['center']},
                     {name:'in_adress', index:'in_adress', width:60,align:['center']},
                     {name:'out_adress', index:'out_adress', width:60,align:['center']},
-                    {name:'client', index:'client', width:80},
+                    {name:'client', index:'client', width:90},
                     {name:'data', index:'data', width:0,hidden:true},
-                    {name:'cl_cash', index:'cl_cash', width:60,align:['center']},
+                    {name:'cl_cash', index:'cl_cash', width:50,align:['center']},
                 {name:'cl_cash_receive', index:'cl_cash_receive', width:50,align:['center']},
                     
                     {name:'transp', index:'transp', width:95},

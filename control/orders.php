@@ -220,7 +220,7 @@ $query = "SELECT * FROM orders ".$international.$extra." ORDER BY ".$sidx." ".$s
 } else {
 
 // Managers can see only their clients - now disabled	
-//if ($group=='3') {$query = "SELECT * FROM `orders` WHERE `delete`='0' AND (`manager`='".$manager."' OR `tr_manager`='".$manager."'".$dop_query.") ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;} else 
+//if ($group=='3') {$query = "SELECT * FROM `orders` WHERE (`manager`='".$manager."' OR `tr_manager`='".$manager."'".$dop_query.") ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;} else 
 $query = "SELECT * FROM orders ".$international." ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
 
 if(@$_GET['showdel']=='true'){
@@ -236,7 +236,7 @@ if (@$_GET["order_id"]!='') {
     
 	$query = "SELECT * FROM orders WHERE id=".$_GET["order_id"]." ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
 	
-	//} else $query = "SELECT * FROM `orders` WHERE `delete`='0' AND `id`='".$_GET["order_id"]."' AND (`manager`='".$manager."' OR `tr_manager`='".$manager."') ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;
+	//} else $query = "SELECT * FROM `orders` WHERE `id`='".$_GET["order_id"]."' AND (`manager`='".$manager."' OR `tr_manager`='".$manager."') ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;
     
 }
 
@@ -408,8 +408,11 @@ if($row['cl_rashod_sb']!=0 || $row['cl_rashod_na_cl']!=0) $dop_cl_rashod_info_2 
 
 if($row['tr_plus']!=0 || $row['tr_minus']!=0) $dop_tr_rashod_info_1 = '(+'.$row['tr_plus'].'/-'.$row['tr_minus'].')'; else $dop_tr_rashod_info_1 = '';
 
+$cl_cash = number_format($row['cl_cash'], 0 , "", $thousands_sep = " " );
+$tr_cash = number_format($row['tr_cash'], 0 , "", $thousands_sep = " " );
+
 $data['rows'][$i]['id'] = $row['id'];
-    $data['rows'][$i]['cell'] = array($row['id'], $order_number.'<br>'.date("d/m/Y",strtotime($row['data'])).$vzaimozachet,'<font size="3">'.$adresses[$res_in].'</font>','<font size="3">'.$adresses[$res_out].'</font>',$pref_cl.' <b><i>«'.$client[$row['client']].'»</b></i><br>('.$users[$row['manager']].')',$row['data'],'<font size="4">'.$row['cl_cash'].$cl_kop.'</font> '.$row['cl_currency'].'<br><b>'.$nds_cl.'</b> <font size="1">'.$dop_cl_rashod_info_1.$dop_cl_rashod_info_2.'</font>','<b>'.$cl_pay_show.'</b> '.$row['cl_currency'].'<br><font size="1">(+'.number_format($cl_pay_plus/100, 0, ',', '').'/-'.number_format($cl_pay_minus/100, 0, ',', '').')</font>'.$pretenzia,$pref_tr.' <b><i>«'.$transporters[$row['transp']].'»</i></b><br>('.$users[$row['tr_manager']].')<font size="1">'.$cont_cl.$cont_tr.'</font>','<font size="4">'.$row['tr_cash'].'</font> '.$row['tr_currency'].'<br><b>'.$nds_tr.'</b> <font size="1">'.$dop_tr_rashod_info_1.'</font>','<b>'.($tr_pay/100).'</b> '.$row['tr_currency'].'<br><font size="1">(+'.number_format($tr_pay_plus/100, 0, ',', '').'/-'.number_format($tr_pay_minus/100, 0, ',', '').')</font>',$row['block'],$row['manager'],$row['rent'],$status_cl,$status_tr,$status_all,$row['vzaimozachet'],$row['pretenzia'],$row['group_id']);
+    $data['rows'][$i]['cell'] = array($row['id'], $order_number.'<br>'.date("d/m/Y",strtotime($row['data'])).$vzaimozachet,'<font size="3">'.$adresses[$res_in].'</font>','<font size="3">'.$adresses[$res_out].'</font>',$pref_cl.' <b><i>«'.$client[$row['client']].'»</b></i><br>('.$users[$row['manager']].')',$row['data'],'<font size="4">'.$cl_cash.$cl_kop.'</font> '.$row['cl_currency'].'<br><b>'.$nds_cl.'</b> <font size="1">'.$dop_cl_rashod_info_1.$dop_cl_rashod_info_2.'</font>','<b>'.$cl_pay_show.'</b> '.$row['cl_currency'].'<br><font size="1">(+'.number_format($cl_pay_plus/100, 0, ',', '').'/-'.number_format($cl_pay_minus/100, 0, ',', '').')</font>'.$pretenzia,$pref_tr.' <b><i>«'.$transporters[$row['transp']].'»</i></b><br>('.$users[$row['tr_manager']].')<font size="1">'.$cont_cl.$cont_tr.'</font>','<font size="4">'.$tr_cash.'</font> '.$row['tr_currency'].'<br><b>'.$nds_tr.'</b> <font size="1">'.$dop_tr_rashod_info_1.'</font>','<b>'.($tr_pay/100).'</b> '.$row['tr_currency'].'<br><font size="1">(+'.number_format($tr_pay_plus/100, 0, ',', '').'/-'.number_format($tr_pay_minus/100, 0, ',', '').')</font>',$row['block'],$row['manager'],$row['rent'],$status_cl,$status_tr,$status_all,$row['vzaimozachet'],$row['pretenzia'],$row['group_id']);
     $i++;
 
 

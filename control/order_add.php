@@ -56,7 +56,7 @@ $cl_check = mysql_fetch_row($result_check);
 
 $limit_check=0;
 $dolg_check="";
-$query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_out2`,`date_in2`,`date_out1` FROM `orders` WHERE `delete`='0' AND `client`='".mysql_escape_string((int)$_POST['client'])."'";
+$query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_out2`,`date_in2`,`date_out1` FROM `orders` WHERE `client`='".mysql_escape_string((int)$_POST['client'])."'";
 $result_ord = mysql_query($query_ord) or die(mysql_error());
 while($row_ord = mysql_fetch_array($result_ord)) {
 $cl_pay=0;
@@ -427,16 +427,6 @@ $settings_check = mysql_fetch_row($result_settings_check);
 
 
 
-//if(((int)$_POST['tr_cont']==9||(int)$_POST['tr_cont']==10||(int)$_POST['cl_cont']==9||(int)$_POST['cl_cont']==10)&&$settings_check[0]=="") {
-//$query_settings = "SELECT `agat_number` FROM `settings`";
-//$result_settings = mysql_query($query_settings) or die(mysql_error());
-//$settings = mysql_fetch_row($result_settings);
-//$agat_number='А-'.$settings[0];
-//$query_settings = "UPDATE `settings` SET `agat_number`='".((int)$settings[0]+1)."'";
-//$result_settings = mysql_query($query_settings) or die(mysql_error());
-//$query_settings = "UPDATE `orders` SET `agat_number`='".mysql_escape_string($agat_number)."' WHERE `id`='".mysql_escape_string($log_order)."'";
-//$result_settings = mysql_query($query_settings) or die(mysql_error());
-//}
 
 
 if(@$_POST['gruz_id']!=""){
@@ -553,21 +543,6 @@ $result_limit_order = mysql_query($query_limit_order) or die(mysql_error());
 }
 
 
-
-//$query_settings_check = "SELECT `agat_number` FROM `orders` WHERE `id`='".mysql_escape_string($log_order)."'";
-//$result_settings_check = mysql_query($query_settings_check) or die(mysql_error());
-//$settings_check = mysql_fetch_row($result_settings_check);
-
-//if(((int)$_POST['tr_cont']==9||(int)$_POST['tr_cont']==10||(int)$_POST['cl_cont']==9||(int)$_POST['cl_cont']==10)&&$settings_check[0]=="") {
-//$query_settings = "SELECT `agat_number` FROM `settings`";
-//$result_settings = mysql_query($query_settings) or die(mysql_error());
-//$settings = mysql_fetch_row($result_settings);
-//$agat_number='А-'.$settings[0];
-//$query_settings = "UPDATE `settings` SET `agat_number`='".((int)$settings[0]+1)."'";
-//$result_settings = mysql_query($query_settings) or die(mysql_error());
-//$query_settings = "UPDATE `orders` SET `agat_number`='".mysql_escape_string($agat_number)."' WHERE `id`='".mysql_escape_string($log_order)."'";
-//$result_settings = mysql_query($query_settings) or die(mysql_error());
-//}
 
 if(@$_POST['gruz_id']!=""){
 $query_gruz = "UPDATE `cl_gruz` SET `order`='".mysql_escape_string($log_order)."' WHERE `id`='".mysql_escape_string((int)$_POST['gruz_id'])."'";

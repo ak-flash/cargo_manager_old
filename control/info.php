@@ -99,7 +99,7 @@ $total=0;
 $total_tr=0;
 
 
-$query = "SELECT * FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".date("Y-m-")."01' AND '".date("Y-m-").date("t")."'";
+$query = "SELECT * FROM `orders` WHERE  `manager`='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".date("Y-m-")."01' AND '".date("Y-m-").date("t")."'";
 $result = mysql_query($query) or die(mysql_error());
 $cash=0;
 while($row = mysql_fetch_array($result)) {
@@ -121,7 +121,7 @@ $total=(int)$total+(int)$cash;
 }
 
 
-$query = "SELECT * FROM `orders` WHERE `delete`='0' AND `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".date("Y-m-")."01' AND '".date("Y-m-").date("t")."'";
+$query = "SELECT * FROM `orders` WHERE  `manager`='".$manager."' AND `tr_manager`!='".$manager."' AND DATE(`data`) BETWEEN '".date("Y-m-")."01' AND '".date("Y-m-").date("t")."'";
 $result = mysql_query($query) or die(mysql_error());
 $cash=0;
 while($row = mysql_fetch_array($result)) {
@@ -142,7 +142,7 @@ if($row['cl_nds']==2&&$row['tr_nds']==2)$cash=$cl_cash_all-$tr_cash_all;
 $total_tr=(int)$total_tr+(int)$cash;
 }
 
-$query = "SELECT * FROM `orders` WHERE `delete`='0' AND `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".date("Y-m-")."01' AND '".date("Y-m-").date("t")."'";
+$query = "SELECT * FROM `orders` WHERE  `manager`!='".$manager."' AND `tr_manager`='".$manager."' AND DATE(`data`) BETWEEN '".date("Y-m-")."01' AND '".date("Y-m-").date("t")."'";
 $result = mysql_query($query) or die(mysql_error());
 $cash=0;
 while($row = mysql_fetch_array($result)) {

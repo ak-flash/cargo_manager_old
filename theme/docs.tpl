@@ -6,7 +6,7 @@
     
 <title>Система обращения документов по заявкам</title>
 <?php include_once("data/header.html");?>
-<script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
+
 <script type="text/javascript">
 
 // - - главная таблица на странице заявок- -

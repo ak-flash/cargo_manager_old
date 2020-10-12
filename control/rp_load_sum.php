@@ -48,8 +48,8 @@ $date_start=$start_elements[2]."-".$start_elements[1]."-".$start_elements[0];
 $end_elements  = explode("/",$_GET['date_end']);
 $date_end=$end_elements[2]."-".$end_elements[1]."-".$end_elements[0];
 
-$query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `delete`='0' AND `client`='".$row_temp['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC";
-} else $query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `delete`='0' AND `client`='".$row_temp['id']."' ORDER BY `Id` DESC";
+$query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `client`='".$row_temp['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC";
+} else $query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `client`='".$row_temp['id']."' ORDER BY `Id` DESC";
 
 $result_ord = mysql_query($query_ord) or die(mysql_error());
 
@@ -131,7 +131,7 @@ case '5': $pref='';break;}
 
 
 if ($date_start!='')
-$query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `delete`='0' AND `client`='".$row['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC"; else $query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `delete`='0' AND `client`='".$row['id']."' ORDER BY `Id` DESC";
+$query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `client`='".$row['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC"; else $query_ord = "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `client`='".$row['id']."' ORDER BY `Id` DESC";
 
 
 $result_ord = mysql_query($query_ord) or die(mysql_error());
@@ -193,8 +193,8 @@ $start_elements  = explode("/",$_GET['date_start']);
 $date_start=$start_elements[2]."-".$start_elements[1]."-".$start_elements[0];
 $end_elements  = explode("/",$_GET['date_end']);
 $date_end=$end_elements[2]."-".$end_elements[1]."-".$end_elements[0];
-$query= "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `delete`='0' AND `client`='".mysql_escape_string($id)."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `cl_cash` ASC";}
-else $query= "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `delete`='0' AND `client`='".mysql_escape_string($id)."' ORDER BY `cl_cash` ASC";
+$query= "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `client`='".mysql_escape_string($id)."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `cl_cash` ASC";}
+else $query= "SELECT `id`,`cl_cash`,`cl_nds`,`tr_cash`,`tr_nds`,`cl_minus`,`cl_plus`,`tr_minus`,`tr_plus` FROM `orders` WHERE `client`='".mysql_escape_string($id)."' ORDER BY `cl_cash` ASC";
 
 
 $result = mysql_query($query) or die(mysql_error());

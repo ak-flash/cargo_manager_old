@@ -25,7 +25,7 @@ $group =$_SESSION["group"];
 if(!$sidx) $sidx =1;
 
 
-if ($group=='3') $result = mysql_query("SELECT COUNT(*) AS count FROM `orders`,`clients` WHERE `delete`='0' AND `orders`.`client`=`clients`.`id` AND `clients`.`cl_manager`='".mysql_escape_string($manager)."'"); else $result = mysql_query("SELECT COUNT(*) AS count FROM `orders` WHERE `delete`='0'");
+if ($group=='3') $result = mysql_query("SELECT COUNT(*) AS count FROM `orders`,`clients` WHERE `orders`.`client`=`clients`.`id` AND `clients`.`cl_manager`='".mysql_escape_string($manager)."'"); else $result = mysql_query("SELECT COUNT(*) AS count FROM `orders`");
 // Выполним запрос, который вернет суммарное кол-во записей в таблице
 
 $row = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -122,7 +122,7 @@ if ($group=='3') $query = "SELECT `orders`.`id`,`in_adress`,`out_adress`,`client
 
 } else {
 
-if ($group=='3') $query = "SELECT `orders`.`id`,`in_adress`,`out_adress`,`clients`.`name`,`cl_cash`,`cl_pref`,`cl_nds`,`orders`.`data`,`orders`.`manager` FROM `orders`,`clients` WHERE `delete`='0' AND  `orders`.`client`=`clients`.`id` AND `clients`.`cl_manager`='".mysql_escape_string($manager)."' ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit; else $query = "SELECT `orders`.`id`,`in_adress`,`out_adress`,`clients`.`name`,`cl_cash`,`cl_pref`,`cl_nds`,`orders`.`data`,`orders`.`manager` FROM `orders`,`clients` WHERE `delete`='0' AND  `orders`.`client`=`clients`.`id` ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
+if ($group=='3') $query = "SELECT `orders`.`id`,`in_adress`,`out_adress`,`clients`.`name`,`cl_cash`,`cl_pref`,`cl_nds`,`orders`.`data`,`orders`.`manager` FROM `orders`,`clients` WHERE `orders`.`client`=`clients`.`id` AND `clients`.`cl_manager`='".mysql_escape_string($manager)."' ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit; else $query = "SELECT `orders`.`id`,`in_adress`,`out_adress`,`clients`.`name`,`cl_cash`,`cl_pref`,`cl_nds`,`orders`.`data`,`orders`.`manager` FROM `orders`,`clients` WHERE `orders`.`client`=`clients`.`id` ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
 
 }
 

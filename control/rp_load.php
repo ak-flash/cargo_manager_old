@@ -48,8 +48,8 @@ $date_start=$start_elements[2]."-".$start_elements[1]."-".$start_elements[0];
 $end_elements  = explode("/",$_GET['date_end_cl']);
 $date_end=$end_elements[2]."-".$end_elements[1]."-".$end_elements[0];
 
-$query_ord = "SELECT `id`,`cl_cash` FROM `orders` WHERE `delete`='0' AND `client`='".$row_temp['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC";
-} else $query_ord = "SELECT `id`,`cl_cash` FROM `orders` WHERE `delete`='0' AND `client`='".$row_temp['id']."' ORDER BY `Id` DESC";
+$query_ord = "SELECT `id`,`cl_cash` FROM `orders` WHERE `client`='".$row_temp['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC";
+} else $query_ord = "SELECT `id`,`cl_cash` FROM `orders` WHERE `client`='".$row_temp['id']."' ORDER BY `Id` DESC";
 
 $result_ord = mysql_query($query_ord) or die(mysql_error());
 
@@ -126,7 +126,7 @@ case '5': $pref='';break;}
 
 
 if ($date_start!=''){
-$query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan` FROM `orders` WHERE `delete`='0' AND `client`='".$row['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC";} else $query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan` FROM `orders` WHERE `delete`='0' AND `client`='".$row['id']."' ORDER BY `Id` DESC";
+$query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan` FROM `orders` WHERE `client`='".$row['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC";} else $query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan` FROM `orders` WHERE `client`='".$row['id']."' ORDER BY `Id` DESC";
 
 
 $result_ord = mysql_query($query_ord) or die(mysql_error());
@@ -232,7 +232,7 @@ $date_end=$end_elements[2]."-".$end_elements[1]."-".$end_elements[0];}
 
 if($id!="") {
 if($_GET['date_start_cl']!='')
-$query= "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`manager`,`date_plan` FROM `orders` WHERE `delete`='0' AND `client`='".mysql_escape_string($id)."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC"; else $query= "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`manager`,`date_plan` FROM `orders` WHERE `delete`='0' AND `client`='".mysql_escape_string($id)."' ORDER BY `Id` DESC";}
+$query= "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`manager`,`date_plan` FROM `orders` WHERE `client`='".mysql_escape_string($id)."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC"; else $query= "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`manager`,`date_plan` FROM `orders` WHERE `client`='".mysql_escape_string($id)."' ORDER BY `Id` DESC";}
 $result = mysql_query($query) or die(mysql_error());
 
 $cl_pay_all_temp=0;

@@ -16,7 +16,7 @@ $query_doc = "SELECT * FROM `docs` WHERE `id`='".mysql_escape_string($docs_id)."
 $result_doc = mysql_query($query_doc) or die(mysql_error());
 $get_doc = mysql_fetch_row($result_doc);
 
-$query_order = "SELECT `cl_nds`,`cl_cash`,`tr_nds`,`tr_cash`,`cl_kop` FROM `orders` WHERE `delete`='0' AND `id`='".mysql_escape_string($get_doc[1])."'";
+$query_order = "SELECT `cl_nds`,`cl_cash`,`tr_nds`,`tr_cash`,`cl_kop` FROM `orders` WHERE  `id`='".mysql_escape_string($get_doc[1])."'";
 $result_order = mysql_query($query_order) or die(mysql_error());
 $get_order = mysql_fetch_row($result_order);
 
