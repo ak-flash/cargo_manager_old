@@ -1,15 +1,15 @@
 <?php
 session_start();
 
-$validate=true;
+$validate = true;
 
 include "../config.php";
 
 
-query = "SELECT `id`,`name` FROM `company` WHERE `active`='1'";
+$query = "SELECT `id`,`name` FROM `company` WHERE `active`='1'";
 $result = mysql_query($query) or die(mysql_error());
 while($company= mysql_fetch_row($result)) {
-if($company[0]!=1) $tr_cont_name[$company[0]] = $company[1];
+    if($company[0]!=1) $tr_cont_name[$company[0]] = $company[1];
 }
 
 
@@ -157,11 +157,12 @@ $print_add_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2
 $users[$user[0]]=$print_add_name;
 }
 
-$query_pay = "SELECT `Id`,`order`,`cash`,`add_name` FROM `pays` WHERE `way`='2' AND `category`='1' AND `appoint`='2' AND `status`='0' AND `delete`='0' AND DATE(`date`) BETWEEN '".$date_start."' AND '".$date_end."'";
+$query_pay = "SELECT `id`,`order`,`cash`,`add_name` FROM `pays` WHERE `way`='2' AND `category`='1' AND `appoint`='2' AND `status`='0' AND `delete`='0' AND DATE(`date`) BETWEEN '".$date_start."' AND '".$date_end."'";
 $result_pay = mysql_query($query_pay) or die(mysql_error());
 $p=4;
 while($ps= mysql_fetch_row($result_pay)) {
-$query = "SELECT `id`,`transp`,`tr_nds`,`tr_cash`,`tr_tfpay`,`tr_event`,`date_in1`,`date_out2`,`date_in2`,`client`,`cl_cash`,`tr_cont` FROM `orders` WHERE `Id`='".mysql_escape_string($ps[1])."' ORDER BY `Id` DESC";
+
+    $query = "SELECT `id`,`transp`,`tr_nds`,`tr_cash`,`tr_tfpay`,`tr_event`,`date_in1`,`date_out2`,`date_in2`,`client`,`cl_cash`,`tr_cont` FROM `orders` WHERE `id`='".mysql_escape_string($ps[1])."' ORDER BY `Id` DESC";
 
 
 $result = mysql_query($query) or die(mysql_error());
@@ -179,14 +180,13 @@ case '2': $nds_tr='НАЛ';$mass_nds_2[]=$p;break;
 
 
 switch ($orders[11]) {
-case '2': $mass_tr_cont_2[]=$p;break;
-case '3': $mass_tr_cont_3[]=$p;break;
-case '9': $mass_tr_cont_4[]=$p;break;
-case '10': $mass_tr_cont_5[]=$p;break;
-case '6': $mass_tr_cont_6[]=$p;break;
-case '7': $mass_tr_cont_7[]=$p;break;
-case '8': $mass_tr_cont_8[]=$p;break;
-
+    case '2': $mass_tr_cont_2[]=$p;break;
+    case '3': $mass_tr_cont_3[]=$p;break;
+    case '9': $mass_tr_cont_4[]=$p;break;
+    case '10': $mass_tr_cont_5[]=$p;break;
+    case '6': $mass_tr_cont_6[]=$p;break;
+    case '7': $mass_tr_cont_7[]=$p;break;
+    case '8': $mass_tr_cont_8[]=$p;break;
 }
 
 
@@ -201,50 +201,50 @@ $tr_pay=0;
 $query_pays = "SELECT `cash` FROM `pays` WHERE `order`='".mysql_escape_string($orders[0])."' AND `delete`='0' AND `appoint`='2' AND `status`='1'";
 $result_pays = mysql_query($query_pays) or die(mysql_error());
 while($pay = mysql_fetch_row($result_pays)) {
-$tr_pay=(int)$pay[0]+(int)$tr_pay;
+    $tr_pay=(int)$pay[0]+(int)$tr_pay;
 }
 if((int)$tr_pay/100!=(int)$orders[3]){
 $tr_event="";
 switch ($orders[5]) {
-case '1': $tr_event=$orders[6];break;
-case '2': $tr_event=$orders[7];break;
+    case '1': $tr_event=$orders[6];break;
+    case '2': $tr_event=$orders[7];break;
 
-case '3': $query_docs = "SELECT `date_tr_receve` FROM `docs` WHERE `order`='".mysql_escape_string($orders[0])."'";
-$result_docs = mysql_query($query_docs) or die(mysql_error());
-$tr_events=mysql_fetch_row($result_docs);
-if(mysql_num_rows($result_docs)>0&&$tr_events[0]!="0000-00-00"&&$tr_events[0]!="1970-01-01"&&$tr_events[0]!=""){
-$tr_event=$tr_events[0];};break;
+    case '3': $query_docs = "SELECT `date_tr_receve` FROM `docs` WHERE `order`='".mysql_escape_string($orders[0])."'";
+    $result_docs = mysql_query($query_docs) or die(mysql_error());
+    $tr_events=mysql_fetch_row($result_docs);
+    if(mysql_num_rows($result_docs)>0&&$tr_events[0]!="0000-00-00"&&$tr_events[0]!="1970-01-01"&&$tr_events[0]!=""){
+    $tr_event=$tr_events[0];};break;
 
-case '4': $query_docs = "SELECT `date_tr_receve` FROM `docs` WHERE `order`='".mysql_escape_string($orders[0])."'";
-$result_docs = mysql_query($query_docs) or die(mysql_error());
-$tr_events=mysql_fetch_row($result_docs);
-if(mysql_num_rows($result_docs)>0&&$tr_events[0]!="0000-00-00"&&$tr_events[0]!="1970-01-01"&&$tr_events[0]!=""){
-$tr_event=$tr_events[0];};break;
+    case '4': $query_docs = "SELECT `date_tr_receve` FROM `docs` WHERE `order`='".mysql_escape_string($orders[0])."'";
+    $result_docs = mysql_query($query_docs) or die(mysql_error());
+    $tr_events=mysql_fetch_row($result_docs);
+    if(mysql_num_rows($result_docs)>0&&$tr_events[0]!="0000-00-00"&&$tr_events[0]!="1970-01-01"&&$tr_events[0]!=""){
+    $tr_event=$tr_events[0];};break;
 }
 if($tr_event!="0000-00-00"&&$tr_event!="1970-01-01"&&$tr_event!=""){
-$tr_event_date=date('d/m/Y', strtotime('+'.(int)$orders[4].' day', strtotime($tr_event)));
+    $tr_event_date=date('d/m/Y', strtotime('+'.(int)$orders[4].' day', strtotime($tr_event)));
 
-$elements  = explode("/",$tr_event_date);
-$current_date = mktime (0,0,0,date("m") ,date("d"),date("Y")); //дата сегодня
-$old_date = mktime (0,0,0,$elements[1],$elements[0],$elements[2]); 
-$difference = ($current_date - $old_date);
-$difference_in_days = floor($difference / 86400); //разница в днях
+    $elements  = explode("/",$tr_event_date);
+    $current_date = mktime (0,0,0,date("m") ,date("d"),date("Y")); //дата сегодня
+    $old_date = mktime (0,0,0,$elements[1],$elements[0],$elements[2]);
+    $difference = ($current_date - $old_date);
+    $difference_in_days = floor($difference / 86400); //разница в днях
 } 
 } else $difference_in_days=0;
 
-$cash_all=number_format((int)$ps[2]/100, 2, '.', '');
+$cash_all = number_format((int)$ps[2]/100, 2, '.', '');
 
 
 
 $aSheet->setCellValue('A'.$p,$ps[0]);
-$aSheet->getStyle('A'.$p)->applyFromArray($center); 
+    $aSheet->getStyle('A'.$p)->applyFromArray($center);
 $aSheet->setCellValue('B'.$p,$orders[0]);
-$aSheet->getStyle('B'.$p)->applyFromArray($center); 
+    $aSheet->getStyle('B'.$p)->applyFromArray($center);
 $aSheet->setCellValue('C'.$p,$tr[0]);
-$aSheet->getStyle('C'.$p)->applyFromArray($boldFont)->applyFromArray($center);
+    $aSheet->getStyle('C'.$p)->applyFromArray($boldFont)->applyFromArray($center);
 //$aSheet->setCellValue('D'.$p,$nds_tr);
 $aSheet->setCellValue('D'.$p,$nds_tr.' ('.$tr_cont_name[$orders[11]].')');
-$aSheet->getStyle('D'.$p)->applyFromArray($center); 
+    $aSheet->getStyle('D'.$p)->applyFromArray($center);
 
 if($tr_pay!=0)$cash=" (Опл.: ".((int)$tr_pay/100).")"; else $cash="";
 
@@ -272,21 +272,17 @@ $p++;
 
 
 
-//case '4': $tr_cont='Техноинвест';$mass_tr_cont_4[]=$p;break;
-//case '5': $tr_cont='ВТС';$mass_tr_cont_5[]=$p;break;
-//case '6': $tr_cont='Метизный Двор
 
-for($i = 1; $i <= 7; $i++) {
+for($i = 1; $i <= (count($company)+1); $i++) {
 
 switch ($i) {
-case '1': $mass_cont_temp=$mass_tr_cont_2;break;
-case '2': $mass_cont_temp=$mass_tr_cont_3;break;
-case '3': $mass_cont_temp=$mass_tr_cont_4;break;
-case '4': $mass_cont_temp=$mass_tr_cont_5;break;
-case '5': $mass_cont_temp=$mass_tr_cont_6;break;
-case '6': $mass_cont_temp=$mass_tr_cont_7;break;
-case '7': $mass_cont_temp=$mass_tr_cont_8;break;
-
+    case '1': $mass_cont_temp=$mass_tr_cont_2;break;
+    case '2': $mass_cont_temp=$mass_tr_cont_3;break;
+    case '3': $mass_cont_temp=$mass_tr_cont_4;break;
+    case '4': $mass_cont_temp=$mass_tr_cont_5;break;
+    case '5': $mass_cont_temp=$mass_tr_cont_6;break;
+    case '6': $mass_cont_temp=$mass_tr_cont_7;break;
+    case '7': $mass_cont_temp=$mass_tr_cont_8;break;
 }
 
 $aSheet->setCellValue('E'.($p+$i),$tr_cont_name[($i+1)].':');
@@ -324,7 +320,7 @@ $aSheet->getStyle('F'.($p+1+$i))->applyFromArray($center)->applyFromArray($boldF
 
 
 
-$aSheet->setCellValue('C'.($p+6+$i),'____________________ Филатов В.Е.');$aSheet->setCellValue('E'.($p+6+$i),'____________________ Коробко Д.И.');
+$aSheet->setCellValue('C'.($p+6+$i),'____________________ ');$aSheet->setCellValue('E'.($p+6+$i),'____________________ ');
 //$aSheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 $aSheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
 $aSheet->getPageSetup()->setPrintArea('A1:G'.($p+10));

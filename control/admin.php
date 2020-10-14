@@ -21,15 +21,15 @@ $result_check = mysql_query($query_check) or die(mysql_error());
 $check = mysql_fetch_row($result_check);
 
 if(((int)$check[1]==9||(int)$check[1]==10||(int)$check[2]==9||(int)$check[2]==10)&&$check[0]=="") {
-$query_settings = "SELECT `agat_number` FROM `settings`";
+$query_settings = "SELECT `international_number` FROM `settings`";
 $result_settings = mysql_query($query_settings) or die(mysql_error());
 $settings = mysql_fetch_row($result_settings);
-$agat_number='А-'.$settings[0];
-$query_settings = "UPDATE `settings` SET `agat_number`='".((int)$settings[0]+1)."'";
+$international_number='М-'.$settings[0];
+$query_settings = "UPDATE `settings` SET `international_number`='".((int)$settings[0]+1)."'";
 $result_settings = mysql_query($query_settings) or die(mysql_error());
-$query_agat_renew = "UPDATE `orders` SET `agat_number`='".$agat_number."' WHERE `id`='".$ord_agat_id."'";
-$result_agat_renew = mysql_query($query_agat_renew) or die(mysql_error());
-$message="Номер заявки: <b>".$agat_number.'<b>'; 
+$query_international_renew = "UPDATE `orders` SET `international_number`='".$international_number."' WHERE `id`='".$ord_agat_id."'";
+$result_international_renew = mysql_query($query_international_renew) or die(mysql_error());
+$message="Номер заявки: <b>".$international_number.'<b>';
 } else $message="Номер уже присвоен"; 
 
 echo $message;
@@ -38,7 +38,7 @@ echo $message;
 
 if(@$_GET['mode']=="pay_unlock")
 {
-
+    $pays = '';
 
 if(@$_GET['pay']=="") {echo "Выберите платеж(и)!";} else {
 $str = explode(',',$_GET['pay']);
@@ -46,7 +46,7 @@ $res = (int)sizeof($str)-1;
 $f=0;
 $error='';
 while ($f<=$res) {
-$pays=$str[$f].",".$pays;
+$pays = $str[$f].",".$pays;
 
 	
 if($_SESSION['group']==1||$_SESSION['group']==2||$_SESSION['group']==4){
@@ -67,7 +67,7 @@ $result = mysql_query($query) or die(mysql_error());
 
 $query = "UPDATE `pays` SET `status`='0' WHERE `id`='".mysql_escape_string($str[$f])."'";
 $result = mysql_query($query) or die(mysql_error());
-echo 'Платёж(ы) <b>№ '.substr($pays,0,strlen($pays)-1).'</b> распроведён(ы)!';
+$success='Платёж <b>№ '.substr($pays,0,strlen($pays)-1).'</b> распроведён!<br>';
 } else {$error.='Платёж №'.$str[$f].' не является проведённым!<br>';}
 
 $f++;
@@ -75,7 +75,7 @@ $f++;
 
 }
 
-echo $error;
+echo $success.$error;
 }
 }
 

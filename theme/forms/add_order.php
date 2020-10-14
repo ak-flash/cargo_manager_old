@@ -14,7 +14,7 @@ $str_auto = explode('&',$row['tr_auto']);
 ?>
 <script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
 <script type="text/javascript">
-
+$("#cl_currency").val(3).change();
 
 $.mask.definitions['~']='[+-]';
 $('#in_data1').mask('99/99/9999');
@@ -569,7 +569,7 @@ if($row['data']=="0000-00-00"||$row['data']=="1970-01-01")$data=""; else $data=d
 
 
 
-echo '$("#gruz_name").val("'.addslashes($row['gruz']).'");$("#gruz_m").val("'.$row['gr_m'].'");$("#gruz_v").val("'.$row['gr_v'].'");$("#gruz_num").val("'.(int)$row['gr_number'].'");$("#tr_receive").val("'.$row['tr_receive'].'");$("#in_data1").val("'.$date_in1.'");$("#in_data2").val("'.$date_in2.'");$("#out_data1").val("'.$date_out1.'");$("#out_data2").val("'.$date_out2.'");$("#in_time11").val("'.$row['time_in11'].'");$("#out_time1").val("'.$row['time_out1'].'");$("#out_time2").val("'.$row['time_out2'].'");$("#in_time12").val("'.$row['time_in12'].'");$("#in_time22").val("'.$row['time_in22'].'");$("#in_time21").val("'.$row['time_in21'].'");$("#order_id").val("'.$row['id'].'");$("#order_id_show").html("'.$row['id'].'");';
+echo '$("#gruz_name").val("'.addslashes($row['gruz']).'");$("#gruz_m").val("'.$row['gr_m'].'");$("#gruz_v").val("'.$row['gr_v'].'");$("#gruz_num").val("'.(int)$row['gr_number'].'");$("#tr_receive").val("'.$row['tr_receive'].'");$("#in_data1").val("'.$date_in1.'");$("#in_data2").val("'.$date_in2.'");$("#out_data1").val("'.$date_out1.'");$("#out_data2").val("'.$date_out2.'");$("#in_time11").val("'.$row['time_in11'].'");$("#out_time1").val("'.$row['time_out1'].'");$("#out_time2").val("'.$row['time_out2'].'");$("#in_time12").val("'.$row['time_in12'].'");$("#in_time22").val("'.$row['time_in22'].'");$("#in_time21").val("'.$row['time_in21'].'");$("#order_id").val("'.$row['id'].'");$("#order_id_show").html("'.$row['id'].'");$("#tr_gruz_worker").val("'.$row['tr_gruz_worker'].'");';
 
 
 if($_SESSION["group"]==1||$_SESSION["group"]==2){
@@ -752,7 +752,7 @@ $("#fa_cl").dialog({ title: "Редактировать клиента №"+$("#
 }
 -->
 
-<select name="cl_currency" style="width:70px;" id="cl_currency" class="select" onchange="$('#currency_info1').html($(this).val());$('#currency_info2').html($(this).val());$('#currency_info3').html($(this).val());$('#currency_info4').html($(this).val());">
+<select name="cl_currency" style="width:70px;" id="cl_currency" class="select" onchange="$('#currency_info1').html($(this).val());$('#currency_info2').html($(this).val());$('#currency_info3').html($(this).val());$('#currency_info4').html($(this).val());$('#currency_info5').html($(this).val());">
   <option value="руб">руб</option>
   <option value="USD">USD</option>
   <option value="Euro">Euro</option>
@@ -870,7 +870,8 @@ $("#fa_cl").dialog({ title: "Редактировать клиента №"+$("#
 
 <fieldset><legend><b>Грузчики:</b></legend>
 <table cellpadding="5"><tr><td>Стоимость грузчиков:</td><td>
-<input name="tr_gruz_worker" id="tr_gruz_worker" style="width: 80px;" placeholder="0" class="input">
+<input name="tr_gruz_worker" id="tr_gruz_worker" style="width:50px;" placeholder="0" class="input">
+<div id="currency_info4" style="display: inline;"></div>
 </td>
 </tr>
 </table>
