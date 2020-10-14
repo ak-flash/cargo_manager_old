@@ -2,6 +2,7 @@
 *.zip
 *.tar
 *~
+/tools/backup/files
 /tools/mysql
 .idea
 .env
