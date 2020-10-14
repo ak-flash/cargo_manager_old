@@ -1,7 +1,9 @@
 *.rar
 *.zip
+*.tar
 *~
-/sxd
-config.php
+/tools/mysql
 .idea
+.env
 /Uploads
+/vendor

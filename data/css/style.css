@@ -121,8 +121,8 @@ text-shadow: 1px 1px 1px #000000;
    vertical-align: text-middle;
    text-align: center;
    color: #fff;
+   border-radius: 5px;
 
-   font-size: 16px;
 text-decoration: none;cursor: pointer;
 
 }

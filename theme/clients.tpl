@@ -87,10 +87,6 @@ function updateTable(value) {
   });
 
 
-
-
-
-
 // - - кнопка добавление клиента - - >
 $("#btnAdd").click(function(){
 $("#fa_cl").load("theme/forms/add_client.php"); 
@@ -101,28 +97,15 @@ $("#fa_cl").load("theme/forms/add_client.php");
 });
 
 
-
-
-
-
-    
- 
-
-
-
   
   });  
     
-  
-
 </script>
 
 </head>
 <body>	
 
-
 <?php include "data/menu.html";?>
-
 
 <!  - - форма добавления клиента  - - >  
 <div id="fa_cl" style="background:#F8F8F8;"></div>
@@ -137,8 +120,8 @@ $("#fa_cl").load("theme/forms/add_client.php");
 <div id="dialog" style="display: none;"></div>
 
 <div class="main">
-<img src="data/img/purse.png" style="float:left;margin-left:20px;">&nbsp;<a class="button3" style="width:208px;" id="btnAdd" href="#">Добавить клиента</a>
-<a class="button" id="btnAllCl" href="#" onclick='$("#table").setGridParam({url:"control/clients.php?mode=clients"});jQuery("#table").trigger("reloadGrid");'>Все</a><a class="button" id="btnWays_search" href="#" onclick="window.location.href='ways_cl.php?group_id=0';" style="margin:12px;margin-right:30px;">Направления</a>
+<a class="button3" style="width:208px;margin-left:10px;" id="btnAdd" href="#">Добавить клиента</a>
+<a class="button" id="btnAllCl" href="#" onclick='$("#table").setGridParam({url:"control/clients.php?mode=clients"});jQuery("#table").trigger("reloadGrid");' style="width:50px;">Все</a><a class="button" id="btnWays_search" href="#" onclick="window.location.href='ways_cl.php?group_id=0';" style="width:100px;">Направления</a>
 
 <!--- Поиск ---->
 <?php $description='по клиентам';include_once("theme/search.tpl");?>
@@ -151,8 +134,6 @@ $("#fa_cl").load("theme/forms/add_client.php");
         <div id="tablePager"></div>
 
 </div>
-
-
 
 
 </td></tr></table>
@@ -169,7 +150,7 @@ if($("#table").jqGrid("getGridParam","selarrrow")!="") {
 $("#cl_group_div").dialog({ title: "Для сохранения группы" },{ width: 250 },{ modal: true },{ resizable: false },{ buttons: { "Добавить": function() {if ($("#cl_group_name").val()!=""){$.post("control/admin.php?mode=group&cl_group_name="+$("#cl_group_name").val()+"&group_cl="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close");$("#cl_group_div").dialog("close"); } } });});} else {alert("Введите название группы клиента!");} } } });} else {alert("Выберите клиентов!");}
 
 
-\' value="Обьединить в группу" style="font-size: 12px;width: 170px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnClGroup" onclick=\'$("#fa_cl_group").load("theme/forms/cl_group.php");$("#fa_cl_group").dialog({ title: "Группы клиентов" },{width: 760,height: 400,modal: true,resizable: false});\' value="Группы клиентов" style="font-size: 12px;width: 150px;height:35px;"></fieldset>';
+\' value="Обьединить в группу" style="font-size: 12px;width: 170px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnClGroup" onclick=\'$("#fa_cl_group").load("theme/forms/add_cl_group.php");$("#fa_cl_group").dialog({ title: "Группы клиентов" },{width: 760,height: 400,modal: true,resizable: false});\' value="Группы клиентов" style="font-size: 12px;width: 150px;height:35px;"></fieldset>';
 }?>
 
 </body>

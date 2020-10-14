@@ -45,6 +45,8 @@ $("#date_komiss").val(<?php echo date("Y");?>).change();
 $('#btnReport_tr').button();$('#btnReport_tr_car').button();
 $('#btnReport_cl').button();$('#btnReport_cl_ex').button();
 $('#btnReport_dir').button();$('#btnReport_dir_old').button();$('#btnReport_sum').button();$('#btnReport_komiss').button();
+$('#btnReport_dir_int').button();
+
 $("#report_tabs").tabs({fx: {opacity:'toggle', duration:1}}); 
 
 $("#reports_menu").css({"background": "#BCBCBC", "color":"#000","text-shadow": "1px 2px 2px #FFF"});
@@ -185,7 +187,35 @@ rownumbers: false,
 
                 }).navGrid('#tablePager_sum', {edit:false,excel:true,add:false,del:false,view:false,refresh:true,search:false});
 
+    // - - кнопка показа за месяц  - - >  
+    $("#btnMonth").click(function(){
+        $("#date_start").val('<?php echo date('d/m/Y', strtotime('first day of this month')); ?>');
+        $("#date_end").val('<?php echo date('d/m/Y', strtotime('last day of this month')); ?>');
+        $("#date_start_cl_all").val('<?php echo date('d/m/Y', strtotime('first day of this month')); ?>');
+        $("#date_end_cl_all").val('<?php echo date('d/m/Y', strtotime('last day of this month')); ?>');
+        $("#date_start_cl").val('<?php echo date('d/m/Y', strtotime('first day of this month')); ?>');
+        $("#date_end_cl").val('<?php echo date('d/m/Y', strtotime('last day of this month')); ?>');
+        $("#date_start_tr").val('<?php echo date('d/m/Y', strtotime('first day of this month')); ?>');
+        $("#date_end_tr").val('<?php echo date('d/m/Y', strtotime('last day of this month')); ?>');
+    });  
+    
+    $("#btnMonth_past").click(function(){
+        $("#date_start").val('<?php echo date('d/m/Y', strtotime('first day of -1 month')); ?>');
+        $("#date_end").val('<?php echo date('d/m/Y', strtotime('last day of -1 month')); ?>');
+        $("#date_start_cl_all").val('<?php echo date('d/m/Y', strtotime('first day of -1 month')); ?>');
+        $("#date_end_cl_all").val('<?php echo date('d/m/Y', strtotime('last day of -1 month')); ?>');
+        $("#date_start_cl").val('<?php echo date('d/m/Y', strtotime('first day of -1 month')); ?>');
+        $("#date_end_cl").val('<?php echo date('d/m/Y', strtotime('last day of -1 month')); ?>');
+        $("#date_start_tr").val('<?php echo date('d/m/Y', strtotime('first day of -1 month')); ?>');
+        $("#date_end_tr").val('<?php echo date('d/m/Y', strtotime('last day of -1 month')); ?>');
+    }); 
+
+
 });
+
+
+
+
 </script>
 </head>
 <body>	
@@ -198,13 +228,15 @@ rownumbers: false,
 <ul style="font-size: 18px;height: 28px;">
 		
 	<?php if($_SESSION["group"]==2||$_SESSION["group"]==1||$_SESSION["group"]==4) {
-			echo '<li><a href="#report_tabs-0">Действия пользователей<div id="name_tab-0" style="display:inline;"></div></a></li><li><a href="#report_tabs-4">Общий отчёт<div id="name_tab-4" style="display:inline;"></div></a></li>';
+			echo '<li><a href="#report_tabs-4">Общий отчёт<div id="name_tab-4" style="display:inline;"></div></a></li>';
 	}?>
 
 		<li><a href="#report_tabs-1">По клиентам<div id="name_tab-1" style="display:inline;"></div></a></li>
 		<li><a href="#report_tabs-2">По перевозчикам<div id="name_tab-2" style="display:inline;"></div></a></li>
 
-	<?php if($_SESSION["group"]==2||$_SESSION["group"]==1||$_SESSION["group"]==4){echo '<li><a href="#report_tabs-3">Рентабельность<div id="name_tab-3" style="display:inline;"></div></a></li><li><a href="#report_tabs-5">Комиссии<div id="name_tab-5" style="display:inline;"></div></a></li><li><a href="#report_tabs-6" onclick=\'$("#cl_notify").load("control/notify.php?mode=show_cl")\';>Уведомления</a></li>';}?>
+	<?php if($_SESSION["group"]==2||$_SESSION["group"]==1||$_SESSION["group"]==4){
+        echo '<li><a href="#report_tabs-3">Рентабельность<div id="name_tab-3" style="display:inline;"></div></a></li><li><a href="#report_tabs-5">Комиссии<div id="name_tab-5" style="display:inline;"></div></a></li><li><a href="#report_tabs-6" onclick=\'$("#cl_notify").load("control/notify.php?mode=show_cl")\';>Уведомления</a></li><li><a href="#report_tabs-0">Логи<div id="name_tab-0" style="display:inline;"></div></a></li>';
+    }?>
 
 
 	</ul>
@@ -239,7 +271,7 @@ echo '</div>
 <fieldset style="font-size: 16px;"><legend><b>Отчёт:</b></legend>
 <table>
 <tr><td width="470"><INPUT TYPE=RADIO NAME="report_cl" id="report_cl" VALUE="1" CHECKED>&nbsp;&nbsp;<b>Общий</b><br><table><tr><td width="130"><INPUT TYPE=RADIO NAME="report_cl" VALUE="3">&nbsp;&nbsp;По клиенту&nbsp;</td><td><div id="cl_select" style="float:right;"></div></td></tr></table></td><td width="370">За период
-&nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start_cl" name="date_start_cl" style="width:85px;" value="" class="input"/>&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end_cl" name="date_end_cl" style="width:85px;" class="input"/></td><td>&nbsp;&nbsp;&nbsp;<a href="#" style="font-size:18px;" id="btnReport_cl" <?php if($_SESSION["group"]!=2&&$_SESSION["group"]!=1&&$_SESSION["group"]!=4)echo 'onclick=\'if(document.getElementById("date_start_cl").value<=document.getElementById("date_end_cl").value){window.location.href="control/reports.php?mode=cl&mode_id="+$("input[name=report_cl]:checked").val()+"&cl_id="+$("#cl_id").val()+"&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val();} else {alert("Дата окончания периода должна быть позже даты начала!");}\''; else echo 'onclick=\'if(document.getElementById("date_start_cl").value<=document.getElementById("date_end_cl").value){if($(":radio[name=report_cl]").filter(":checked").val()==1){jQuery("#table_cl").setGridParam({url:"control/rp_load.php?mode=rp_load&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val(),subGridUrl:"control/rp_load.php?mode=desc&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val(), page:1});jQuery("#table_cl").trigger("reloadGrid");}
+&nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start_cl" name="date_start_cl" style="width:85px;" value="<?php echo date('d/m/Y', strtotime('first day of this month')); ?>" class="input"/>&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end_cl" name="date_end_cl" style="width:85px;" value="<?php echo date('d/m/Y', strtotime('last day of this month')); ?>" class="input"/></td><td>&nbsp;&nbsp;&nbsp;<a href="#" style="font-size:18px;" id="btnReport_cl" <?php if($_SESSION["group"]!=2&&$_SESSION["group"]!=1&&$_SESSION["group"]!=4)echo 'onclick=\'if(document.getElementById("date_start_cl").value<=document.getElementById("date_end_cl").value){window.location.href="control/reports.php?mode=cl&mode_id="+$("input[name=report_cl]:checked").val()+"&cl_id="+$("#cl_id").val()+"&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val();} else {alert("Дата окончания периода должна быть позже даты начала!");}\''; else echo 'onclick=\'if(document.getElementById("date_start_cl").value<=document.getElementById("date_end_cl").value){if($(":radio[name=report_cl]").filter(":checked").val()==1){jQuery("#table_cl").setGridParam({url:"control/rp_load.php?mode=rp_load&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val(),subGridUrl:"control/rp_load.php?mode=desc&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val(), page:1});jQuery("#table_cl").trigger("reloadGrid");}
 if($(":radio[name=report_cl]").filter(":checked").val()==3){jQuery("#table_cl").setGridParam({url:"control/rp_load.php?mode=rp_load&cl_id="+$("#cl_id").val()+"&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val(),subGridUrl:"control/rp_load.php?mode=desc&date_start_cl="+$("#date_start_cl").val()+"&date_end_cl="+$("#date_end_cl").val(), page:1});jQuery("#table_cl").trigger("reloadGrid");}
 } else {alert("Дата окончания периода должна быть позже даты начала!");}\'';
 ?>>Сформировать</a>&nbsp;|&nbsp;
@@ -249,13 +281,7 @@ if($(":radio[name=report_cl]").filter(":checked").val()==3){jQuery("#table_cl").
 
 </table>
 
-
-
-
-
-
-
-        
+  
 </fieldset>
 <br>
 
@@ -270,7 +296,7 @@ if($(":radio[name=report_cl]").filter(":checked").val()==3){jQuery("#table_cl").
 <fieldset style="font-size: 16px;"><legend><b>Отчёт:</b></legend>
 <div style="float:left;">
 <br>&nbsp;&nbsp;За период
-&nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start_tr" name="date_start_tr" style="width:85px;" value="" class="input" />&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end_tr" name="date_end_tr" style="width:85px;" class="input"/>
+&nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start_tr" name="date_start_tr" style="width:85px;" value="'.'date('d/m/Y', strtotime('first day of this month')).'" class="input" />&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end_tr" name="date_end_tr" style="width:85px;" value="'.date('d/m/Y', strtotime('last day of this month')).'" class="input"/>
 
 <br><br>
 
@@ -286,61 +312,78 @@ if($(":radio[name=report_cl]").filter(":checked").val()==3){jQuery("#table_cl").
 </div>
 
 
-<?php if($_SESSION["group"]==2||$_SESSION["group"]==1||$_SESSION["group"]==4){echo '<div id="report_tabs-3"><table cellspacing="10" width="100%"><tr><td width="350">&nbsp;&nbsp;За период
-&nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start"  name="date_start" style="width:85px;" value="" class="input"/>&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end" name="date_end" style="width:85px;" class="input"/><br><br>
+<?php if($_SESSION["group"]==2||$_SESSION["group"]==1||$_SESSION["group"]==4){
+    echo '<div id="report_tabs-3"><table cellspacing="10" width="100%"><tr><td width="350">&nbsp;&nbsp;За период
+&nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start_rent"  name="date_start_rent" style="width:85px;" value="'.date('d/m/Y', strtotime('first day of this month')).'" class="input"/>&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end" name="date_end" style="width:85px;" value="'.date('d/m/Y', strtotime('last day of this month')).'" class="input"/><br><br>
 &nbsp;&nbsp;Рентабельность
 &nbsp;&nbsp;от&nbsp;&nbsp;<input type="text" id="start_rent" onchange=\'$("#end_rent").val($("#start_rent").val());\' name="start_rent" style="width:35px;" value="" class="input"/>&nbsp;&nbsp;до&nbsp;&nbsp;<input type="text" id="end_rent" name="end_rent" style="width:35px;" class="input"/> %</td><td>
-<a href="#" style="font-size:18px;" id="btnReport_sum" onclick=\'if(document.getElementById("date_start").value<=document.getElementById("date_end").value){jQuery("#table_sum").setGridParam({url:"control/rp_load_sum.php?mode=rp_load&date_start="+$("#date_start").val()+"&date_end="+$("#date_end").val()+"&start_rent="+$("#start_rent").val()+"&end_rent="+$("#end_rent").val(),subGridUrl:"control/rp_load_sum.php?mode=desc&date_start="+$("#date_start").val()+"&date_end="+$("#date_end").val()+"&start_rent="+$("#start_rent").val()+"&end_rent="+$("#end_rent").val(), page:1});jQuery("#table_sum").trigger("reloadGrid");
+<a href="#" style="font-size:18px;" id="btnReport_sum" onclick=\'if(document.getElementById("date_start_rent").value<=document.getElementById("date_end").value){jQuery("#table_sum").setGridParam({url:"control/rp_load_sum.php?mode=rp_load&date_start="+$("#date_start_rent").val()+"&date_end="+$("#date_end").val()+"&start_rent="+$("#start_rent").val()+"&end_rent="+$("#end_rent").val(),subGridUrl:"control/rp_load_sum.php?mode=desc&date_start="+$("#date_start_rent").val()+"&date_end="+$("#date_end").val()+"&start_rent="+$("#start_rent").val()+"&end_rent="+$("#end_rent").val(), page:1});jQuery("#table_sum").trigger("reloadGrid");
 } else {alert("Дата окончания периода должна быть позже даты начала!");}\'>Сформировать</a></td></tr></table><br>
 <table id="table_sum" align="center"></table>
         <div id="tablePager_sum"></div></div>';}?>
 
-<?php if($_SESSION["group"]==2||$_SESSION["group"]==1||$_SESSION["group"]==4){echo '<div id="report_tabs-4"><fieldset style="font-size: 16px;"><legend><b>Отчёт:</b></legend>
-<div style="float:left;">
-<br>&nbsp;&nbsp;За период
-&nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start_cl_all" name="date_start_cl_all" style="width:85px;" value="" class="input"/>&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end_cl_all" name="date_end_cl_all" style="width:85px;" class="input"/>
+<?php if($_SESSION["group"]==2||$_SESSION["group"]==1||$_SESSION["group"]==4){
+        echo '<div id="report_tabs-4"><fieldset style="font-size: 16px;"><legend><b>Отчёт:</b></legend>
+    <div style="float:left;">
+    <br>&nbsp;&nbsp;За период
+    &nbsp;&nbsp;с&nbsp;&nbsp;<input type="text" id="date_start_cl_all" name="date_start_cl_all" style="width:85px;" value="'.date('d/m/Y', strtotime('first day of this month')).'" class="input"/>&nbsp;&nbsp;по&nbsp;&nbsp;<input type="text" id="date_end_cl_all" name="date_end_cl_all" style="width:85px;"  value="'.date('d/m/Y', strtotime('last day of this month')).'" class="input"/>
 
-<br><br>
+    <a class="button" id="btnMonth" href="#" style="width:120px;">Текущий месяц</a>
+    <a class="button" id="btnMonth_past" href="#" style="width:120px;">Предыдущий</a>
 
-<input type="hidden" name="cl_all_id" id="cl_all_id" value="0">
-<table><tr><td colspan="2"><INPUT TYPE=RADIO NAME="report_cl_all" id="report_cl_all" VALUE="1" CHECKED>&nbsp;&nbsp;<b>Общий</b></td></tr><tr><td width="150"><INPUT TYPE=RADIO NAME="report_cl_all" VALUE="3">&nbsp;&nbsp;По клиенту</td><td><div id="cl_all_select"></div></td></tr>
+    <br><br>
 
-<tr><td width="200"><INPUT TYPE=RADIO NAME="report_cl_all" VALUE="5">&nbsp;&nbsp;По группе клиентов</td><td><select name="group" id="group" style="width:260px; font-size: 18px;" class="select"><option value="0">Выберите...</option>';
-$query = "SELECT `group_id`,`group_name`,`group_cl` FROM `cl_group` ORDER BY `group_name` ASC";
-$result = mysql_query($query) or die(mysql_error());
-while($group= mysql_fetch_row($result)) {
-echo '<option value='.$group[2].'>'.$group[1].'</option>';
+    <input type="hidden" name="cl_all_id" id="cl_all_id" value="0">
+    <table><tr><td colspan="2"><INPUT TYPE=RADIO NAME="report_cl_all" id="report_cl_all" VALUE="1" CHECKED style="margin-bottom:15px;">&nbsp;&nbsp;<b>Общий</b></td></tr><tr><td width="150"><INPUT TYPE=RADIO NAME="report_cl_all" VALUE="3">&nbsp;&nbsp;По клиенту</td><td><div id="cl_all_select"></div></td></tr>
+
+    <tr><td width="200"><INPUT TYPE=RADIO NAME="report_cl_all" VALUE="5">&nbsp;&nbsp;По группе клиентов</td><td><select name="group" id="group" style="width:260px; font-size: 18px;" class="select"><option value="0">Выберите...</option>';
+    $query = "SELECT `group_id`,`group_name`,`group_cl` FROM `cl_group` ORDER BY `group_name` ASC";
+    $result = mysql_query($query) or die(mysql_error());
+    while($group= mysql_fetch_row($result)) {
+    echo '<option value='.$group[2].'>'.$group[1].'</option>';
+    }
+    echo '</select>
+
+
+
+    </td></tr>
+
+
+    <tr><td width="200">&nbsp;&nbsp;Контрагенты</td><td><select name="group_cont" id="group_cont" style="width:260px; font-size: 18px;" class="select"><option value="0">Выберите...</option>';
+    $query = "SELECT `id`,`name` FROM `company` ORDER BY `id` ASC";
+    $result = mysql_query($query) or die(mysql_error());
+    while($group_cont= mysql_fetch_row($result)) {
+    if($group_cont[0]!=1)echo '<option value='.$group_cont[0].'>'.$group_cont[1].'</option>';
+
 }
-echo '</select>
+    echo '</select>
+    </td></tr>
 
 
+    <tr><td colspan="2">&nbsp;&nbsp;</td></tr><tr><td><INPUT TYPE=RADIO NAME="report_cl_all" id="report_cl_all" VALUE="4">&nbsp;&nbsp;По менеджеру</td><td><select name="username" id="username" style="width:160px; font-size: 18px;" class="select"><option value="0">Выберите...</option>';
+    $query = "SELECT `id`,`name` FROM `workers` WHERE `delete`='0' AND (`group`='3' OR `group`='2' OR `group`='1') ORDER BY `name` ASC";
+    $result = mysql_query($query) or die(mysql_error());
+    while($user= mysql_fetch_row($result)) {
+    $pieces = explode(" ", $user[1]);
+    $print_add_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2).".";
+    echo '<option value='.$user[0].'>'.$print_add_name.'</option>';
+    }
+    echo '</select></td></tr><tr><td colspan="2">&nbsp;&nbsp;</td></tr><tr><td colspan="2"><INPUT TYPE=RADIO NAME="report_cl_all" id="report_cl_all" VALUE="6">&nbsp;&nbsp;по НДС</td></tr></table>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-</td></tr>
+    <!--
+    <a href="#" style="height:35px;font-size:18px;margin-top:40px;" id="btnReport_dir_old" onclick=\'if(document.getElementById("date_start_cl_all").value<=document.getElementById("date_end_cl_all").value){window.location.href="control/export_old.php?mode=cl_all&mode_id="+$("input[name=report_cl_all]:checked").val()+"&cl_all="+$("#cl_all_id").val()+"&group_cont="+$("#group_cont").val()+"&date_start="+$("#date_start_cl_all").val()+"&date_end="+$("#date_end_cl_all").val()+"&user="+$("#username").val()+"&group="+$("#group").val();} else {alert("Дата окончания периода должна быть позже даты начала!");}\'>Старый</a>
+    -->
 
+    <a href="#" style="margin-left:30px;margin-top:90px;height:95px;width:170px;font-size:1.2em;" id="btnReport_dir" onclick=\'if(document.getElementById("date_start_cl_all").value<=document.getElementById("date_end_cl_all").value){window.location.href="control/export.php?mode=cl_all&mode_id="+$("input[name=report_cl_all]:checked").val()+"&cl_all="+$("#cl_all_id").val()+"&group_cont="+$("#group_cont").val()+"&date_start="+$("#date_start_cl_all").val()+"&date_end="+$("#date_end_cl_all").val()+"&user="+$("#username").val()+"&group="+$("#group").val();} else {alert("Дата окончания периода должна быть позже даты начала!");}\'>Российские заявки (Excel)</a>
 
-<tr><td width="200">&nbsp;&nbsp;Контрагенты</td><td><select name="group_cont" id="group_cont" style="width:260px; font-size: 18px;" class="select"><option value="0">Выберите...</option>';
-$query = "SELECT `id`,`name` FROM `company` ORDER BY `id` ASC";
-$result = mysql_query($query) or die(mysql_error());
-while($group_cont= mysql_fetch_row($result)) {
-if($group_cont[0]!=1)echo '<option value='.$group_cont[0].'>'.$group_cont[1].'</option>';
-}
-echo '</select>
-</td></tr>
+    <a href="#"class="button4" style="margin-top:90px;margin-left:50px;height:95px;width:190px;font-size:1.2em;" id="btnReport_dir_int" onclick=\'if(document.getElementById("date_start_cl_all").value<=document.getElementById("date_end_cl_all").value){window.location.href="control/export.php?mode=cl_all&mode_id="+$("input[name=report_cl_all]:checked").val()+"&cl_all="+$("#cl_all_id").val()+"&group_cont="+$("#group_cont").val()+"&date_start="+$("#date_start_cl_all").val()+"&date_end="+$("#date_end_cl_all").val()+"&user="+$("#username").val()+"&group="+$("#group").val();} else {alert("Дата окончания периода должна быть позже даты начала!");}\'>Международ- ные заявки (Excel)</a>
 
+    </fieldset></div>
 
-<tr><td colspan="2">&nbsp;&nbsp;</td></tr><tr><td><INPUT TYPE=RADIO NAME="report_cl_all" id="report_cl_all" VALUE="4" CHECKED>&nbsp;&nbsp;По менеджеру</td><td><select name="username" id="username" style="width:160px; font-size: 18px;" class="select"><option value="0">Выберите...</option>';
-$query = "SELECT `id`,`name` FROM `workers` WHERE `delete`='0' AND (`group`='3' OR `group`='2' OR `group`='1') ORDER BY `name` ASC";
-$result = mysql_query($query) or die(mysql_error());
-while($user= mysql_fetch_row($result)) {
-$pieces = explode(" ", $user[1]);
-$print_add_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2).".";
-echo '<option value='.$user[0].'>'.$print_add_name.'</option>';
-}
-echo '</select></td></tr><tr><td colspan="2">&nbsp;&nbsp;</td></tr><tr><td colspan="2"><INPUT TYPE=RADIO NAME="report_cl_all" id="report_cl_all" VALUE="6">&nbsp;&nbsp;по НДС</td></tr></table>
-</div>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" style="height:35px;font-size:18px;margin-top:40px;" id="btnReport_dir_old" onclick=\'if(document.getElementById("date_start_cl_all").value<=document.getElementById("date_end_cl_all").value){window.location.href="control/export_old.php?mode=cl_all&mode_id="+$("input[name=report_cl_all]:checked").val()+"&cl_all="+$("#cl_all_id").val()+"&group_cont="+$("#group_cont").val()+"&date_start="+$("#date_start_cl_all").val()+"&date_end="+$("#date_end_cl_all").val()+"&user="+$("#username").val()+"&group="+$("#group").val();} else {alert("Дата окончания периода должна быть позже даты начала!");}\'>Старый</a><br>
-<br>
-&nbsp;<a href="#" style="height:65px;font-size:30px;" id="btnReport_dir" onclick=\'if(document.getElementById("date_start_cl_all").value<=document.getElementById("date_end_cl_all").value){window.location.href="control/export.php?mode=cl_all&mode_id="+$("input[name=report_cl_all]:checked").val()+"&cl_all="+$("#cl_all_id").val()+"&group_cont="+$("#group_cont").val()+"&date_start="+$("#date_start_cl_all").val()+"&date_end="+$("#date_end_cl_all").val()+"&user="+$("#username").val()+"&group="+$("#group").val();} else {alert("Дата окончания периода должна быть позже даты начала!");}\'>Новый</a></fieldset></div>';}?>
+    ';
+}?>
 
 
 

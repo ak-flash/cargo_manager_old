@@ -1,5 +1,6 @@
 <?php 
- if(@$_GET['mode']=="show_group")
+
+if(@$_GET['mode']=="show_group")
 {
 include "../config.php";
 
@@ -35,4 +36,3 @@ echo '</div></fieldset>';
 
 
 }
-?>	

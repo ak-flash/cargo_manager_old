@@ -1,6 +1,6 @@
 ﻿<?php
 include ('config.php');
-header('Content-Type: text/html; charset=utf8');
+
 session_start();
 
 if (@$_GET['mode']=="logout") {
@@ -84,7 +84,7 @@ if (!empty($_POST))
 				}
 			}
 
-			if($row['id']=="51") $_SESSION["group_name"]='Механик';
+			
 
 			
 			if($_SESSION["group"]==3) header('Location: orders'); else header('Location: main');
@@ -110,19 +110,20 @@ print '<html>
 <style type="text/css">
 .frame{
 
-width:295px;
-
+width:285px;
+border-radius: 10px;
 background:url(data/images/login.png);
 
 }
 .b_login{
-width:160px;
+width:100px;
 height:35px;
-font-size:20px;
-font-weight:bold;
-background:#8CBB1D;
+font-size:1.3em;
+color: #FFF;
+background:#5E820D;
 border-radius: 5px;
-
+margin-top:5px;
+margin-bottom:15px;
     padding-bottom: 5px;
  }
 .input{
@@ -133,7 +134,7 @@ border-radius: 5px;
 
     padding: 3px;
 
-  
+	height:35px;
 }
 
 .input:focus{
@@ -153,10 +154,10 @@ background:url(data/body-bg.gif) top left repeat;
 
 <form action="index.php" id="form_login" method="post">
 	<input type="hidden" name="user_ip" value="'.$_SERVER["REMOTE_ADDR"].'"> 
-<div align="center"><img src="data/img/login.png"></div><br>
-		  <table class="frame" align="center"><tr><td colspan="2" align="center"><div style="font-size: 26px;margin:3px;"><b>Авторизация</b></div></td></tr><tr><td align="right" width="85"><font size="5">Имя:</font>&nbsp;&nbsp;</td><td>
+<div align="center" style="margin-top:30px;">
+<img src="data/img/login.png"></div><br>	  <table class="frame" align="center"><tr><td colspan="2" align="center"><br></td></tr><tr><td align="right" width="85"><font size="4">Имя:</font>&nbsp;&nbsp;</td><td>
 
-<select name="username" style="width:160px; font-size: 18px;" class="input"><option value="0">Выберите...</option>';
+<select name="username" style="width:160px; font-size: 1em;" class="input"><option value="0">Выберите...</option>';
 $query = "SELECT `login`,`name`,`id` FROM `workers` WHERE `delete`='0' AND `group`<>'5' AND `group`<>'6' ORDER BY `name` ASC";
 $result = mysql_query($query) or die(mysql_error());
 while($user= mysql_fetch_row($result)) {
@@ -168,7 +169,7 @@ echo '<option value='.$user[0].'>'.$print_add_name.'</option>';
 }
 print '</select>
 	</td></tr>
-   <tr><td align="right" height="20"><font size="4">Пароль:</font>&nbsp;&nbsp;</td><td><input type="password" name="password" style="width:160px; font-size: 15px;" class="input"/></td></tr>
+   <tr><td align="right" height="20"><font size="4">Пароль:</font>&nbsp;&nbsp;</td><td><input type="password" name="password" style="width:160px;height:32px;" class="input"/></td></tr>
     <tr><td></td><td height="55"><button type="submit" class="b_login">войти</button></td></tr>
   
     

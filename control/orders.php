@@ -46,9 +46,9 @@ $date_end=date("Y-m-d",strtotime($end_elements[2]."-".$end_elements[1]."-".$end_
 // Managers can see only their clients - now disabled
 //if ($group=='3') { $result = mysql_query("SELECT COUNT(*) AS count FROM `orders` WHERE (`manager`='".$manager."' OR `tr_manager`='".$manager."'".$dop_query.") AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."'");} else 
 	if($international=='') {
-		$extra = "WHERE DATE(data) BETWEEN ".$date_start." AND ".$date_end;
+		$extra = "WHERE DATE(data) BETWEEN '".$date_start."' AND '".$date_end."'";
 	} else {
-		$extra = " AND DATE(data) BETWEEN ".$date_start." AND ".$date_end;
+		$extra = " AND DATE(data) BETWEEN '".$date_start."' AND '".$date_end."'";
 	}
 
 	$result = mysql_query("SELECT COUNT(*) AS count FROM orders ".$international.$extra);
@@ -61,7 +61,7 @@ $result = mysql_query("SELECT COUNT(*) AS count FROM orders ".$international);
 
 }
 
-if(@$_GET['showdel']=='true') $result = mysql_query("SELECT COUNT(*) AS count FROM delete");
+if(@$_GET['showdel']=='true') $result = mysql_query("SELECT COUNT(*) AS count FROM `deleted_orders`");
 // Выполним запрос, который вернет суммарное кол-во записей в таблице
 
 $row = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -210,9 +210,9 @@ else
 //if ($group=='3') {$query = "SELECT * FROM `orders` WHERE (`manager`='".$manager."' OR `tr_manager`='".$manager."'".$dop_query.") AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;} else 
 
 if($international=='') {
-	$extra = "WHERE DATE(data) BETWEEN ".$date_start." AND ".$date_end;
+	$extra = "WHERE DATE(data) BETWEEN '".$date_start."' AND '".$date_end."'";
 } else {
-	$extra = " AND DATE(data) BETWEEN ".$date_start." AND ".$date_end;
+	$extra = " AND DATE(data) BETWEEN '".$date_start."' AND ".$date_end."'";
 }
 
 $query = "SELECT * FROM orders ".$international.$extra." ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
@@ -224,7 +224,7 @@ $query = "SELECT * FROM orders ".$international.$extra." ORDER BY ".$sidx." ".$s
 $query = "SELECT * FROM orders ".$international." ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
 
 if(@$_GET['showdel']=='true'){
-	$query = "SELECT * FROM delete ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
+	$query = "SELECT * FROM `deleted_orders` ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
 }
 
 }
@@ -394,7 +394,9 @@ if($row['cl_kop']!=""&&(int)$row['cl_kop']!=0) $cl_kop='</font>.<font size="2">'
 
 $cl_pay_show=0;
 
-if(substr($cl_pay, -2, 1)!=0) $cl_pay_show=number_format($cl_pay/100, 2, ',', ''); else $cl_pay_show=number_format($cl_pay/100, 0, ',', '');
+if(substr($cl_pay, -2, 1)!=0) $cl_pay_show=number_format($cl_pay/100, 2, ',', ' '); else $cl_pay_show=number_format($cl_pay/100, 0, ',', ' ');
+
+
 
 if($row['cl_plus']!=0 || $row['cl_minus']!=0) $dop_cl_rashod_info_1 = '(+'.$row['cl_plus'].'/-'.$row['cl_minus'].')'; else $dop_cl_rashod_info_1 = '';
 
@@ -408,11 +410,19 @@ if($row['cl_rashod_sb']!=0 || $row['cl_rashod_na_cl']!=0) $dop_cl_rashod_info_2 
 
 if($row['tr_plus']!=0 || $row['tr_minus']!=0) $dop_tr_rashod_info_1 = '(+'.$row['tr_plus'].'/-'.$row['tr_minus'].')'; else $dop_tr_rashod_info_1 = '';
 
-$cl_cash = number_format($row['cl_cash'], 0 , "", $thousands_sep = " " );
-$tr_cash = number_format($row['tr_cash'], 0 , "", $thousands_sep = " " );
+$cl_cash = number_format($row['cl_cash'], 0 , "", " " );
+$tr_cash = number_format($row['tr_cash'], 0 , "", " " );
+
+if($cl_pay_plus!=0 || $cl_pay_minus!=0 || $row['cl_plus']!=0 || $row['cl_minus']!=0) {
+	$cl_pay_plus_minus = '<br><font size="1">(+'.number_format($cl_pay_plus/100, 0, ',', '').'/-'.number_format($cl_pay_minus/100, 0, ',', '').')</font>';
+} else $cl_pay_plus_minus = '';
+
+if($tr_pay_plus!=0 || $tr_pay_minus!=0 || $row['tr_plus']!=0 || $row['tr_minus']!=0) {
+	$tr_pay_plus_minus = '<br><font size="1">(+'.number_format($tr_pay_plus/100, 0, ',', '').'/-'.number_format($tr_pay_minus/100, 0, ',', '').')</font>';
+} else $tr_pay_plus_minus = '';
 
 $data['rows'][$i]['id'] = $row['id'];
-    $data['rows'][$i]['cell'] = array($row['id'], $order_number.'<br>'.date("d/m/Y",strtotime($row['data'])).$vzaimozachet,'<font size="3">'.$adresses[$res_in].'</font>','<font size="3">'.$adresses[$res_out].'</font>',$pref_cl.' <b><i>«'.$client[$row['client']].'»</b></i><br>('.$users[$row['manager']].')',$row['data'],'<font size="4">'.$cl_cash.$cl_kop.'</font> '.$row['cl_currency'].'<br><b>'.$nds_cl.'</b> <font size="1">'.$dop_cl_rashod_info_1.$dop_cl_rashod_info_2.'</font>','<b>'.$cl_pay_show.'</b> '.$row['cl_currency'].'<br><font size="1">(+'.number_format($cl_pay_plus/100, 0, ',', '').'/-'.number_format($cl_pay_minus/100, 0, ',', '').')</font>'.$pretenzia,$pref_tr.' <b><i>«'.$transporters[$row['transp']].'»</i></b><br>('.$users[$row['tr_manager']].')<font size="1">'.$cont_cl.$cont_tr.'</font>','<font size="4">'.$tr_cash.'</font> '.$row['tr_currency'].'<br><b>'.$nds_tr.'</b> <font size="1">'.$dop_tr_rashod_info_1.'</font>','<b>'.($tr_pay/100).'</b> '.$row['tr_currency'].'<br><font size="1">(+'.number_format($tr_pay_plus/100, 0, ',', '').'/-'.number_format($tr_pay_minus/100, 0, ',', '').')</font>',$row['block'],$row['manager'],$row['rent'],$status_cl,$status_tr,$status_all,$row['vzaimozachet'],$row['pretenzia'],$row['group_id']);
+    $data['rows'][$i]['cell'] = array($row['id'], $order_number.'<br>'.date("d/m/Y",strtotime($row['data'])).$vzaimozachet,'<font size="3">'.$adresses[$res_in].'</font>','<font size="3">'.$adresses[$res_out].'</font>',$pref_cl.' <b><i>«'.$client[$row['client']].'»</b></i><br>('.$users[$row['manager']].')',$row['data'],'<font size="4">'.$cl_cash.$cl_kop.'</font> '.$row['cl_currency'].'<br><b>'.$nds_cl.'</b> <font size="1">'.$dop_cl_rashod_info_1.$dop_cl_rashod_info_2.'</font>','<b>'.$cl_pay_show.'</b> '.$row['cl_currency'].$cl_pay_plus_minus.$pretenzia,$pref_tr.' <b><i>«'.$transporters[$row['transp']].'»</i></b><br>('.$users[$row['tr_manager']].')<font size="1">'.$cont_cl.$cont_tr.'</font>','<font size="4">'.$tr_cash.'</font> '.$row['tr_currency'].'<br><b>'.$nds_tr.'</b> <font size="1">'.$dop_tr_rashod_info_1.'</font>','<b>'.number_format($tr_pay/100, 0, ',', ' ').'</b> '.$row['tr_currency'].$tr_pay_plus_minus,$row['block'],$row['manager'],$row['rent'],$status_cl,$status_tr,$status_all,$row['vzaimozachet'],$row['pretenzia'],$row['group_id']);
     $i++;
 
 
@@ -782,11 +792,11 @@ echo json_encode($data);
 if ($_GET['mode']=='repair') 
 {
 $id =$_GET['id'];
-$query = "INSERT INTO orders SELECT * FROM delete WHERE id=".mysql_escape_string($id);
+$query = "INSERT INTO `orders` SELECT * FROM `deleted_orders` WHERE `id`='".mysql_escape_string($id)."'";
 $result = mysql_query($query) or die(mysql_error());
 
 
-$query = "DELETE FROM delete WHERE id=".$id;
+$query = "DELETE FROM `deleted_orders` WHERE `id`='".$id."'";
 $result = mysql_query($query) or die(mysql_error());
 
 echo '<font color="red" size="3">Заявка №'.$id.' восстановлена!</font>';
@@ -796,24 +806,24 @@ if ($_GET['mode']=='delete')
 {
 $id = (int) $_GET['id'];
 
-$query = "SELECT block,notify FROM orders WHERE id=".mysql_escape_string($id);
+$query = "SELECT block, notify FROM orders WHERE id=".mysql_escape_string($id);
 $result = mysql_query($query) or die(mysql_error());
 $row = mysql_fetch_row($result);
 
 
 if ($row[0]=='1'){echo '<font color="red" size="3"><div alegn="center">Заявка заблокирована! Обратитесь к директору...</div></font>';}
 else {
-$query_pay = "SELECT status FROM pays WHERE delete=0 AND order=".mysql_escape_string($id);
+$query_pay = "SELECT status FROM `pays` WHERE `delete`='0' AND `order`='".mysql_escape_string($id)."'";
 $result_pay = mysql_query($query_pay) or die(mysql_error());
 if(mysql_num_rows($result_pay)==0){
 
-$query = "INSERT delete SELECT * FROM orders WHERE id=".mysql_escape_string($id);
+$query = "INSERT `deleted_orders` SELECT * FROM orders WHERE id=".mysql_escape_string($id);
 $result = mysql_query($query) or die(mysql_error());
 
 $query = "DELETE FROM orders WHERE id=".mysql_escape_string($id);
 $result = mysql_query($query) or die(mysql_error());
 
-$query_gruz = "UPDATE cl_gruz SET order=0, status=0 WHERE order=".mysql_escape_string($id);
+$query_gruz = "UPDATE `cl_gruz` SET `order`='0', `status`='0' WHERE `order`='".mysql_escape_string($id)."'";
 $result_gruz = mysql_query($query_gruz) or die(mysql_error());
 
 echo '<font color="red" size="3">Заявка помечена на удаление!</font>';
@@ -829,16 +839,16 @@ $result_ord = mysql_query($query_ord) or die(mysql_error());
 $row_ord = mysql_fetch_row($result_ord);
 
 if((int)$row_ord[0]==2){
-$query = "INSERT delete SELECT * FROM orders WHERE id=".$id;
+$query = "INSERT deleted_orders SELECT * FROM orders WHERE id=".$id;
 $result = mysql_query($query) or die(mysql_error());
 
 $query = "DELETE FROM orders WHERE id=".$id;
 $result = mysql_query($query) or die(mysql_error());
 
-$query = "DELETE FROM pays WHERE order=".$id." AND way=2";
+$query = "DELETE FROM `pays` WHERE `order`='".$id."' AND `way`='2'";
 $result = mysql_query($query) or die(mysql_error());
 
-$query_gruz = "UPDATE cl_gruz SET order=0,status=0 WHERE order=".mysql_escape_string($id);
+$query_gruz = "UPDATE `cl_gruz` SET `order`='0',`status`='0' WHERE `order`='".mysql_escape_string($id)."'";
 $result_gruz = mysql_query($query_gruz) or die(mysql_error());
 	
 } else
@@ -942,7 +952,4 @@ echo '<font size="4">'.$total.'</font> руб.&nbsp;&nbsp;&nbsp;';
 
 }
 
-//$fh = fopen("somefile.txt", "a+"); 
-//fwrite($fh, $date_end); 
-//fclose($fh);
 ?>

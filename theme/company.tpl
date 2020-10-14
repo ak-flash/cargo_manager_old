@@ -29,7 +29,7 @@ $(function(){$("#control_menu_css").css({"background": "#BCBCBC", "color":"#000"
                     
                   viewrecords: true,
                   rowNum:8,
-                  height: 450,width: 970,
+                  height: 350,
                   autowidth: true,caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление компаниями',
                   sortname: 'id',
                   sortorder: 'asc',
@@ -88,15 +88,6 @@ $("#fa_company").load("theme/forms/add_company.php");
 });
 
 
-
-
-
-
-    
- 
-
-
-
   
   });  
     
@@ -126,7 +117,7 @@ $("#fa_company").load("theme/forms/add_company.php");
 <div id="dialog" style="display: none;"></div>
 
 <div class="main">
-<a class="button3" id="btnAdd" href="#">Добавить</a>
+<a class="button3" id="btnAdd" href="#" style="width:120px;">Добавить</a>
 
 
 

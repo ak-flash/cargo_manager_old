@@ -28,7 +28,7 @@ $(function(){$("#list_menu_css").css({"background": "#BCBCBC", "color":"#000","t
                     {name:'adr_mode', index:'adr_mode', width:0,hidden:true}],
                     
                   viewrecords: true,
-                  rowNum:12,
+                  rowNum:10,
                   height: 550,
                   autowidth: true,
                   sortname: 'id',caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление адресами',

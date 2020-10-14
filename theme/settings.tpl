@@ -30,8 +30,18 @@ $("#importsPays").submit(function() {
 });
 
 
-
 });
+
+function backupDB(token){
+
+  document.getElementById("btnBackup").disabled = true; 
+  
+  $.post("tools/backup/db.php", "token="+token)
+    .done(function(data) {
+          toastr.success(data);      
+  });  
+}
+
 </script>
 
 </head>
@@ -44,6 +54,8 @@ $dates_num= mysql_fetch_row($result_date);
 ?>
 
 <div id="result"></div>
+</div><div id="fa_app" style="background:#F8F8F8;"></div>
+
 
 <fieldset style="float:left;width:320px;margin:20px;font-size:15px;"><legend>Настройки</legend>
 <table><tr>
@@ -57,9 +69,11 @@ $dates_num= mysql_fetch_row($result_date);
 </table>
 </fieldset>
 
-
-
-<fieldset style="float:left;width:45%;"><iframe src="mysql/adminer.php" width="586" height="462" frameborder="0" style="margin:0;"></iframe></fieldset>
+<fieldset style="width:520px;margin:20px;font-size:15px;"><legend>Дополнительно: </legend>
+&nbsp;&nbsp;<button class="button3" id="btnBackup" onclick="backupDB('cf2efc22cf2')" style="width:230px;">Сохранить БАЗУ данных</button>
+&nbsp;&nbsp;|&nbsp;&nbsp;
+<a class="button" id="btnAppoints" href="javascript:" onclick='$("#fa_app").load("theme/forms/add_appoints.php");$("#fa_app").dialog({ title: "Назначения платежей" },{width: 950,height: 710,modal: true,resizable: false});' style="width:170px;">Категории платежей</a>
+</fieldset>
 
 <!--------
 

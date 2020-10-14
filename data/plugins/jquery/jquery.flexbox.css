@@ -2,15 +2,17 @@
 .ffb-input 
 {
 	float:left;border: 2px solid #A0A0A0;
-
+	padding-left: 5px;
 border-radius: 3px;
-    
+    width:90%
 	color:#000; /* must specify along with watermark color */
-	height:18px; /* required for webkit browsers (Safari, Chrome) */
+	height:25px; /* required for webkit browsers (Safari, Chrome) */
 }
+
 /* Color of watermark, if present */
 .ffb-input.watermark { /* added and removed dynamically */
 	color:#888; /* must specify along with input color */
+	
 }
 /* Drop-down arrow, with sprited image */
 .ffb-arrow 
@@ -18,7 +20,6 @@ border-radius: 3px;
 	float:left;
 	width:17px;
 	height:22px;
-	background-image:url("../images/sel_win7.gif");
 }
 .ffb-arrow.out { /* css sprite technique */
 	background-position:0;

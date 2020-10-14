@@ -170,7 +170,8 @@ jQuery("#table").trigger("reloadGrid");
 
 <!  - - форма добавления платежа  - - >  
 <div id="fa_pay" style="background:url('/data/bg_order.png') top left repeat;"></div>
-<div id="fa_pay_group" style="background:url('/data/bg_order.png') top left repeat;"></div><div id="fa_app" style="background:#F8F8F8;"></div>
+<div id="fa_pay_group" style="background:url('/data/bg_order.png') top left repeat;">
+</div><div id="fa_app" style="background:#F8F8F8;"></div>
 <div id="fa" style="background:#F8F8F8;"></div>
 <div id="fa_bill_company"></div>
 
@@ -182,14 +183,12 @@ jQuery("#table").trigger("reloadGrid");
 <div id="dialog" style="display: none;"></div>
 
 <div class="main">
-<img src="data/img/credit-cards.png" style="float:left;margin-left:20px;">&nbsp;&nbsp;&nbsp;<a class="button3" id="btnAdd" href="javascript:" style="width:130px;">Добавить</a>&nbsp;<a id="btnAdd_group" class="button3" href="javascript:" style="width:50px;">П</a>
-
-&nbsp;|&nbsp;&nbsp;
-<a class="button2" id="btnDeleteShow" href="javascript:" onclick="$('#table').setGridParam({url:'control/pays.php?mode=pays&del_show=true'});
-jQuery('#table').trigger('reloadGrid');" style="width:100px;font-weight:normal;font-size: 12px;">Удаленные</a>
+<a class="button3" id="btnAdd" href="javascript:" style="width:190px;margin-left:10px;">Добавить платёж</a>
+&nbsp;<a id="btnAdd_group" class="button5" href="javascript:" style="font-size:0.8em;">Платежи по заявкам</a>
 
 &nbsp;&nbsp;&nbsp;&nbsp;
-За период: с <input type="text" id="date_start" name="date_start" style="width:80px;" value="" class="input"> по <input type="text" id="date_end" name="date_end" style="width:80px;" class="input">&nbsp;<a class="button" id="btnData" href="javascript:" style="width:100px;">показать</a>
+За период: с <input type="text" id="date_start" name="date_start" style="width:80px;" value="" class="input"> по <input type="text" id="date_end" name="date_end" style="width:80px;" class="input">
+&nbsp;<a class="button" id="btnData" href="javascript:" style="width:80px;">показать</a>
 
 <!--- Поиск ---->
 <?php $description='по платежам';include_once("theme/search.tpl");?>
@@ -207,13 +206,13 @@ jQuery('#table').trigger('reloadGrid');" style="width:100px;font-weight:normal;f
 
 
 <fieldset><legend>Дополнительно: </legend>
-&nbsp;&nbsp;<a class="button" id="btnAppoints" href="javascript:" onclick='
-<?php if($_SESSION["group"]==1||$_SESSION["group"]==2){
-echo '
-$("#fa_app").load("theme/forms/add_appoints.php");$("#fa_app").dialog({ title: "Назначения платежей" },{width: 950,height: 710,modal: true,resizable: false});';}
+
+<?php if($_SESSION["group"]==1||$_SESSION["group"]==2||$_SESSION["group"]==4){
+echo '&nbsp;&nbsp;<a class="button" id="btnlockPay" href="javascript:" onclick=\'if($("#table").jqGrid("getGridParam","selrow")!=null){$.post("control/admin.php?mode=pay_lock&pay="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});} else {$("#result").html("Выберите платеж(и)!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });};\' style="font-size: 12px;height:30px;width: 100px;font-weight:normal;">Провести</a>&nbsp;&nbsp;<a class="button" id="btnUnlockPay" href="javascript:" onclick=\'if($("#table").jqGrid("getGridParam","selrow")!=null){$.post("control/admin.php?mode=pay_unlock&pay="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});} else {$("#result").html("Выберите платеж(и)!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });};\' style="font-size: 12px;font-weight:normal;height:30px;width: 110px;">Распровести</a>';
+}
 ?>
-' style="font-size: 14px;height:35px;width: 180px;margin:0px;font-weight:normal;margin-bottom:10px;white-space: nowrap;
-">Назначения платежей</a>
+
+
 &nbsp;&nbsp;|&nbsp;&nbsp;
 <input type="button" id="btnPaymentsList" onclick='$("#fa_listpay").load("theme/forms/add_listpay.php");$("#fa_listpay").dialog({ title: "Список на оплату" },{width: 1050,height: 770,modal: true,resizable: false});' value="Список на оплату" style="font-size: 14px;width: 160px;height:35px;"><span class="amNumber"><div id="count_pay" style="display:inline;"></div><div class="amAngle"></div></span>
 &nbsp;&nbsp;|&nbsp;&nbsp;<input type="button" id="btnDocs" onclick='if(document.getElementById("date_start").value!=""&&document.getElementById("date_end").value!="")window.location.href="control/print_listpay.php?mode=print&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}' value="Непров. выплаты" style="font-size: 12px;width: 150px;height:30px;">
@@ -238,10 +237,10 @@ if($pays_app[0]>6) echo '<option value="'.$pays_app[0].'">'.$pays_app[1].'</opti
 
 <input type="button" id="btnPaysReport" onclick='if(document.getElementById("date_start").value!=""&&document.getElementById("date_end").value!="")window.location.href="control/pays_reports.php?mode=pays&app_id="+$("#pays_appoints").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}' value="Отчет" style="font-size: 12px;">
 
-<?php if($_SESSION["group"]==1||$_SESSION["group"]==2||$_SESSION["group"]==4){
-echo '&nbsp;&nbsp;<a class="button" id="btnlockPay" href="javascript:" onclick=\'if($("#table").jqGrid("getGridParam","selrow")!=null){$.post("control/admin.php?mode=pay_lock&pay="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});} else {$("#result").html("Выберите платеж(и)!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });};\' style="font-size: 12px;height:30px;width: 100px;margin-left:30px;font-weight:normal;">Провести</a>&nbsp;&nbsp;<a class="button" id="btnUnlockPay" href="javascript:" onclick=\'if($("#table").jqGrid("getGridParam","selrow")!=null){$.post("control/admin.php?mode=pay_unlock&pay="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});} else {$("#result").html("Выберите платеж(и)!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });};\' style="font-size: 12px;font-weight:normal;height:30px;width: 110px;">Распровести</a>';
-}
-?>
+
+
+
+<a class="button2" id="btnDeleteShow" href="javascript:" onclick="$('#table').setGridParam({url:'control/pays.php?mode=pays&del_show=true'});jQuery('#table').trigger('reloadGrid');" style="float:right;font-size:0.7em;">Удаленные</a>
 
 </fieldset>
 
