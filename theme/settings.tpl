@@ -36,7 +36,7 @@ function backupDB(token){
 
   document.getElementById("btnBackup").disabled = true; 
   
-  $.post("tools/backup/db.php", "token="+token)
+  $.post("mysql/backup/db.php", "token="+token)
     .done(function(data) {
           toastr.success(data);      
   });  

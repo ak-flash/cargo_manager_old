@@ -444,8 +444,8 @@ if($cl_pay==$row['cl_cash']*100&&$tr_pay==$row['tr_cash']*100) $aSheet->getStyle
 if($row['pretenzia']==1) $pretenzia='Претензия'; else $pretenzia='';
 
 $aSheet->setCellValue('C'.$p,$row['id']);
-	$aSheet->getStyle('C'.$p)->applyFromArray($center);
-
+	$aSheet->getStyle('C'.$p)->applyFromArray($center)->applyFromArray($boldFont);
+	
 
 
 if(@$_GET['mode_id']==6){
