@@ -11,7 +11,7 @@ $row = mysql_fetch_array($result);
 }
 ?>
 
-<script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
+
 <script type="text/javascript">
     
 $('#save').button();

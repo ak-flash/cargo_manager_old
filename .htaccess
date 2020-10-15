@@ -1,6 +1,6 @@
 DirectoryIndex index.php
 Options -Indexes 
-php_value error_reporting E_ALL
+
 AddDefaultCharset utf-8
 #AddHandler application/x-httpd-php .html
 

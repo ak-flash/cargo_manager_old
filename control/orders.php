@@ -1,29 +1,32 @@
 <?php
 // Подключение и выбор БД
-include "../config.php";	
+include "../config.php";
 include "komissia.php";
 
 session_start();
 
-$month=0;
+if (!isset($data)) $data = new stdClass();
 
-if(isset($_GET['international'])) {
-	if(@$_GET['international']==0) $international = " WHERE international_number='0'";
-	if(@$_GET['international']==1) $international = " WHERE international_number!='0'";
+$page = (int)$_GET['page'];      // Номер запришиваемой страницы
+$limit = (int)$_GET['rows'];     // Количество запрашиваемых записей
+$sidx = mysql_real_escape_string($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку // Проще говоря поле, по которому следует производить сортировку
+$sord = mysql_real_escape_string($_GET['sord']);      // Направление сортировки
+
+$month = 0;
+
+if (isset($_GET['international'])) {
+    if (@$_GET['international'] == 0) $international = " WHERE international_number='0'";
+    if (@$_GET['international'] == 1) $international = " WHERE international_number!='0'";
 } else $international = '';
 
-if (isset($_GET['date_start'])){
-$start_elements  = explode("/",$_GET['date_start']);
+if (isset($_GET['date_start'])) {
+    $start_elements = explode("/", $_GET['date_start']);
 if ($start_elements[0]=='01'){$month=1;}
 $date_start=$start_elements[2]."-".$start_elements[1]."-".$start_elements[0];
 $end_elements  = explode("/",$_GET['date_end']);
 $date_end=$end_elements[2]."-".$end_elements[1]."-".$end_elements[0];}
 
-if(isset($_GET['page']))$page = $_GET['page'];      // Номер запришиваемой страницы
-if(isset($_GET['rows']))$limit = $_GET['rows'];     // Количество запрашиваемых записей
-if(isset($_GET['sidx']))$sidx = $_GET['sidx'];      // Номер элемента массива по котору следует производить сортировку
-                            // Проще говоря поле, по которому следует производить сортировку
-if(isset($_GET['sord']))$sord = $_GET['sord'];      // Направление сортировки
+
 
 
 $manager = $_SESSION["user_id"];
@@ -235,27 +238,26 @@ if (@$_GET["order_id"]!='') {
     //if($_SESSION["group"]==1) {  
     
 	$query = "SELECT * FROM orders WHERE id=".$_GET["order_id"]." ORDER BY ".$sidx." ".$sord." LIMIT ".$start.", ".$limit;
-	
-	//} else $query = "SELECT * FROM `orders` WHERE `id`='".$_GET["order_id"]."' AND (`manager`='".$manager."' OR `tr_manager`='".$manager."') ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;
-    
+
+    //} else $query = "SELECT * FROM `orders` WHERE `id`='".$_GET["order_id"]."' AND (`manager`='".$manager."' OR `tr_manager`='".$manager."') ORDER BY `".$sidx."` ".$sord." LIMIT ".$start.", ".$limit;
+
 }
 
 
 }
-$result = mysql_query($query) or die(mysql_error());
+    $result = mysql_query($query) or die(mysql_error());
 // Начало формирование массива
 // для последующего преобразоования
 // в JSON объект
-$data['page']=$page;
-$data['total']=$total_pages;
-$data['records']=$count;
+    $data->page = $page;
+    $data->total = $total_pages;
+    $data->records = $count;
 
 
-	
 // Строки данных для таблицы
-$i = 0;
-if(mysql_num_rows($result)>0){
-while($row = mysql_fetch_array($result)) {
+    $i = 0;
+    if (mysql_num_rows($result) > 0) {
+        while ($row = mysql_fetch_array($result)) {
 
 
 
@@ -323,28 +325,30 @@ while($pay = mysql_fetch_row($result_pays)) {
 $tr_pay_plus=(int)$pay[0]+(int)$tr_pay_plus;
 }
 
-$tr_pay_minus=0;
-$query_pays = "SELECT `cash` FROM `pays` WHERE `order`='".mysql_escape_string($row[0])."' AND `delete`='0' AND `appoint`='6' AND `status`='1'";
-$result_pays = mysql_query($query_pays) or die(mysql_error());
-while($pay = mysql_fetch_row($result_pays)) {
-$tr_pay_minus=(int)$pay[0]+(int)$tr_pay_minus;
-}
+            $tr_pay_minus = 0;
+            $query_pays = "SELECT `cash` FROM `pays` WHERE `order`='" . mysql_escape_string($row[0]) . "' AND `delete`='0' AND `appoint`='6' AND `status`='1'";
+            $result_pays = mysql_query($query_pays) or die(mysql_error());
+            while ($pay = mysql_fetch_row($result_pays)) {
+                $tr_pay_minus = (int)$pay[0] + (int)$tr_pay_minus;
+            }
 
-$status_tr=0;
-$status_cl=0;
+            $status_tr = 0;
+            $status_cl = 0;
 
-if(($cl_pay==($row['cl_cash']*100+$row['cl_kop']))||(substr($cl_pay, 0, -2)==$row['cl_cash'])) $status_cl=1;
-if($cl_pay==($row['cl_cash']*100+$row['cl_kop'])&&$cl_pay_plus==$row['cl_plus']*100&&$cl_pay_minus==$row['cl_minus']*100) $status_cl=2;
+            if (($cl_pay == ((int)['cl_cash'] * 100 + (int)$row['cl_kop'])) || (substr($cl_pay, 0, -2) == (int)$row['cl_cash'])) $status_cl = 1;
+            if ($cl_pay == ((int)$row['cl_cash'] * 100 + (int)$row['cl_kop']) && $cl_pay_plus == $row['cl_plus'] * 100 && $cl_pay_minus == $row['cl_minus'] * 100) $status_cl = 2;
 
-if($tr_pay==$row['tr_cash']*100) $status_tr=1;
-if($tr_pay==$row['tr_cash']*100&&$tr_pay_plus==$row['tr_minus']*100&&$tr_pay_minus==$row['tr_plus']*100) $status_tr=2;
+            if ($tr_pay == $row['tr_cash'] * 100) $status_tr = 1;
+            if ($tr_pay == $row['tr_cash'] * 100 && $tr_pay_plus == $row['tr_minus'] * 100 && $tr_pay_minus == $row['tr_plus'] * 100) $status_tr = 2;
 
 
-if((($cl_pay==$row['cl_cash']*100)||(substr($cl_pay, 0, -2)==$row['cl_cash']))&&$tr_pay==$row['tr_cash']*100) $status_all=1; else $status_all=0;
+            if ((($cl_pay == $row['cl_cash'] * 100) || (substr($cl_pay, 0, -2) == $row['cl_cash'])) && $tr_pay == $row['tr_cash'] * 100) $status_all = 1; else $status_all = 0;
 
-$cont_cl='';
+            $cont_cl = '';
 
-if($row['transp']=='2'){$status_tr=1;$row['tr_pref']=1;
+            if ($row['transp'] == '2') {
+                $status_tr = 1;
+                $row['tr_pref'] = 1;
 
 switch ($row['cl_cont']) {
 case '3': $cont_cl='Транспортная компания';break;
@@ -411,23 +415,22 @@ if($row['cl_rashod_sb']!=0 || $row['cl_rashod_na_cl']!=0) $dop_cl_rashod_info_2 
 if($row['tr_plus']!=0 || $row['tr_minus']!=0) $dop_tr_rashod_info_1 = '(+'.$row['tr_plus'].'/-'.$row['tr_minus'].')'; else $dop_tr_rashod_info_1 = '';
 
 $cl_cash = number_format($row['cl_cash'], 0 , "", " " );
-$tr_cash = number_format($row['tr_cash'], 0 , "", " " );
+            $tr_cash = number_format($row['tr_cash'], 0, "", " ");
 
-if($cl_pay_plus!=0 || $cl_pay_minus!=0 || $row['cl_plus']!=0 || $row['cl_minus']!=0) {
-	$cl_pay_plus_minus = '<br><font size="1">(+'.number_format($cl_pay_plus/100, 0, ',', '').'/-'.number_format($cl_pay_minus/100, 0, ',', '').')</font>';
-} else $cl_pay_plus_minus = '';
+            if ($cl_pay_plus != 0 || $cl_pay_minus != 0 || $row['cl_plus'] != 0 || $row['cl_minus'] != 0) {
+                $cl_pay_plus_minus = '<br><font size="1">(+' . number_format($cl_pay_plus / 100, 0, ',', '') . '/-' . number_format($cl_pay_minus / 100, 0, ',', '') . ')</font>';
+            } else $cl_pay_plus_minus = '';
 
-if($tr_pay_plus!=0 || $tr_pay_minus!=0 || $row['tr_plus']!=0 || $row['tr_minus']!=0) {
-	$tr_pay_plus_minus = '<br><font size="1">(+'.number_format($tr_pay_plus/100, 0, ',', '').'/-'.number_format($tr_pay_minus/100, 0, ',', '').')</font>';
-} else $tr_pay_plus_minus = '';
+            if ($tr_pay_plus != 0 || $tr_pay_minus != 0 || $row['tr_plus'] != 0 || $row['tr_minus'] != 0) {
+                $tr_pay_plus_minus = '<br><font size="1">(+' . number_format($tr_pay_plus / 100, 0, ',', '') . '/-' . number_format($tr_pay_minus / 100, 0, ',', '') . ')</font>';
+            } else $tr_pay_plus_minus = '';
 
-$data['rows'][$i]['id'] = $row['id'];
-    $data['rows'][$i]['cell'] = array($row['id'], $order_number.'<br>'.date("d/m/Y",strtotime($row['data'])).$vzaimozachet,'<font size="3">'.$adresses[$res_in].'</font>','<font size="3">'.$adresses[$res_out].'</font>',$pref_cl.' <b><i>«'.$client[$row['client']].'»</b></i><br>('.$users[$row['manager']].')',$row['data'],'<font size="4">'.$cl_cash.$cl_kop.'</font> '.$row['cl_currency'].'<br><b>'.$nds_cl.'</b> <font size="1">'.$dop_cl_rashod_info_1.$dop_cl_rashod_info_2.'</font>','<b>'.$cl_pay_show.'</b> '.$row['cl_currency'].$cl_pay_plus_minus.$pretenzia,$pref_tr.' <b><i>«'.$transporters[$row['transp']].'»</i></b><br>('.$users[$row['tr_manager']].')<font size="1">'.$cont_cl.$cont_tr.'</font>','<font size="4">'.$tr_cash.'</font> '.$row['tr_currency'].'<br><b>'.$nds_tr.'</b> <font size="1">'.$dop_tr_rashod_info_1.'</font>','<b>'.number_format($tr_pay/100, 0, ',', ' ').'</b> '.$row['tr_currency'].$tr_pay_plus_minus,$row['block'],$row['manager'],$row['rent'],$status_cl,$status_tr,$status_all,$row['vzaimozachet'],$row['pretenzia'],$row['group_id']);
-    $i++;
+            $data->rows[$i]['id'] = $row['id'];
+            $data->rows[$i]['cell'] = array($row['id'], $order_number . '<br>' . date("d/m/Y", strtotime($row['data'])) . $vzaimozachet, '<font size="3">' . $adresses[$res_in] . '</font>', '<font size="3">' . $adresses[$res_out] . '</font>', $pref_cl . ' <b><i>«' . $client[$row['client']] . '»</b></i><br>(' . $users[$row['manager']] . ')', $row['data'], '<font size="4">' . $cl_cash . $cl_kop . '</font> ' . $row['cl_currency'] . '<br><b>' . $nds_cl . '</b> <font size="1">' . $dop_cl_rashod_info_1 . $dop_cl_rashod_info_2 . '</font>', '<b>' . $cl_pay_show . '</b> ' . $row['cl_currency'] . $cl_pay_plus_minus . $pretenzia, $pref_tr . ' <b><i>«' . $transporters[$row['transp']] . '»</i></b><br>(' . $users[$row['tr_manager']] . ')<font size="1">' . $cont_cl . $cont_tr . '</font>', '<font size="4">' . $tr_cash . '</font> ' . $row['tr_currency'] . '<br><b>' . $nds_tr . '</b> <font size="1">' . $dop_tr_rashod_info_1 . '</font>', '<b>' . number_format($tr_pay / 100, 0, ',', ' ') . '</b> ' . $row['tr_currency'] . $tr_pay_plus_minus, $row['block'], $row['manager'], $row['rent'], $status_cl, $status_tr, $status_all, $row['vzaimozachet'], $row['pretenzia'], $row['group_id']);
+            $i++;
 
 
-
-}
+        }
 }
 // Перед выводом не забывайте выставить header
 // с типом контента и кодировкой
@@ -474,18 +477,28 @@ $car_info = mysql_fetch_row($result_car);
 //}
 //if($car_info[9]==1) $check_desc=" Запрос был отправлен: <b>".date("d/m/Y H:i", strtotime($car_info[10]))."</b>";
 
+    switch ($car_info[11]) {
+        case '0':
+            $check_info = "<font color='grey'>не проверялся";
+            break;
+        case '1':
+            $check_info = "<font color='#5954FF'>ожидает проверки";
+            break;
+        case '2':
+            $check_info = "<font color='green'>подтверждено";
+            break;
+        case '3':
+            $check_info = "<font color='red'>недостоверные данные";
+            break;
+    }
 
-switch ($car_info[11]) {
-case '0': $check_info="<font color='grey'>не проверялся";break;
-case '1': $check_info="<font color='#5954FF'>ожидает проверки";break;
-case '2': $check_info="<font color='green'>подтверждено";break;
-case '3': $check_info="<font color='red'>недостоверные данные";break;
-}
 
+    $check_desc = "";
+    $check_button = "";
 
-$car_check="<br><fieldset style='margin-bottom:15px;'><table style='float:left;border-width: 1px;border-collapse: collapse;' cellpadding='0'>
-<tr><td>Собственник:&nbsp;<b>".$car_info[6]."</b></td><td>Свидетельство ТС:&nbsp;<b>".$car_info[7]."</b></td></tr>
-<tr><td>Статус: <b>".$check_info."</font></b></td><td>".$check_desc."</td></tr></table><div align='center'>".$check_button."</div></fieldset>";
+    $car_check = "<br><fieldset style='margin-bottom:15px;'><table style='float:left;border-width: 1px;border-collapse: collapse;' cellpadding='0'>
+<tr><td>Собственник:&nbsp;<b>" . $car_info[6] . "</b></td><td>Свидетельство ТС:&nbsp;<b>" . $car_info[7] . "</b></td></tr>
+<tr><td>Статус: <b>" . $check_info . "</font></b></td><td>" . $check_desc . "</td></tr></table><div align='center'>" . $check_button . "</div></fieldset>";
 
 }
         	

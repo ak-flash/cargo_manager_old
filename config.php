@@ -1,5 +1,6 @@
 <?php
-include ('.env');
+include('.env');
+include('lib/mysql.php');
 
 # Запрос подключение
 $db = mysql_connect($db_host, $db_user, $db_pass) or die ("Ошибка связи с компьютером БД");

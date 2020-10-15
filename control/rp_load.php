@@ -2,21 +2,22 @@
 
 include "../config.php";
 
-$page = $_GET['page'];      // Номер запришиваемой страницы
-$limit = $_GET['rows'];     // Количество запрашиваемых записей
-$sidx = $_GET['sidx'];      // Номер элемента массива по котору следует производить сортировку
-                            // Проще говоря поле, по которому следует производить сортировку
-$sord = $_GET['sord'];      // Направление сортировки
+if (!isset($data)) $data = new stdClass();
+
+$page = (int)$_GET['page'];      // Номер запришиваемой страницы
+$limit = (int)$_GET['rows'];     // Количество запрашиваемых записей
+$sidx = mysql_real_escape_string($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку // Проще говоря поле, по которому следует производить сортировку
+$sord = mysql_real_escape_string($_GET['sord']);      // Направление сортировки
 
 $query_pays = "SELECT `cash`,`order` FROM `pays` WHERE `delete`='0' AND `appoint`='1' AND `status`='1'";
 $result_pays = mysql_query($query_pays) or die(mysql_error());
-while($pay = mysql_fetch_row($result_pays)) {
-if($ord_cash[$pay[1]]=="")
-$ord_cash[$pay[1]]=(int)$pay[0]; else $ord_cash[$pay[1]]=(int)$ord_cash[$pay[1]]+(int)$pay[0];
+while ($pay = mysql_fetch_row($result_pays)) {
+    if ($ord_cash[$pay[1]] == "")
+        $ord_cash[$pay[1]] = (int)$pay[0]; else $ord_cash[$pay[1]] = (int)$ord_cash[$pay[1]] + (int)$pay[0];
 }
 
 
-if ($_GET['mode']=='rp_load') 
+if ($_GET['mode'] == 'rp_load')
 {
 
 $query_user = "SELECT `id`,`name` FROM `workers`";

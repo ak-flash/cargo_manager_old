@@ -19,72 +19,68 @@ $('#btnUnBlock').button();
 $('#btnSetVzaim').button();
 $('#btnBlock').button();
 $('#btnShowDel').button();
-$('#btnSetPretenz').button();
-$('#btnCl_info').button();
-$('#btnNDSTr').button();
+    $('#btnSetPretenz').button();
+    $('#btnCl_info').button();
+    $('#btnNDSTr').button();
 
-<?php 
+    <?php
 //if($_SESSION["group"]!=2&&$_SESSION["group"]!=1) echo '$("#info_text").load("/control/load_info_text.php?mode=random", function(data) {  if(data!="") $("#information").fadeIn(1000);});';
 ?>
 
 
-               var table = $('#table');
-      table.jqGrid({
-                  url:'control/orders.php?mode=orders&order_id=<?php if(isset($_GET["order_id"]))echo $_GET["order_id"];?>',
-                  datatype: 'json',
-                  mtype: 'GET',
-                  colNames:['№','№/дата','Загрузка','Выгрузка','Клиент','Дата','Ставка клиента','Оплачено клиент.','Перевозчик','Ставка перев.','Оплачено перев.','Блок','Менеджер заявки','Рентабельность','Stat_cl','Stat_tr','Stat_all','Взаимозачет','Претензия','Группа'],
-                  colModel :[
-                    {name:'id', width:0,hidden:true},
-                    {name:'id_d', index:'id', width:35,align:['center']},
-                    {name:'in_adress', index:'in_adress', width:60,align:['center']},
-                    {name:'out_adress', index:'out_adress', width:60,align:['center']},
-                    {name:'client', index:'client', width:90},
-                    {name:'data', index:'data', width:0,hidden:true},
-                    {name:'cl_cash', index:'cl_cash', width:50,align:['center']},
-                {name:'cl_cash_receive', index:'cl_cash_receive', width:50,align:['center']},
-                    
-                    {name:'transp', index:'transp', width:95},
-                    {name:'tr_cash', index:'tr_cash', width:50,align:['center']},
-                {name:'tr_cash_receive', index:'tr_cash_receive', width:50,align:['center']},
-                    {name:'block', index:'block', width:0,hidden:true},
-                    {name:'manager', index:'manager', width:0,hidden:true},
-                    {name:'rent', index:'rent', width:0,hidden:true},
-                    {name:'stat_cl', index:'stat_cl', width:0,hidden:true},
-                    {name:'stat_tr', index:'stat_tr', width:0,hidden:true},
-                    {name:'stat_all', index:'stat_all', width:0,hidden:true},
-                    {name:'vzaimozachet', index:'vzaimozachet', width:0,hidden:true},
-                    {name:'pretenzia', index:'pretenzia', width:0,hidden:true},
-                    {name:'group_id', index:'group_id', width:0,hidden:true}
-                    ],
-                    
-                  multiselect: true,
-                  rowNum:8,	
-                  height:'auto',
-                  autowidth: true,
-                  caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление заявками',
-                  sortname: 'id',
-                  sortorder: 'desc',
-                  loadtext: "Загрузка...",
-                  gridview: true,
-                   toolbar: [true,"bottom"], loadComplete: function() {
+var table = $('#table');
+    table.jqGrid({url:'control/orders.php?mode=orders&order_id=<?php if(isset($_GET["order_id"])) echo $_GET["order_id"];?>',
+datatype: 'json',
+mtype: 'GET',
+colNames:['№','№/дата','Загрузка','Выгрузка','Клиент','Дата','Ставка клиента','Оплачено клиент.','Перевозчик','Ставка перев.','Оплачено перев.','Блок','Менеджер заявки','Рентабельность','Stat_cl','Stat_tr','Stat_all','Взаимозачет','Претензия','Группа'],
+colModel :[
+{name:'id', width:0,hidden:true},
+    {name:'id_d', index:'id', width:35,align:['center']},
+    {name:'in_adress', index:'in_adress', width:60,align:['center']},
+    {name:'out_adress', index:'out_adress', width:60,align:['center']},
+    {name:'client', index:'client', width:90},
+    {name:'data', index:'data', width:0,hidden:true},
+    {name:'cl_cash', index:'cl_cash', width:50,align:['center']},
+    {name:'cl_cash_receive', index:'cl_cash_receive', width:50,align:['center']},
 
+    {name:'transp', index:'transp', width:95},
+    {name:'tr_cash', index:'tr_cash', width:50,align:['center']},
+    {name:'tr_cash_receive', index:'tr_cash_receive', width:50,align:['center']},
+    {name:'block', index:'block', width:0,hidden:true},
+    {name:'manager', index:'manager', width:0,hidden:true},
+    {name:'rent', index:'rent', width:0,hidden:true},
+    {name:'stat_cl', index:'stat_cl', width:0,hidden:true},
+    {name:'stat_tr', index:'stat_tr', width:0,hidden:true},
+    {name:'stat_all', index:'stat_all', width:0,hidden:true},
+    {name:'vzaimozachet', index:'vzaimozachet', width:0,hidden:true},
+    {name:'pretenzia', index:'pretenzia', width:0,hidden:true},
+    {name:'group_id', index:'group_id', width:0,hidden:true}
+    ],
+    multiselect: true,
+    rowNum:8,
+    height:'auto',
+    autowidth: true,
+    caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление заявками',
+    sortname: 'id',
+    sortorder: 'desc',
+    loadtext: "Загрузка...",
+    gridview: true,
+    toolbar: [true,"bottom"], loadComplete: function() {
 
-      var myGrid = jQuery("#table");
-      var ids = myGrid.jqGrid('getDataIDs');
-      var row_data= myGrid.jqGrid('getRowData');
+    var myGrid = jQuery("#table");
+    var ids = myGrid.jqGrid('getDataIDs');
+    var row_data= myGrid.jqGrid('getRowData');
 
-      for (var i = 0; i < ids.length; i++) {
-          var id=ids[i];
-          
-            //console.log(row_data[i].manager);
-            if(row_data[i].rent=='-1'){
+    for (var i = 0; i < ids.length; i++) {
+    var id=ids[i];
+
+    //console.log(row_data[i].manager);
+    if(row_data[i].rent=='-1'){
                 myGrid.jqGrid('setCell',id,'id_d','',{'background-color':'#FFA95E'});
-
             }
 
-            if(row_data[i].manager!=<?php echo $_SESSION["user_id"];?>&&<?php echo $_SESSION['group'];?>=='3'){
-                myGrid.jqGrid('setCell',id,'id_d','',{'background-color':'#FFD06B'});
+            if(row_data[i].manager!=<?php echo $_SESSION["user_id"];?>&&<?php echo $_SESSION['group'];?>=='3') {
+myGrid.jqGrid('setCell',id,'id_d','',{'background-color':'#FFD06B'});
                 myGrid.jqGrid('setCell',id,'client','',{'background-color':'#FFD06B'});
                 myGrid.jqGrid('setCell',id,'in_adress','',{'background-color':'#FFD06B'});
                 myGrid.jqGrid('setCell',id,'out_adress','',{'background-color':'#FFD06B'});

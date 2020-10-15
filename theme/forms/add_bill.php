@@ -6,7 +6,6 @@ $c_bill=$_GET['c_bill'];
 
 
 ?>
-<script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
 
 <script type="text/javascript">
 $.mask.definitions['~']='[+-]';

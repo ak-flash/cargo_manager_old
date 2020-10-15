@@ -3,19 +3,20 @@
 include "../config.php";
 include "komissia.php";
 
-$page = $_GET['page'];      // Номер запришиваемой страницы
-$limit = $_GET['rows'];     // Количество запрашиваемых записей
-$sidx = $_GET['sidx'];      // Номер элемента массива по котору следует производить сортировку
-                            // Проще говоря поле, по которому следует производить сортировку
-$sord = $_GET['sord'];      // Направление сортировки
+if (!isset($data)) $data = new stdClass();
+
+$page = (int)$_GET['page'];      // Номер запришиваемой страницы
+$limit = (int)$_GET['rows'];     // Количество запрашиваемых записей
+$sidx = mysql_real_escape_string($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку // Проще говоря поле, по которому следует производить сортировку
+$sord = mysql_real_escape_string($_GET['sord']);      // Направление сортировки
 
 function mediana($arr)
 {
-sort($arr);
-$count = count($arr);
-$n1 = floor($count / 2);
-$n2 = $n1 + 1;
-return ($arr[$n1] + $arr[$n2]) / 2;
+    sort($arr);
+    $count = count($arr);
+    $n1 = floor($count / 2);
+    $n2 = $n1 + 1;
+    return ($arr[$n1] + $arr[$n2]) / 2;
 }
 
 

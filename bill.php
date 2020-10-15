@@ -4,9 +4,6 @@ if (@$_GET['company']!=""||intval($_GET['company'])){
 $company=$_GET['company'];
 } 
 ?>
-<script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
-
-
 
 
 <?php  if ($company!="") {

@@ -12,7 +12,7 @@ $row = mysql_fetch_array($result);
 
 } else {session_start();}
 ?>
-<script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
+
 <script type="text/javascript">
 $('#save_trip').button();
 $('#btnClose_trip').button();

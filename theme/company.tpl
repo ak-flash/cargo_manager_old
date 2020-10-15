@@ -3,21 +3,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Управление компаниями</title>
-<?php include_once("data/header.html");?>
+    <title>Управление компаниями</title>
+    <?php include_once("data/header.html");?>
 
 
+    <script type="text/javascript">
+        // - - главная таблица на странице заявок- -
+        $(function () {
 
-<script type="text/javascript">
-// - - главная таблица на странице заявок- -
-$(function(){$("#control_menu_css").css({"background": "#BCBCBC", "color":"#000","text-shadow": "1px 2px 2px #FFF"});
-               var table = $('#table');
-      table.jqGrid({
-                  url:'control/company.php?mode=company&adr=0',
-                  datatype: 'json',
-                  mtype: 'GET',
-                  colNames:['№','Форма','Компания','','Ответственное лицо','Должность','Телефон','Почта'],
-                  colModel :[
+            $("#control_menu_css").css({"background": "#BCBCBC", "color":"#000","text-shadow": "1px 2px 2px #FFF"});
+            var table = $('#table');
+            table.jqGrid({
+                url: 'control/company.php?mode=company&adr=0',
+                datatype: 'json',
+                mtype: 'GET',
+                colNames: ['№', 'Форма', 'Компания', '', 'Ответственное лицо', 'Должность', 'Телефон', 'Почта'],
+                colModel: [
                     {name:'id', index:'id', width:20,align:['center']},
                     {name:'company_pref', index:'company_pref', width:30,align:['center']},
                     {name:'company', index:'company', width:90},
@@ -25,24 +26,27 @@ $(function(){$("#control_menu_css").css({"background": "#BCBCBC", "color":"#000"
                     {name:'company_chief', index:'company_chief', width:90},
                     {name:'company_dchief', index:'company_dchief', width:50,align:['center']},
                     {name:'company_phone', index:'company_phone', width:50,align:['center']},
-                    {name:'company_mail', index:'company_mail', width:60}],
-                    
-                  viewrecords: true,
-                  rowNum:8,
-                  height: 350,
-                  autowidth: true,caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление компаниями',
-                  sortname: 'id',
-                  sortorder: 'asc',
-afterInsertRow: function(row_id, row_data){
+                    {name:'company_mail', index:'company_mail', width:60}
+                ],
+                viewrecords: true,
+                rowNum: 8,
+                height: 350,
+                autowidth: true,
+                autoencode: false,
+                loadtext: "Загрузка...",
+                caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление компаниями',
+                sortname: 'id',
+                sortorder: 'asc',
+                afterInsertRow: function (row_id, row_data) {
 
 
-},
-                  subGrid: true,
-                  subGridUrl: 'control/company.php?mode=desc', 
-                  subGridOptions: {
-		"plusicon"  : "ui-icon-triangle-1-e",
-		"minusicon" : "ui-icon-triangle-1-s",
-		"openicon"  : "ui-icon-arrowreturn-1-e"
+                },
+                subGrid: true,
+                subGridUrl: 'control/company.php?mode=desc',
+                subGridOptions: {
+                    "plusicon": "ui-icon-triangle-1-e",
+                    "minusicon": "ui-icon-triangle-1-s",
+                    "openicon": "ui-icon-arrowreturn-1-e"
 	},
                   subGridModel: [{ name : ['Управление','Информация о компании'], align:  ['center','left'], width : [80,950], params: ['id']} ],
 rownumbers: false,
@@ -108,30 +112,25 @@ $("#fa_company").load("theme/forms/add_company.php");
 <div id="fa_c_bill" style="background:#F8F8F8;"></div>
 
 
-<!  - - форма добавления адреса  - - >  
+<! - - форма добавления адреса - - >
 <div id="fa_adr" style="background:#F8F8F8;"></div>
 
-<div id="result" style="display: none;"></div><div id="result_temp" style="display: none;"></div>
+<div id="result" style="display: none;"></div>
+<div id="result_temp" style="display: none;"></div>
 
 <div id="dialogp" style="display: none;"></div>
 <div id="dialog" style="display: none;"></div>
 
 <div class="main">
-<a class="button3" id="btnAdd" href="#" style="width:120px;">Добавить</a>
+
+    <button class="btn btn-warning m-3" id="btnAdd">Добавить</button>
 
 
-
-
-<table id="table" align="center"></table>
-        <div id="tablePager"></div>
-
-
+    <table id="table" align="center"></table>
+    <div id="tablePager"></div>
 
 
 </div>
-
-
-
 
 
 </body>

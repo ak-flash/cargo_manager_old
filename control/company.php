@@ -1,27 +1,19 @@
 <?php
 // Подключение и выбор БД
-include "../config.php";	
+include "../config.php";
+
+if (!isset($data)) $data = new stdClass();
+
+$page = (int)$_GET['page'];      // Номер запришиваемой страницы
+$limit = (int)$_GET['rows'];     // Количество запрашиваемых записей
+$sidx = mysql_real_escape_string($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку // Проще говоря поле, по которому следует производить сортировку
+$sord = mysql_real_escape_string($_GET['sord']);      // Направление сортировки
 
 
-# ВНИМАНИЕ!!!
-# Данный код не имеет проверок запрашиваемых данных
-# что может стать причиной взлома! Обязательно проверяйте все данные
-# поступающие от клиента
-
-$page = $_GET['page'];      // Номер запришиваемой страницы
-$limit = $_GET['rows'];     // Количество запрашиваемых записей
-$sidx = $_GET['sidx'];      // Номер элемента массива по котору следует производить сортировку
-                            // Проще говоря поле, по которому следует производить сортировку
-$sord = $_GET['sord'];      // Направление сортировки
-
-
-
-
-if ($_GET['mode']=='company') 
-{
+if ($_GET['mode'] == 'company') {
 
 // Если не указано поле сортировки, то производить сортировку по первому полю
-if(!$sidx) $sidx =1;
+    if (!$sidx) $sidx = 1;
 
 
 $result = mysql_query("SELECT COUNT(*) AS count FROM `company` WHERE `delete`='0'");
@@ -54,7 +46,9 @@ $result = mysql_query($query) or die(mysql_error());
 // Начало формирование массива
 // для последующего преобразоования
 // в JSON объект
-$data->page       = $page;
+
+
+    $data->page       = $page;
 $data->total      = $total_pages;
 $data->records    = $count;
 
@@ -98,7 +92,7 @@ $data->rows[$i]['id'] = $row[0];
 }
 // Перед выводом не забывайте выставить header
 // с типом контента и кодировкой
-header("Content-type: text/script;charset=utf-8");
+    header("Content-type: application/json");
 echo json_encode($data);
 	
 }
@@ -126,7 +120,7 @@ if($row['id']!=1){
 	        }
 	        }
 
-header("Content-type: text/script;charset=utf-8");
+    header("Content-type: application/json");
 echo json_encode($data);
 
 

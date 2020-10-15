@@ -1,5 +1,5 @@
 <?php include "../../config.php";?>
-<script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
+
 <script type="text/javascript">
 
 $('#Save_vtl_repair').button();

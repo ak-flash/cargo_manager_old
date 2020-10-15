@@ -1,4 +1,3 @@
-<script type="text/javascript" src="data/jquery.maskedinput-1.3.min.js"></script>
 <script type="text/javascript" src="data/javascript/jquery.autocomplete.js"></script>
 
 <script type="text/javascript">
