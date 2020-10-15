@@ -152,7 +152,5 @@ $result = mysql_query($query) or die(mysql_error());
 echo '<font color="red" size="3">Сотрудник восстановлен...</font>';
 	
 }
-//$fh = fopen("somefile.txt", "a+"); 
-//fwrite($fh, $id); 
-//fclose($fh);
+
 ?>

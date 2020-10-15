@@ -120,6 +120,7 @@ $aSheet = $pExcel->getActiveSheet();
 $aSheet->freezePane('D2');
 
 
+
 $aSheet->setTitle("Отчет по заявкам");
 
 $aSheet->setCellValue('A1',"№");
@@ -249,8 +250,7 @@ $aSheet->setCellValue('W1',"Итого ставка заказчика");
 $aSheet->getStyle('W1')->applyFromArray($center)->applyFromArray($boldFont);
 $aSheet->getStyle('W1')->getAlignment()->setWrapText(true);
 
-$aSheet->setCellValue('X1',"ПРИБЫЛЬ");
-$aSheet->getStyle('X1')->applyFromArray($center)->applyFromArray($boldFont);
+
 
 $aSheet->setCellValue('Y1',"Форма оплаты клиента, нал / б.нал");
 $aSheet->getStyle('Y1')->applyFromArray($center)->applyFromArray($boldFont);
@@ -649,7 +649,8 @@ $p++;
 
 }
 
-$aSheet->setCellValue('W'.($p+1),"Итого:");
+
+	$aSheet->setCellValue('W'.($p+1),"Итого:");
 	$aSheet->getStyle('W'.($p+1))->applyFromArray($right)->applyFromArray($boldFont);
 
 $aSheet->setCellValue('Y'.($p+1),$row['cl_currency']);
@@ -717,25 +718,33 @@ $aSheet->getColumnDimension('V')->setWidth(10);
 $aSheet->getColumnDimension('W')->setWidth(10);
 $aSheet->getColumnDimension('X')->setWidth(10);
 $aSheet->getColumnDimension('Y')->setWidth(15);
-$aSheet->getColumnDimension('Z')->setWidth(23);
-$aSheet->getColumnDimension('AA')->setWidth(10);
-$aSheet->getColumnDimension('AB')->setWidth(15);
-$aSheet->getColumnDimension('AC')->setWidth(15);
-$aSheet->getColumnDimension('AD')->setWidth(15);
-$aSheet->getColumnDimension('AE')->setWidth(15);
-$aSheet->getColumnDimension('AF')->setWidth(15);
+	$aSheet->getColumnDimension('Z')->setWidth(23);
+	$aSheet->getColumnDimension('AA')->setWidth(10);
+	$aSheet->getColumnDimension('AB')->setWidth(15);
+	$aSheet->getColumnDimension('AC')->setWidth(15);
+	$aSheet->getColumnDimension('AD')->setWidth(15);
+	$aSheet->getColumnDimension('AE')->setWidth(15);
+	$aSheet->getColumnDimension('AF')->setWidth(15);
 	$aSheet->getColumnDimension('AG')->setWidth(10);
 	$aSheet->getColumnDimension('AH')->setWidth(15);
 }
-$aSheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+	$aSheet->setCellValue('X1', "ПРИБЫЛЬ");
+	$aSheet->getStyle('X1')->applyFromArray($center)->applyFromArray($boldFont);
+
+// Filter
+	$aSheet->setAutoFilter('A1:AH' . ($p - 1));
+
+
+	$aSheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 //$aSheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
-$aSheet->getPageSetup()->setPrintArea('A1:AH'.($p+1));
-$aSheet->getPageSetup()->setFitToPage(true);
-$aSheet->getPageSetup()->setFitToWidth(1);
-$aSheet->getPageSetup()->setFitToHeight(0);
+	$aSheet->getPageSetup()->setPrintArea('A1:AH' . ($p + 1));
+	$aSheet->getPageSetup()->setFitToPage(true);
+	$aSheet->getPageSetup()->setFitToWidth(1);
+	$aSheet->getPageSetup()->setFitToHeight(0);
 
 //отдаем пользователю в браузер
-include("PHPExcel/Writer/Excel5.php");
+	include("PHPExcel/Writer/Excel5.php");
 $pExcel->setActiveSheetIndex(0);
 $pExcel->removeSheetByIndex(1);
 

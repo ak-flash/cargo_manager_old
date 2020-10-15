@@ -340,7 +340,5 @@ echo $total;
 
 }
 
-$fh = fopen("somefile.txt", "a+"); 
-fwrite($fh, $date_end); 
-fclose($fh);
+
 ?>
