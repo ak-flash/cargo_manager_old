@@ -1,9 +1,9 @@
 *.rar
 *.zip
 *.tar
+*.json
 *~
 /tools/backup/files
-/tools/mysql
 .idea
 .env
 /Uploads

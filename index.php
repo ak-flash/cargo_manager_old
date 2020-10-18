@@ -27,8 +27,8 @@ function get_client_ip()
 
 if (@$_GET['mode'] == "logout") {
     session_unset();
-    //unset($_COOKIE["authcode"]);
-    //setcookie('authcode', null, -1, '/');
+    unset($_COOKIE["authcode"]);
+    setcookie('authcode', null, -1, '/');
 }
 
 $error_message = '';
@@ -273,7 +273,8 @@ background:url(data/body-bg.gif) top left repeat;
         if ($user[2] != "1") {
             $pieces = explode(" ", $user[1]);
             $print_add_name = $pieces[0] . " " . substr($pieces[1], 0, 2) . ". " . substr($pieces[2], 0, 2) . ".";
-            echo '<option value=' . $user[0] . '>' . $print_add_name . '</option>';
+            if (isset($_POST['username']) && @$_POST['username'] != '0' && @$_POST['username'] == $user[0])  $selected = ' selected'; else $selected = '';
+                echo '<option value=' . $user[0] .$selected. '>' . $print_add_name . '</option>';
         }
     }
     echo '</select></td></tr><tr><td align="right" height="20"><font size="4">Пароль:</font>&nbsp;&nbsp;</td><td><input type="password" name="password" style="width:160px;height:32px;" class="input" value="';

@@ -12,7 +12,7 @@
 // - - главная таблица на странице заявок- -
 $(function(){
 
-$('#btnAdd').button();
+$('#btnAdd').button({ icons: { primary: "ui-icon-plusthick" } });
 $('#btnGroup').button();
 $('#btnClGroup').button();
 

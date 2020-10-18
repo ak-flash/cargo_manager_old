@@ -17,8 +17,8 @@ $('#date_start').mask('99/99/9999');
 
 $("#pays_menu").css({"background": "#BCBCBC", "color":"#000","text-shadow": "1px 2px 2px #FFF"});
 
-$('#btnAppoints').button();$('#btnDeleteShow').button();$('#btnAdd').button();$('#btnAdd_group').button();
-$('#btnBill').button();$('#btnUnlockPay').button();$('#btnlockPay').button();
+$('#btnAppoints').button();$('#btnDeleteShow').button();$('#btnAdd').button({ icons: { primary: "ui-icon-circle-plus" } });$('#btnAdd_group').button();
+$('#btnBill').button();$('#btnUnlockPay').button({ icons: { primary: "ui-icon-pin-w" } });$('#btnlockPay').button({ icons: { primary: "ui-icon-pin-s" } });
 $('#btnPaymentsList').button();
 $('#btnDocs').button();$('#btnPaysReport').button();
 
@@ -183,8 +183,8 @@ jQuery("#table").trigger("reloadGrid");
 <div id="dialog" style="display: none;"></div>
 
 <div class="main">
-<a class="button3" id="btnAdd" href="javascript:" style="width:190px;margin-left:10px;">Добавить платёж</a>
-&nbsp;<a id="btnAdd_group" class="button5" href="javascript:" style="font-size:0.8em;">Платежи по заявкам</a>
+<button class="button3" id="btnAdd" style="width:138px;">Добавить</button>
+&nbsp;<button id="btnAdd_group" class="button4" style="">Платежи по заявкам</button>
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 За период: с <input type="text" id="date_start" name="date_start" style="width:80px;" value="" class="input"> по <input type="text" id="date_end" name="date_end" style="width:80px;" class="input">
@@ -216,7 +216,7 @@ jQuery("#table").trigger("reloadGrid");
 
 
 &nbsp;&nbsp;|&nbsp;&nbsp;
-<input type="button" id="btnPaymentsList" onclick='$("#fa_listpay").load("theme/forms/add_listpay.php");$("#fa_listpay").dialog({ title: "Список на оплату" },{width: 1050,height: 770,modal: true,resizable: false});' value="Список на оплату" style="font-size: 14px;width: 160px;height:35px;"><span class="amNumber"><div id="count_pay" style="display:inline;"></div><div class="amAngle"></div></span>
+<input type="button" id="btnPaymentsList" onclick='$("#fa_listpay").load("theme/forms/add_listpay.php");$("#fa_listpay").dialog({ title: "Список на оплату" },{width: 1050,height: 770,modal: true,resizable: false});' value="Список на оплату" style="font-size: 14px;width: 160px;height:35px;">
 &nbsp;&nbsp;|&nbsp;&nbsp;<input type="button" id="btnDocs" onclick='if(document.getElementById("date_start").value!=""&&document.getElementById("date_end").value!="")window.location.href="control/print_listpay.php?mode=print&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}' value="Непров. выплаты" style="font-size: 12px;width: 150px;height:30px;">
 &nbsp;&nbsp;|&nbsp;&nbsp;
 
@@ -242,7 +242,7 @@ if($pays_app[0]>6) echo '<option value="'.$pays_app[0].'">'.$pays_app[1].'</opti
 
 
 
-<a class="button2" id="btnDeleteShow" href="javascript:" onclick="$('#table').setGridParam({url:'control/pays.php?mode=pays&del_show=true'});jQuery('#table').trigger('reloadGrid');" style="float:right;font-size:0.7em;">Удаленные</a>
+<button class="button5" id="btnDeleteShow" onclick="$('#table').setGridParam({url:'control/pays.php?mode=pays&del_show=true'});jQuery('#table').trigger('reloadGrid');" style="float:right;">Удалённые платежи</button>
 
 </fieldset>
 

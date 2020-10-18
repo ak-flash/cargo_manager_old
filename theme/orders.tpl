@@ -11,21 +11,22 @@
 // - - главная таблица на странице заявок- -
 $(function(){
 
-$("#orders_menu").css({"background": "#607269","text-shadow":"1px 1px 1px #000"});
+    $("#orders_menu").css({"background": "#607269","text-shadow":"1px 1px 1px #000"});
 
-$('#btnPass').button();
-$('#btnAdd').button();
-$('#btnUnBlock').button();
-$('#btnSetVzaim').button();
-$('#btnBlock').button();
-$('#btnShowDel').button();
+
+    $('#btnAdd').button({ icons: { primary: "ui-icon-plusthick" } });
+    $('#btnUnBlock').button();
+    $('#btnSetVzaim').button();
+    $('#btnBlock').button();
+    $('#btnShowDel').button();
     $('#btnSetPretenz').button();
     $('#btnCl_info').button();
     $('#btnNDSTr').button();
+    $('#btnGroupping').button();
 
     <?php
-//if($_SESSION["group"]!=2&&$_SESSION["group"]!=1) echo '$("#info_text").load("/control/load_info_text.php?mode=random", function(data) {  if(data!="") $("#information").fadeIn(1000);});';
-?>
+        //if($_SESSION["group"]!=2&&$_SESSION["group"]!=1) echo '$("#info_text").load("/control/load_info_text.php?mode=random", function(data) {  if(data!="") $("#information").fadeIn(1000);});';
+    ?>
 
 
 var table = $('#table');
@@ -34,27 +35,27 @@ datatype: 'json',
 mtype: 'GET',
 colNames:['№','№/дата','Загрузка','Выгрузка','Клиент','Дата','Ставка клиента','Оплачено клиент.','Перевозчик','Ставка перев.','Оплачено перев.','Блок','Менеджер заявки','Рентабельность','Stat_cl','Stat_tr','Stat_all','Взаимозачет','Претензия','Группа'],
 colModel :[
-{name:'id', width:0,hidden:true},
-    {name:'id_d', index:'id', width:35,align:['center']},
-    {name:'in_adress', index:'in_adress', width:60,align:['center']},
-    {name:'out_adress', index:'out_adress', width:60,align:['center']},
-    {name:'client', index:'client', width:90},
-    {name:'data', index:'data', width:0,hidden:true},
-    {name:'cl_cash', index:'cl_cash', width:50,align:['center']},
-    {name:'cl_cash_receive', index:'cl_cash_receive', width:50,align:['center']},
+        {name:'id', width:0,hidden:true},
+        {name:'id_d', index:'id', width:35,align:['center']},
+        {name:'in_adress', index:'in_adress', width:60,align:['center']},
+        {name:'out_adress', index:'out_adress', width:60,align:['center']},
+        {name:'client', index:'client', width:90},
+        {name:'data', index:'data', width:0,hidden:true},
+        {name:'cl_cash', index:'cl_cash', width:50,align:['center']},
+        {name:'cl_cash_receive', index:'cl_cash_receive', width:50,align:['center']},
 
-    {name:'transp', index:'transp', width:95},
-    {name:'tr_cash', index:'tr_cash', width:50,align:['center']},
-    {name:'tr_cash_receive', index:'tr_cash_receive', width:50,align:['center']},
-    {name:'block', index:'block', width:0,hidden:true},
-    {name:'manager', index:'manager', width:0,hidden:true},
-    {name:'rent', index:'rent', width:0,hidden:true},
-    {name:'stat_cl', index:'stat_cl', width:0,hidden:true},
-    {name:'stat_tr', index:'stat_tr', width:0,hidden:true},
-    {name:'stat_all', index:'stat_all', width:0,hidden:true},
-    {name:'vzaimozachet', index:'vzaimozachet', width:0,hidden:true},
-    {name:'pretenzia', index:'pretenzia', width:0,hidden:true},
-    {name:'group_id', index:'group_id', width:0,hidden:true}
+        {name:'transp', index:'transp', width:95},
+        {name:'tr_cash', index:'tr_cash', width:50,align:['center']},
+        {name:'tr_cash_receive', index:'tr_cash_receive', width:50,align:['center']},
+        {name:'block', index:'block', width:0,hidden:true},
+        {name:'manager', index:'manager', width:0,hidden:true},
+        {name:'rent', index:'rent', width:0,hidden:true},
+        {name:'stat_cl', index:'stat_cl', width:0,hidden:true},
+        {name:'stat_tr', index:'stat_tr', width:0,hidden:true},
+        {name:'stat_all', index:'stat_all', width:0,hidden:true},
+        {name:'vzaimozachet', index:'vzaimozachet', width:0,hidden:true},
+        {name:'pretenzia', index:'pretenzia', width:0,hidden:true},
+        {name:'group_id', index:'group_id', width:0,hidden:true}
     ],
     multiselect: true,
     rowNum:8,
@@ -91,7 +92,7 @@ myGrid.jqGrid('setCell',id,'id_d','',{'background-color':'#FFD06B'});
                 myGrid.jqGrid('setCell',id,'tr_cash_receive','',{'background-color':'#FFD06B'});
             }
 
-            if(row_data[i].block=='1'){
+            if(row_data[i].block=='1') {
                 myGrid.jqGrid('setCell',id,'id_d','',{'background-color':'#FFC1C1'});
             }
             
@@ -261,11 +262,16 @@ jQuery("#table").trigger("reloadGrid");});
         document.addEventListener('keydown', reg_event,false);
     }
 
-function reg_event(event){//обработка события
+function reg_event(event){
+//обработка события
 if(event.ctrlKey&&event.keyCode==81){
-if($("#show_hide").val()=='0'){$("#show_hide").val("1");document.getElementById('main_container').style.visibility = 'hidden';} else
- {$("#show_hide").val("0");
-    document.getElementById('main_container').style.visibility = 'visible';}
+if($("#show_hide").val()=='0'){
+    $("#show_hide").val("1");document.getElementById('main_container').style.visibility = 'hidden';
+    } else
+    {
+    $("#show_hide").val("0");
+    document.getElementById('main_container').style.visibility = 'visible';
+    }
  event.preventDefault();//запрет на дальнейшее распространение
      return false;//возвращаем false
 }
@@ -344,13 +350,13 @@ if($("#show_hide").val()=='0'){$("#show_hide").val("1");document.getElementById(
 
 <div id="dialogp" style="display: none;">Выделите заявку!</div>
 <div id="dialog" style="display: none;">Выберите запись для удаления!</div>
-<div id="dialogpr" style="display: none;">Распечатать заявку:</div>
+<div id="dialogpr" style="display: none;font-size: 1.2em;">Распечатать заявку:</div>
 <div class="main">
         
         
 
 <?php //Ограничения для добавления заявок бухгалтером
-if($_SESSION["group"]!=5){echo '<a class="button3" id="btnAdd" href="#" style="width:188px;">Добавить заявку</a>';}?>
+if($_SESSION["group"]!=5){echo '<button class="button3" id="btnAdd" style="width:145px;">Добавить</button>';}?>
 <a class="button" id="btnMonth" href="#" style="width:90px;">За месяц</a>
 <select name="orders_filter"  id="orders_filter" class="select" style="width:145px;margin-left:20px;margin-right:20px;">
             <option value="0" onclick="showAll()">Все</option>
@@ -371,24 +377,23 @@ if($_SESSION["group"]!=5){echo '<a class="button3" id="btnAdd" href="#" style="w
 <table id="table" align="center"></table>
         <div id="tablePager"></div>
 
+    <fieldset style="height:35px;">
+
+        <button class="button2" id="btnGroupping" onclick='$.post("control/admin.php?groupping="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});' style="">Объединить</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+
 <?php if($_SESSION["group"]==1||$_SESSION["group"]==2){
-echo '<fieldset>
-<input type="button" id="btnPass" onclick=\'$("#security_code_admin").dialog({ title: "Для сохранения нерентабельной заявки" },{ width: 300 },{ modal: true },{ resizable: false },{ buttons: { "Добавить": function() {if ($("#order_code_admin").val()!=""){$.post("control/admin.php?order_code="+$("#order_code_admin").val(), function(data) {alert(data);}); $("#order_code_admin").val(""); $(this).dialog("close");} else {alert("Пароль не может быть пустым!");} } } });\' value="Уст. пароль" style="font-size: 12px;width: 100px;height:35px;margin-top:5px;">
-
-&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="button" id="btnBlock" onclick=\'$.post("control/admin.php?lock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="Заблокировать" style="font-size: 12px;">
+echo '<button id="btnBlock" onclick=\'$.post("control/admin.php?lock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' style="font-size: 0.9em;">Заблокировать</button>
 <input type="button" id="btnUnBlock" onclick=\'$.post("control/admin.php?unlock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="Разблокировать" style="font-size: 12px;">
-&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetVzaim" onclick=\'$.post("control/admin.php?vzaimozachet="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="«Взаимозачет»" style="font-size: 12px;width: 120px;">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetPretenz" onclick=\'$.post("control/admin.php?pretenzia="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="«Претензия»" style="font-size: 12px;width: 100px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:" class="button2" id="btnShowDel" onclick=\'$("#table").setGridParam({url:"control/orders.php?mode=orders&showdel=true"});jQuery("#table").trigger("reloadGrid");\' style="font-size: 0.7em;float:right;">Удалённые заявки</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetVzaim" onclick=\'$.post("control/admin.php?vzaimozachet="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="«Взаимозачет»" style="font-size: 12px;width: 120px;">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetPretenz" onclick=\'$.post("control/admin.php?pretenzia="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="«Претензия»" style="font-size: 12px;width: 100px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<button class="button5" id="btnShowDel" onclick=\'$("#table").setGridParam({url:"control/orders.php?mode=orders&showdel=true"});jQuery("#table").trigger("reloadGrid");\' style="float:right;">Удалённые заявки</button>';
 
-</fieldset>
-<div id="security_code_admin" style="display: none;"><br>&nbsp;&nbsp;&nbsp;Пароль: <input name="order_code_admin" id="order_code_admin" value="" class="input" style="width: 135px;"></div>';
 }
 
 if($_SESSION["group"]==4){
-echo '<fieldset>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnNDSTr" onclick=\'window.location.href="control/tr_nds.php?mode=nds&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value\' value="Перевозчики с НДС" style="font-size: 12px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+        echo '<input type="button" id="btnNDSTr" onclick=\'window.location.href="control/tr_nds.php?mode=nds&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value\' value="Перевозчики с НДС" style="font-size: 12px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
 <input type="button" id="btnBlock" onclick=\'$.post("control/admin.php?lock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="Заблокировать" style="font-size: 12px;width: 160px;">
 <input type="button" id="btnUnBlock" onclick=\'$.post("control/admin.php?unlock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="Разблокировать" style="font-size: 12px;width: 160px;">
-&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetVzaim" onclick=\'$.post("control/admin.php?vzaimozachet="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="Отм. «Взаимозачет»" style="font-size: 12px;width: 160px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:" class="button2" id="btnShowDel" onclick=\'$("#table").setGridParam({url:"control/orders.php?mode=orders&showdel=true"});jQuery("#table").trigger("reloadGrid");\' style="font-size: 0.7em;float:right;">Удалённые заявки</a></fieldset>';
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetVzaim" onclick=\'$.post("control/admin.php?vzaimozachet="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="Отм. «Взаимозачет»" style="font-size: 12px;width: 160px;">';
 }
 ?>
 

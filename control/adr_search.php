@@ -1,6 +1,9 @@
 <?php
 include "../config.php";
 header("Content-type: text/script;charset=utf-8");
+
+if (!isset($data)) $data = new stdClass();
+
 if (@$_GET['adr_id']!=""){
 $query_adress = "SELECT * FROM `adress` WHERE `Id`='".$_GET['adr_id']."'";
 $result_adress = mysql_query($query_adress) or die(mysql_error());

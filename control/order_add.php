@@ -49,7 +49,7 @@ if(@$_POST['tr_komissia']!=""&&!CheckInt($_POST['tr_komissia'])){echo $error.'"�
 
 
 // Проверка лимита - этот участок тормозит. Удалить?
-
+/*
 $query_check = "SELECT `id`,`name`,`cl_limit`,`cl_limit_order` FROM `clients` WHERE `id`='".mysql_escape_string((int)$_POST['client'])."'";
 $result_check = mysql_query($query_check) or die(mysql_error());
 $cl_check = mysql_fetch_row($result_check);
@@ -102,24 +102,25 @@ if($difference_in_days>=0) $dolg_check.='<b>'.$row_ord['id'].'<b> ('.$difference
 }
 
 
-// Конец участка, который тормозит.
 
 
 if($validate&&@$_POST['edit']!="1")
 {
 
 
-if($dolg_check!="" && $cl_check[3]==0) {
-	echo '<font size="4" color="red">Невозможно создать заявку!</font><br><br>У клиента имеются задолженности по заявкам '.$dolg_check.'<br><br><font size="1">Примите меры для ликвидации задолженности...</font><br><br>';$validate=false;
-}
+    if($dolg_check!="" && $cl_check[3]==0) {
+        echo '<font size="4" color="red">Невозможно создать заявку!</font><br><br>У клиента имеются задолженности по заявкам '.$dolg_check.'<br><br><font size="1">Примите меры для ликвидации задолженности...</font><br><br>';$validate=false;
+    }
 
-//if(@$_POST['transporter']==0&&(@$_POST['ati_km']=='0'||@$_POST['ati_km']==''||!CheckInt($_POST['ati_km']))) {echo $error.'"Заполните километраж в закладке Адреса"'.$err.ValFail('ati_km'); $validate=false;} else {echo ValOk('ati_km');}
+    //if(@$_POST['transporter']==0&&(@$_POST['ati_km']=='0'||@$_POST['ati_km']==''||!CheckInt($_POST['ati_km']))) {echo $error.'"Заполните километраж в закладке Адреса"'.$err.ValFail('ati_km'); $validate=false;} else {echo ValOk('ati_km');}
 
-if((int)$cl_check[2]<(int)@$_POST['cl_cash']){echo '<font size="4" color="red">Невозможно создать заявку!</font><br><br>Ставка клиента ('.(int)@$_POST['cl_cash'].' '.$_POST['cl_currency'].') больше<br>лимита дебиторской задолженности<br><br><b>Лимит: '.(int)$cl_check[2].' '.$_POST['cl_currency'].'</b><br><br><font size="4">Обратитесь к Директору...</font>'; $validate=false;} else {
+    if((int)$cl_check[2]<(int)@$_POST['cl_cash']){echo '<font size="4" color="red">Невозможно создать заявку!</font><br><br>Ставка клиента ('.(int)@$_POST['cl_cash'].' '.$_POST['cl_currency'].') больше<br>лимита дебиторской задолженности<br><br><b>Лимит: '.(int)$cl_check[2].' '.$_POST['cl_currency'].'</b><br><br><font size="4">Обратитесь к Директору...</font>'; $validate=false;} else {
 
 
-if((int)$cl_check[2]<((int)$limit_check+(int)@$_POST['cl_cash'])){echo '<font size="4" color="red">Невозможно создать заявку!</font><br><br>Достигнут лимит дебиторской задолженности ('.(int)$cl_check[2].' '.$_POST['cl_currency'].')<br> для  клиента <b>«'.addslashes($cl_check[1]).'»</b><br><br><b>Долг составляет: '.number_format((int)$limit_check, 2, ',', ' ').' '.$_POST['cl_currency'].'</b><br>Плюс ставка клиента: '.(int)@$_POST['cl_cash'].' '.$_POST['cl_currency'].'<br><br><font size="1">Примите меры для ликвидации задолженности...</font>'; $validate=false;}
-}
+    if((int)$cl_check[2]<((int)$limit_check+(int)@$_POST['cl_cash'])){echo '<font size="4" color="red">Невозможно создать заявку!</font><br><br>Достигнут лимит дебиторской задолженности ('.(int)$cl_check[2].' '.$_POST['cl_currency'].')<br> для  клиента <b>«'.addslashes($cl_check[1]).'»</b><br><br><b>Долг составляет: '.number_format((int)$limit_check, 2, ',', ' ').' '.$_POST['cl_currency'].'</b><br>Плюс ставка клиента: '.(int)@$_POST['cl_cash'].' '.$_POST['cl_currency'].'<br><br><font size="1">Примите меры для ликвидации задолженности...</font>'; $validate=false;}
+    }
+
+
 } else {
 
 
@@ -134,7 +135,8 @@ if((int)$cl_check[2]<(int)@$_POST['cl_cash']&&$cl_change_check[0]!=(int)@$_POST[
 if((int)$cl_check[2]<((int)$limit_check+(int)@$_POST['cl_cash'])&&$cl_change_check[0]!=(int)@$_POST['client']){echo '<font size="4" color="red">Невозможно обновить заявку!</font><br><b>Клиент изменён!</b><br>Достигнут лимит дебиторской задолженности ('.(int)$cl_check[2].' '.$_POST['cl_currency'].')<br> для  клиента <b>«'.addslashes($cl_check[1]).'»</b><br><br><b>Долг составляет: '.number_format((int)$limit_check, 2, ',', ' ').' '.$_POST['cl_currency'].'</b><br>Плюс ставка клиента: '.(int)@$_POST['cl_cash'].' '.$_POST['cl_currency'].'<br><br><font size="1">Примите меры для ликвидации задолженности...</font>'; $validate=false;}
 }
 }
-
+*/
+// Конец участка, который тормозит.
 
 if($validate)
 {
@@ -383,7 +385,7 @@ $query_logs = "INSERT INTO `logs` (`user`,`log_message`) VALUES ('".$_SESSION["u
 $result_logs = mysql_query($query_logs) or die(mysql_error());
 
 }
-else echo '<font size="3" color="red">Заявка заблокирована для редактирования!</font>';
+else echo '<font size="3">Заявка заблокирована для редактирования!</font>';
 }
 
 }	

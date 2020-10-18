@@ -311,4 +311,42 @@ $result = mysql_query($query) or die(mysql_error());
 
 }
 
+if(isset($_GET['groupping']))
+{
+    if(@$_GET['groupping']=="") {echo "Выберите заявку(и)!";} else {
+        $str = explode(',',$_GET['groupping']);
+        $res = (int)sizeof($str)-1;
+        $f=0;
+        $err_info = '';
+        while ($f<=$res) {
+
+            $query_ord = "SELECT `group_id` FROM `orders` WHERE `Id`='".mysql_escape_string($str[$f])."'";
+            $result_ord = mysql_query($query_ord) or die(mysql_error());
+            $check_ord= mysql_fetch_row($result_ord);
+
+            $check_group_count = explode(',',$check_ord[0]);
+
+            if($check_ord[0]==0||$check_ord[0]==''){
+                $query_orders = "UPDATE `orders` SET `group_id`='".mysql_escape_string($_GET['groupping'])."' WHERE `Id`='".mysql_escape_string($str[$f])."'";
+                $set=1;
+            } else {
+                if (sizeof($check_group_count) != sizeof($str)) {
+                    $err_info = 'Выберите все заявки группы для разъединения!';
+                } else {
+                    $query_orders = "UPDATE `orders` SET `group_id`='' WHERE `Id`='" . mysql_escape_string($str[$f]) . "'";
+                    $set = 2;
+                }
+
+            }
+
+            if(isset($query_orders)) $result_orders = mysql_query($query_orders) or die(mysql_error());
+            $orders=$str[$f].",".$orders;
+            $f++;
+        }
+        if($set==1) echo "Заявка(и) <b>№ ".substr($orders,0,strlen($orders)-1)."</b> объединены по перевозчику";
+        if($set==2) echo "С заявок <b>№ ".substr($orders,0,strlen($orders)-1)."</b> снята <b>группировка</b>.";
+        if($err_info!='') echo "<b>".$err_info."</b>";
+    }
+}
+
 ?>

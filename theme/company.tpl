@@ -10,6 +10,7 @@
     <script type="text/javascript">
         // - - главная таблица на странице заявок- -
         $(function () {
+            $('button').button({ icons: { primary: "ui-icon-plusthick" } });
 
             $("#control_menu_css").css({"background": "#BCBCBC", "color":"#000","text-shadow": "1px 2px 2px #FFF"});
             var table = $('#table');
@@ -78,10 +79,6 @@ function updateTable(value) {
   });
 
 
-
-
-$('#btnAdd').button();
-
 // - - кнопка добавление клиента - - >
 $("#btnAdd").click(function(){
 $("#fa_company").load("theme/forms/add_company.php"); 
@@ -123,7 +120,7 @@ $("#fa_company").load("theme/forms/add_company.php");
 
 <div class="main">
 
-    <button class="btn btn-warning m-3" id="btnAdd">Добавить</button>
+    <button class="button3" id="btnAdd" style="width: 140px;">Добавить</button>
 
 
     <table id="table" align="center"></table>

@@ -42,7 +42,8 @@ echo '<tr><td align="center"><b>'.date('d/m/Y',strtotime($card[1])).'</b></td><t
 }
 
 } else {echo '<tr><td align="center" colspan="5"><font color="red"><b>Отсутствуют операции по карте...</b></font></td></tr>';
-echo '<script type="text/javascript">alert("Отсутствуют операции по карте...");</script>';}
+//echo '<script type="text/javascript">alert("Отсутствуют операции по карте...");</script>';
+}
 
 echo '</table>';
 echo '<script type="text/javascript">$("#card_balance").text("'.($card_cash[0]/100).' руб.");</script>';

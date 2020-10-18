@@ -16,13 +16,13 @@
 $(function(){
 // - - работа с датами - - >
 $("#date_start").datepicker({
-   onSelect: function(dateText, inst) {$("#date_end").val(dateText);}
+   onSelect: function(dateText, inst) { $("#date_end").val(dateText); }
 
 });
 $("#date_end").datepicker();
 
 $("#date_start_card").datepicker({
-   onSelect: function(dateText, inst) {$("#date_end_card").val(dateText);}
+   onSelect: function(dateText, inst) { $("#date_end_card").val(dateText); }
 
 });
 $("#date_end_card").datepicker();
@@ -49,7 +49,7 @@ $('#print_trip').button();
 
 $('#add_card').button();$('#edit_card').button();$('#del_card').button();$('#cash_add_card').button();
 
-$("#autopark_tabs").tabs({fx: {opacity:'toggle', duration:1}}); 
+$("#autopark_tabs").tabs({fx: {opacity:'toggle', duration:1}});
 
 $("#control_menu_css").css({"background": "#BCBCBC", "color":"#000","text-shadow": "1px 2px 2px #FFF"});
 
@@ -219,7 +219,7 @@ if(document.getElementById('date_start').value<=document.getElementById('date_en
 $('#table_tr_trip').setGridParam({url:'control/auto/vtl_trip.php?mode=trip&date_start='+document.getElementById('date_start').value+'&date_end='+document.getElementById('date_end').value});
 jQuery("#table_tr_trip").trigger("reloadGrid");
 
-} else {alert('Дата окончания периода должна быть позже даты начала!');}
+} else { alert('Дата окончания периода должна быть позже даты начала!'); }
 });
 
             
@@ -232,21 +232,6 @@ jQuery("#table_tr_trip").trigger("reloadGrid");
 <div id="result_temp" style="display: none;"></div>
 <! - - форма отчет по автопарку  - - >  
 <div id="fa_car_report" style="background:#F8F8F8;"></div>
-
-
-
-<div style="width: 98%;margin: 10px;POSITION: absolute;Z-INDEX: 1;">
-<div id="autopark_tabs">
-<ul style="font-size: 18px;height: 28px;">
-		
-
-		<li><a href="#autopark_tabs-1">Рейсы</a></li>
-		<li><a href="#autopark_tabs-2">Транспорт</a></li>
-		<li><a href="#autopark_tabs-3">Водители</a></li>
-<li><a href="#autopark_tabs-4">Ремонт</a></li>
-<li><a href="#autopark_tabs-5">Топливные карты</a></li>
-<li><a href="#autopark_tabs-6">Уведомления</a></li>
-	</ul>
 <div id="fa_vtl_auto" style="background:#F8F8F8;"></div>
 <div id="fa_vtl_trip" style="background:#F8F8F8;"></div>
 <div id="fa_vtl_repair" style="background:#F8F8F8;"></div>
@@ -256,78 +241,103 @@ jQuery("#table_tr_trip").trigger("reloadGrid");
 <div id="fa_report" style="background:#F8F8F8;"></div>
 <div id="fa_vtl_card" style="background:#F8F8F8;"></div>
 <div id="fa_vtl_card_refill" style="background:#F8F8F8;"></div>
-<! - - форма отчет по автопарку  - - >  
+<! - - форма отчет по автопарку  - - >
 <div id="fa_car_report" style="background:#F8F8F8;"></div>
 <div id="result"></div>
 
-<div id="autopark_tabs-2">
-<div style="height:43em;">
 
+<div style="width: 98%;margin: 10px;POSITION: absolute;Z-INDEX: 1;">
 
-<table id="table_tr" align="center"></table>
-        <div id="tablePager_tr"></div><fieldset style="width:97%;">&nbsp;&nbsp;&nbsp;&nbsp;<b>Управление</b>&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="add_tr" value="Добавить" style="height:35px;font-size:14px;margin-top:6px;" onclick='$("#fa_vtl_auto").load("theme/forms/add_vtl_auto.php");$("#fa_vtl_auto").dialog({ title: "Новый транспорт" },{width: 460,height: 655,modal: true,resizable: false});'>&nbsp;&nbsp;<input type="button" id="edit_tr" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr').jqGrid('getGridParam','selrow');if(selrow){
-$('#fa_vtl_auto').load('theme/forms/add_vtl_auto.php?edit=1&auto_id='+selrow);$('#fa_vtl_auto').dialog({ title: 'Редактировать транспорт' },{width: 460,height: 675,modal: true,resizable: false});
-} else alert('Выберите транспорт!');" value="Редактировать">&nbsp;&nbsp;|&nbsp;&nbsp;
-<input type="button" id="del_tr" value="Удалить" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr').jqGrid('getGridParam','selrow');if(selrow){$('#result').html('Удалить автотранспорт №'+selrow+'?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {$.post('control/auto/vtl_auto.php?mode=delete&id='+selrow, function(data) {jQuery('#table_tr').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 400 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {$(this).dialog('close');}}] });
-} else alert('Выберите транспорт!');"></fieldset>  
+<div id="autopark_tabs">
 
-
-</div>
-</div>
-
+    <ul style="font-size: 18px;height: 28px;">
+        <li><a href="#autopark_tabs-1">Рейсы</a></li>
+        <li><a href="#autopark_tabs-2">Транспорт</a></li>
+        <li><a href="#autopark_tabs-3">Водители</a></li>
+        <li><a href="#autopark_tabs-4">Ремонт</a></li>
+        <li><a href="#autopark_tabs-5">Топливные карты</a></li>
+        <li><a href="#autopark_tabs-6">Уведомления</a></li>
+    </ul>
 
 <div id="autopark_tabs-1">
-<div style="height:43em;">
-&nbsp;&nbsp;&nbsp;&nbsp;<a id="btnAdd" onclick='$("#fa_vtl_trip").load("theme/forms/add_vtl_trip.php");$("#fa_vtl_trip").dialog({ title: "Новый рейс" },{width: 510,height: 430,modal: true,resizable: false});'>Добавить</a>&nbsp;&nbsp;|&nbsp;&nbsp;<input type="button" id="edit_trip" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr_trip').jqGrid('getGridParam','selrow');if(selrow){
-$('#fa_vtl_trip').load('theme/forms/add_vtl_trip.php?edit=1&trip_id='+selrow);$('#fa_vtl_trip').dialog({ title: 'Редактировать рейс' },{width: 510,height: 430,modal: true,resizable: false});
-} else alert('Выберите рейс!');" value="Редактировать">&nbsp;&nbsp;|&nbsp;&nbsp;
-<input type="button" id="del_trip" value="Удалить" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr_trip').jqGrid('getGridParam','selrow');if(selrow){$('#result').html('Удалить рейс №'+selrow+'?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {$(this).dialog('close');$.post('control/auto/vtl_trip.php?mode=delete&id='+selrow, function(data) {jQuery('#table_tr_trip').trigger('reloadGrid');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 150 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {$(this).dialog('close');}}] });
-} else alert('Выберите рейс!');">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;За период: с <input type="text" id="date_start" name="date_start" style="width:80px;" value="" class="input"/> по <input type="text" id="date_end" name="date_end" style="width:80px;" class="input"/>&nbsp;<a class="button" id="btnData" href="#" style="height:22px;width:100px;">показать</a><!--- Поиск ---->
-<?php $description='по заявкам';include_once("theme/search.tpl");?>
-<!--- End Поиск ---->
-<br><br><br>
-<table id="table_tr_trip" align="center"></table>
-        <div id="tablePager_tr_trip"></div><fieldset style="height:37px;width:97%;"><div style="float:right;"><select name="car_number" style="width:165px;margin-top:7px;" id="car_number" onchange="" class="select"><option value="0">Выберите...</option>
-<?php 
-include "config.php";
-$query_car = "SELECT `id`,`name`,`number`,`type` FROM `vtl_auto` WHERE `delete`='0' AND (`type`='1' OR `type`='3')";
-$result_car = mysql_query($query_car) or die(mysql_error());
-while($car = mysql_fetch_row($result_car)) {
-echo '<option value='.$car[0].'>'.$car[1].' - '.$car[2].'</option>';
-}
-?>
-</select>
-<!---- &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnAutoReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/vtl_auto_report.php?mode=auto_report&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет" style="font-size: 12px;margin-top:5px;width: 100px;height:30px;"> --->
-&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnTripReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/trip_reports.php?mode=trip&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет по рейсам" style="font-size: 12px;margin-top:5px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnTripNewReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/trip_reports_new.php?mode=trip&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет по рейсам 2014" style="font-size: 12px;margin-top:5px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnPetrolReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/oil_reports.php?mode=trip&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет по топливу" style="font-size: 12px;margin-top:5px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<input type="button" id="btnVTLcar" onclick='$("#fa_car_report").load("car_report.php");$("#fa_car_report").dialog({ title: "Отчёт по автопарку" },{width: 560,height: 250,modal: true,resizable: false});' value="Автопарк" style="font-size: 12px;width: 150px;height:35px;"></div></fieldset></div>
+    <div style="height:43em;">
+    &nbsp;&nbsp;&nbsp;&nbsp;<a id="btnAdd" onclick='$("#fa_vtl_trip").load("theme/forms/add_vtl_trip.php");$("#fa_vtl_trip").dialog({ title: "Новый рейс" },{width: 510,height: 430,modal: true,resizable: false});'>Добавить</a>&nbsp;&nbsp;|&nbsp;&nbsp;<input type="button" id="edit_trip" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr_trip').jqGrid('getGridParam','selrow');if(selrow){
+    $('#fa_vtl_trip').load('theme/forms/add_vtl_trip.php?edit=1&trip_id='+selrow);$('#fa_vtl_trip').dialog({ title: 'Редактировать рейс' },{width: 510,height: 430,modal: true,resizable: false});
+    } else alert('Выберите рейс!');" value="Редактировать">&nbsp;&nbsp;|&nbsp;&nbsp;
+
+        <input type="button" id="del_trip" value="Удалить" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr_trip').jqGrid('getGridParam','selrow');if(selrow){ $('#result').html('Удалить рейс №'+selrow+'?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() { $(this).dialog('close'); $.post('control/auto/vtl_trip.php?mode=delete&id='+selrow, function(data) {jQuery('#table_tr_trip').trigger('reloadGrid');$('#result_temp').html(data); $('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 150 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() { $(this).dialog('close');}}] });
+    } else alert('Выберите рейс!');">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;За период: с <input type="text" id="date_start" name="date_start" style="width:80px;" value="" class="input"/> по <input type="text" id="date_end" name="date_end" style="width:80px;" class="input"/>&nbsp;<a class="button" id="btnData" href="#" style="height:22px;width:100px;">показать</a>
+    <!--- Поиск ---->
+        <?php $description='по заявкам';include_once("theme/search.tpl");?>
+    <!--- End Поиск ---->
+    <br><br><br>
+    <table id="table_tr_trip" align="center"></table>
+            <div id="tablePager_tr_trip"></div>
+    <fieldset style="height:37px;width:97%;">
+
+    <div style="float:right;">
+    <select name="car_number" style="width:165px;margin-top:7px;" id="car_number" onchange="" class="select">
+        <option value="0">Выберите...</option>
+        <?php
+            $query_car = "SELECT `id`,`name`,`number`,`type` FROM `vtl_auto` WHERE `delete`='0' AND (`type`='1' OR `type`='3')";
+            $result_car = mysql_query($query_car) or die(mysql_error());
+            while($car = mysql_fetch_row($result_car)) {
+                echo '<option value='.$car[0].'>'.$car[1].' - '.$car[2].'</option>';
+            }
+        ?>
+    </select>
+     <!-- &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnAutoReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/vtl_auto_report.php?mode=auto_report&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет" style="font-size: 12px;margin-top:5px;width: 100px;height:30px;"> -->
+    &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnTripReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/trip_reports.php?mode=trip&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет по рейсам" style="font-size: 12px;margin-top:5px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnTripNewReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/trip_reports_new.php?mode=trip&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет по рейсам 2014" style="font-size: 12px;margin-top:5px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnPetrolReport" onclick='if((document.getElementById("date_start").value==""||document.getElementById("date_end").value=="")||(document.getElementById("date_start").value==document.getElementById("date_end").value)) {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });} else {if(document.getElementById("car_number").value!=0)window.location.href="control/auto/oil_reports.php?mode=trip&car_number="+$("#car_number").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите транспорт для отчета!");$("#result").dialog({ title: "Внимание" },{width: 300,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}}' value="Отчет по топливу" style="font-size: 12px;margin-top:5px;width: 150px;height:30px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<input type="button" id="btnVTLcar" onclick='$("#fa_car_report").load("car_report.php");$("#fa_car_report").dialog({ title: "Отчёт по автопарку" },{width: 560,height: 250,modal: true,resizable: false});' value="Автопарк" style="font-size: 12px;width: 150px;height:35px;">
+            </div>
+        </fieldset>
+    </div>
 </div>
+
+<div id="autopark_tabs-2">
+        <div style="height:43em;">
+
+
+            <table id="table_tr" align="center"></table>
+            <div id="tablePager_tr"></div><fieldset style="width:97%;">&nbsp;&nbsp;&nbsp;&nbsp;<b>Управление</b>&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="add_tr" value="Добавить" style="height:35px;font-size:14px;margin-top:6px;" onclick='$("#fa_vtl_auto").load("theme/forms/add_vtl_auto.php");$("#fa_vtl_auto").dialog({ title: "Новый транспорт" },{width: 460,height: 655,modal: true,resizable: false});'>&nbsp;&nbsp;<input type="button" id="edit_tr" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr').jqGrid('getGridParam','selrow');if(selrow){
+                        $('#fa_vtl_auto').load('theme/forms/add_vtl_auto.php?edit=1&auto_id='+selrow);$('#fa_vtl_auto').dialog({ title: 'Редактировать транспорт' },{width: 460,height: 675,modal: true,resizable: false});
+                        } else alert('Выберите транспорт!');" value="Редактировать">&nbsp;&nbsp;|&nbsp;&nbsp;
+                <input type="button" id="del_tr" value="Удалить" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr').jqGrid('getGridParam','selrow');if(selrow){$('#result').html('Удалить автотранспорт №'+selrow+'?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {$.post('control/auto/vtl_auto.php?mode=delete&id='+selrow, function(data) {jQuery('#table_tr').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 400 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {$(this).dialog('close');}}] });
+                        } else alert('Выберите транспорт!');"></fieldset>
+
+
+        </div>
+    </div>
+
+    <div id="autopark_tabs-3">
+        <div style="height:43em;">
+            <table id="table_tr_driver" align="center"></table>
+            <div id="tablePager_tr_driver"></div><hr><fieldset><legend><b>Зарплатные ставки:</b></legend>
+                <table cellspacing="5"><tr><td align="right">Оклад:</td><td width="200"><b><div id="z_sum" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Суточные:</td><td><b><div id="z_day" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Городские:</td><td><b><div id="z_city" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Ремонтные:</td><td><b><div id="z_repair" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Километры:</td><td><b><div id="z_km" style="float:left;">0</div></b>&nbsp;&nbsp;руб./км</td></tr></table> </fieldset>
+
+        </div></div>
+
 
 <div id="autopark_tabs-4">
 <div style="height:43em;">
 <table id="table_tr_repair" align="center"></table><div id="tablePager_tr_repair"></div><fieldset >&nbsp;&nbsp;&nbsp;&nbsp;<b>Управление</b>&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="add_repair" value="Добавить" style="height:35px;font-size:14px;margin-top:6px;" onclick='$("#fa_vtl_repair").load("theme/forms/add_vtl_repair.php");$("#fa_vtl_repair").dialog({ title: "Новые ремонтные работы" },{width: 440,height: 360,modal: true,resizable: false});'>&nbsp;&nbsp;<input type="button" id="edit_repair" value="Редактировать" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr_repair').jqGrid('getGridParam','selrow');if(selrow){
-$('#fa_vtl_repair').load('add_vtl_repair.html?edit=1&repair_id='+selrow);$('#fa_vtl_repair').dialog({ title: 'Редактировать список ремонтных работ №'+selrow },{width: 440,height: 360,modal: true,resizable: false});
+$('#fa_vtl_repair').load('add_vtl_repair.php?edit=1&repair_id='+selrow);$('#fa_vtl_repair').dialog({ title: 'Редактировать список ремонтных работ №'+selrow },{width: 440,height: 360,modal: true,resizable: false});
 } else alert('Выберите лист ремонтных работ!');">&nbsp;&nbsp;|&nbsp;&nbsp;
 <input type="button" id="del_repair" value="Удалить" style="height:35px;font-size:14px;" onclick="var selrow=jQuery('#table_tr_repair').jqGrid('getGridParam','selrow');if(selrow){$('#result').html('Удалить лист ремонтных работ №'+selrow+'?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {$(this).dialog('close');$.post('control/auto/vtl_repair.php?mode=delete&id='+selrow, function(data) {jQuery('#table_tr_repair').trigger('reloadGrid');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 80 },{ width: 320 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {$(this).dialog('close');}}] });
-} else alert('Выберите лист ремонтных работ!');"></fieldset> 
+} else alert('Выберите лист ремонтных работ!');"></fieldset>
 </div>
 
 
 </div>
 
-<div id="autopark_tabs-3">
-<div style="height:43em;">
-<table id="table_tr_driver" align="center"></table>
-        <div id="tablePager_tr_driver"></div><hr><fieldset><legend><b>Зарплатные ставки:</b></legend> 
-        <table cellspacing="5"><tr><td align="right">Оклад:</td><td width="200"><b><div id="z_sum" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Суточные:</td><td><b><div id="z_day" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Городские:</td><td><b><div id="z_city" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Ремонтные:</td><td><b><div id="z_repair" style="float:left;">0</div></b>&nbsp;&nbsp;руб.</td></tr><tr><td align="right">Километры:</td><td><b><div id="z_km" style="float:left;">0</div></b>&nbsp;&nbsp;руб./км</td></tr></table> </fieldset>
-        
-        </div></div>
+
 
 <div id="autopark_tabs-5">
 <div style="height:43em;">
-<fieldset><table cellspacing="5"><tr><td rowspan="2" width="130"><input type="button" id="add_card" value="Добавить" style="height:35px;font-size:14px;margin-top:6px;width:100px;" onclick='$("#fa_vtl_card").load("add_vtl_card.html");$("#fa_vtl_card").dialog({ title: "Новая топливная карта" },{width: 340,height: 200,modal: true,resizable: false});' ></td><td width="230">&nbsp;<b>Баланс: <div id="card_balance" style="display:inline;font-size:18px;">n/a</div></b>&nbsp;&nbsp;<a href="#" onclick="if($('#card_number').val()!=0){$('#card_load_info').load('control/auto/vtl_card.php?mode=card&card_id='+$('#card_number').val());
+<fieldset><table cellspacing="5"><tr><td rowspan="2" width="130"><input type="button" id="add_card" value="Добавить" style="height:35px;font-size:14px;margin-top:6px;width:100px;" onclick='$("#fa_vtl_card").load("theme/forms/add_vtl_card.php");$("#fa_vtl_card").dialog({ title: "Новая топливная карта" },{width: 340,height: 200,modal: true,resizable: false});' ></td><td width="230">&nbsp;<b>Баланс: <div id="card_balance" style="display:inline;font-size:18px;">n/a</div></b>&nbsp;&nbsp;<a href="#" onclick="if($('#card_number').val()!=0){$('#card_load_info').load('control/auto/vtl_card.php?mode=card&card_id='+$('#card_number').val());
 } else alert('Выберите топливную карту!');"><img src="data/img/arrow-circle-double.png"></a>
-</td><td rowspan="2" width="40"><input type="button" id="cash_add_card" value="+" style="height:35px;font-size:14px;" onclick="if($('#card_number').val()!=0){$('#fa_vtl_card_refill').load('theme/forms/add_vtl_card_refill.php?card_id='+$('#card_number').val());$('#fa_vtl_card_refill').dialog({ title: 'Кредитование топливной карты №'+$('#card_number').val()},{width: 320,height: 230,modal: true,resizable: false});
+</td><td rowspan="2" width="40"><input type="button" id="cash_add_card" value="+" style="height:35px;font-size:14px;" onclick="if($('#card_number').val()!=0){$('#fa_vtl_card_refill').load('theme/forms/add_vtl_card_refill.php?card_id='+$('#card_number').val());$('#fa_vtl_card_refill').dialog({ title: 'Кредитование топливной карты №'+$('#card_number').val()},{width: 340,height: 230,modal: true,resizable: false});
 } else alert('Выберите топливную карту!');"></td><td rowspan="2">
 <input type="button" id="edit_card" value="Редактировать" style="height:35px;font-size:12px;" onclick="
 if($('#card_number').val()!=0){$('#fa_vtl_card').load('theme/forms/add_vtl_card.php?edit=1&card_id='+$('#card_number').val());$('#fa_vtl_card').dialog({ title: 'Редактировать топливную карту №'+$('#card_number').val()},{width: 340,height: 200,modal: true,resizable: false});
@@ -341,11 +351,11 @@ if($('#card_number').val()!=0){$('#fa_vtl_card').load('theme/forms/add_vtl_card.
 </select>
 
 
-</td></tr></table></fieldset> 
+</td></tr></table></fieldset>
 
 <fieldset>
 <div id="card_load_info" style="height:33em;"></div>
-</fieldset> 
+</fieldset>
 
  </div></div>
  
@@ -353,13 +363,14 @@ if($('#card_number').val()!=0){$('#fa_vtl_card').load('theme/forms/add_vtl_card.
  
 <div id="autopark_tabs-6">
 <div style="height:43em;">
-<img src="data/img/exclamation.png" style="float:left;margin:15px;margin-top:20px;"><div style="padding: 10px;background: #ddd;border: 1px solid #bbb;width: 96%;font-size:16px;">По заявкам: <b><div id="trip_fail" style="display:inline;"></div></b> отсутствуют авансовые отчёты!</div>
+<img src="data/img/exclamation.png" style="float:left;margin-left: 15px;margin-right: 15px;"><div style="padding: 10px;background: #ddd;border: 1px solid #bbb;width: 96%;font-size:16px;">По заявкам: <b><div id="trip_fail" style="display:inline;"></div></b> отсутствуют авансовые отчёты!</div>
 
 
-</div></div>
+</div>
+</div>
 
 
-
+</div>
 </div>
 </body>
 </html>

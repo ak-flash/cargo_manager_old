@@ -116,7 +116,7 @@ echo '</div></div></li>';}
 
 
 <br>
-<div style="float:right;margin: 5px;"> <?php $pieces = explode(" ", $_SESSION["user"]);$print_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2)."."; echo $_SESSION["group_name"].': <a href="index.php" style="text-decoration:none;color:#000;font-size:22px;">'.$print_name.'</a>';?>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<input type="button" id="btnExit" onclick="window.location.href='index.php?mode=logout'" value="Выход" style="font-size: 14px;width: 80px;margin-right: 20px;">
+<div style="float:right;margin: 5px;"> <?php $pieces = explode(" ", $_SESSION["user"]);$print_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2)."."; echo $_SESSION["group_name"].': <a href="profile" style="text-decoration:none;color:#000;font-size:22px;">'.$print_name.'</a>';?>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<input type="button" id="btnExit" onclick="window.location.href='index.php?mode=logout'" value="Выход" style="font-size: 14px;width: 80px;margin-right: 20px;">
 
 
 </div>

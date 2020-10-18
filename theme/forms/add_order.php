@@ -6,6 +6,10 @@ if (!empty($_GET['order'])) {
 
     $order = (int)$_GET['order'];
 
+    if (!empty($_GET['mode']) && @$_GET['mode']=='copy') {
+        $copy_order = true;
+    } else $copy_order = false;
+
     $query = "SELECT * FROM `orders` WHERE `id`='" . mysql_escape_string($order) . "'";
     $result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -348,9 +352,6 @@ if (!empty($_GET['order'])) {
                 var arr = $('#cl_select_hidden').val().split(/[|]/);
                 $('#cl_nds').val(arr[1]).change();
                 $('#cl_pref_temp').html(arr[3]);
-                if (arr[0] == 651) {
-                    $('#tr_days_input').css('display', '');
-                }
                 $('#cl_tfpay').val(arr[4]);
                 $('#cl_event').val(arr[5]).change();
                 $('#cl_cont').val(arr[6]).change();
@@ -370,9 +371,12 @@ if (!empty($_GET['order'])) {
             $query_cl = "SELECT `id`,`name` FROM `clients` WHERE `Id`='" . $row['client'] . "'";
             $result_cl = mysql_query($query_cl) or die(mysql_error());
             $client = mysql_fetch_row($result_cl);
-            echo '$("#cl_select").setValue("' . addslashes($client[1]) . '");';
-            echo '$("#hidden_value_cl").html("<input type=\"hidden\" name=\"client\" id=\"client\" value=\"' . $client[0] . '\">");if(' . $client[0] . '==651){$("#tr_days_input").css("display","");$("#tr_days").val(' . $row['tr_days'] . ')}';
-        }?>
+            if(!$copy_order) {
+                echo '$("#cl_select").setValue("' . addslashes($client[1]) . '");';
+                echo '$("#hidden_value_cl").html("<input type=\"hidden\" name=\"client\" id=\"client\" value=\"' . $client[0] . '\">");';
+            }
+        }
+        ?>
 
 
         $('#tr_select').flexbox('control/tr_search.php', {
@@ -582,48 +586,46 @@ if (!empty($_GET['order'])) {
                 }
 
                 $('#result').html(arr[0]);
+                if(arr[1]=='1') toastr.success(arr[0]); else toastr.error(arr[0]);
 
 
-                $("#result").dialog({title: 'Сообщение'}, {modal: true}, {resizable: false}, {
-                    buttons: {
-                        "Ok": function () {
-                            $(this).dialog("close");
-                            if (arr[1] == 2) {
-                                document.getElementById('security_code').style.visibility = "visible";
-                                $("#order_code").val("");
-                            } else {
-                                if (arr[1] == 1) {
-                                    if ($("#transporter").val() == '2' || $("#transporter").val() == '462') {
-                                        $('#dialogpr').dialog({
-                                            buttons: [{
-                                                text: 'Клиенту', click: function () {
-                                                    window.open('control/print.php?order_type=1&mode=cl&id=' + base64encode(arr[2]));
-                                                    $(this).dialog('close');
-                                                }
-                                            }]
-                                        }, {resizable: false});
-                                    } else {
-                                        $('#dialogpr').dialog({
-                                            buttons: [{
-                                                text: 'Клиенту', click: function () {
-                                                    window.open('control/print.php?order_type=1&mode=cl&id=' + base64encode(arr[2]));
-                                                    $(this).dialog('close');
-                                                }
-                                            }, {
-                                                text: 'Перевозчику', click: function () {
-                                                    window.open('control/print.php?order_type=1&mode=tr&id=' + base64encode(arr[2]));
-                                                    $(this).dialog('close');
-                                                }
-                                            }]
-                                        }, {resizable: false});
+                $(this).dialog("close");
+
+                if (arr[1] == 2) {
+                    document.getElementById('security_code').style.visibility = "visible";
+                    $("#order_code").val("");
+                } else {
+                    if (arr[1] == 1) {
+                        if ($("#transporter").val() == '2' || $("#transporter").val() == '462') {
+                            $('#dialogpr').dialog({modal: true,
+                                buttons: [{
+                                    text: 'Клиенту', click: function () {
+                                        window.open('control/print.php?order_type=1&mode=cl&id=' + base64encode(arr[2]));
+                                        $(this).dialog('close');
                                     }
-                                }
-                            }
+                                }]
+                            }, {resizable: false});
+                        } else {
 
-
+                            $('#dialogpr').dialog({modal: true,
+                                buttons: [{
+                                    text: 'Клиенту', click: function () {
+                                        window.open('control/print.php?order_type=1&mode=cl&id=' + base64encode(arr[2]));
+                                        $(this).dialog('close');
+                                    }
+                                }, {
+                                    text: 'Перевозчику', click: function () {
+                                        window.open('control/print.php?order_type=1&mode=tr&id=' + base64encode(arr[2]));
+                                        $(this).dialog('close');
+                                    }
+                                }]
+                            }, {resizable: false});
                         }
                     }
-                });
+                }
+
+
+    //$("#result").dialog({title: 'Сообщение'}, {modal: true}, {resizable: false}, { buttons: {"Ok": function () {}}});
 
 
                 jQuery("#table").trigger("reloadGrid");
@@ -666,7 +668,7 @@ if (!empty($_GET['order'])) {
                 $pref_cl = 'АО';
                 break;
         }
-        echo '$("#cl_pref_temp").html("&nbsp;&nbsp;&nbsp;' . $pref_cl . '&nbsp;");$("#hidden_value_cl").html("<input type=\"hidden\" name=\"client\" id=\"client\" value=\"' . $row['client'] . '\"><input type=\"hidden\" name=\"cl_pref\" id=\"cl_pref\" value=\"' . $row['cl_pref'] . '\">");';
+        if(!$copy_order) echo '$("#cl_pref_temp").html("&nbsp;&nbsp;&nbsp;' . $pref_cl . '&nbsp;");$("#hidden_value_cl").html("<input type=\"hidden\" name=\"client\" id=\"client\" value=\"' . $row['client'] . '\"><input type=\"hidden\" name=\"cl_pref\" id=\"cl_pref\" value=\"' . $row['cl_pref'] . '\">");';
         $pref_tr = '';
         switch ($row['tr_pref']) {
             case '1':
@@ -697,7 +699,7 @@ if (!empty($_GET['order'])) {
         echo '$("#cl_tfpay").val(' . $row['cl_tfpay'] . ');$("#cl_event").val(' . $row['cl_event'] . ').change();$("#cl_cont").val(' . $row['cl_cont'] . ').change();$("#cl_currency").val("' . $row['cl_currency'] . '").change();';
         echo '$("#tr_tfpay").val(' . $row['tr_tfpay'] . ');$("#tr_event").val(' . $row['tr_event'] . ').change();$("#tr_cont").val(' . $row['tr_cont'] . ').change();$("#tr_currency").val("' . $row['tr_currency'] . '").change();';
 
-        echo '$("#cl_cash").val(' . $row['cl_cash'] . ');$("#cl_kop").val(' . $row['cl_kop'] . ');';
+        if(!$copy_order) echo '$("#cl_cash").val(' . $row['cl_cash'] . ');$("#cl_kop").val(' . $row['cl_kop'] . ');';
         echo '$("#tr_cash").val(' . $row['tr_cash'] . ');';
 
         if ($row['cl_minus'] != 0) print('$("#cl_cash_min").val(' . $row['cl_minus'] . ');');
@@ -714,19 +716,18 @@ if (!empty($_GET['order'])) {
         if ($row['date_in2'] == "0000-00-00" || $row['date_in2'] == "1970-01-01") $date_in2 = ""; else $date_in2 = date("d/m/Y", strtotime($row['date_in2']));
         if ($row['date_out1'] == "0000-00-00" || $row['date_out1'] == "1970-01-01") $date_out1 = ""; else $date_out1 = date("d/m/Y", strtotime($row['date_out1']));
         if ($row['date_out2'] == "0000-00-00" || $row['date_out2'] == "1970-01-01") $date_out2 = ""; else $date_out2 = date("d/m/Y", strtotime($row['date_out2']));
-        if ($row['data'] == "0000-00-00" || $row['data'] == "1970-01-01") $data = ""; else $data = date("d/m/Y", strtotime($row['data']));
-
-        if ($row['gr_m'] != 0) print('$("#gruz_m").val("' . $row['gr_m'] . '");');
-        if ($row['gr_v'] != 0) print('$("#gruz_v").val("' . $row['gr_v'] . '");');
-        if ($row['gr_number'] != 0) print('$("#gruz_num").val("' . (int)$row['gr_number'] . '");');
-        if ($row['tr_gruz_worker'] != 0) print('$("#tr_gruz_worker").val("' . $row['tr_gruz_worker'] . '");');
-
-        echo '$("#gruz_name").val("' . addslashes($row['gruz']) . '");$("#tr_receive").val("' . $row['tr_receive'] . '");$("#in_data1").val("' . $date_in1 . '");$("#in_data2").val("' . $date_in2 . '");$("#out_data1").val("' . $date_out1 . '");$("#out_data2").val("' . $date_out2 . '");$("#in_time11").val("' . $row['time_in11'] . '");$("#out_time1").val("' . $row['time_out1'] . '");$("#out_time2").val("' . $row['time_out2'] . '");$("#in_time12").val("' . $row['time_in12'] . '");$("#in_time22").val("' . $row['time_in22'] . '");$("#in_time21").val("' . $row['time_in21'] . '");$("#order_id").val("' . $row['id'] . '");$("#order_id_show").html("' . $row['id'] . '");';
 
 
-        if ($_SESSION["group"] == 1 || $_SESSION["group"] == 2) {
-            echo '$("#data").val("' . $data . '");';
-        }
+        if ($row['gr_m'] != 0 && !$copy_order) print('$("#gruz_m").val("' . $row['gr_m'] . '");');
+        if ($row['gr_v'] != 0 && !$copy_order) print('$("#gruz_v").val("' . $row['gr_v'] . '");');
+        if ($row['gr_number'] != 0 && !$copy_order) print('$("#gruz_num").val("' . (int)$row['gr_number'] . '");');
+        if ($row['tr_gruz_worker'] != 0 && !$copy_order) print('$("#tr_gruz_worker").val("' . $row['tr_gruz_worker'] . '");');
+        if ($row['gruz'] != '' && !$copy_order) print('$("#gruz_name").val("' . addslashes($row['gruz']) . '");');
+
+        if (!$copy_order) echo '$("#order_id").val("' . $row['id'] . '");$("#order_id_show").html("' . $row['id'] . '");';
+
+        echo '$("#tr_receive").val("' . $row['tr_receive'] . '");$("#in_data1").val("' . $date_in1 . '");$("#in_data2").val("' . $date_in2 . '");$("#out_data1").val("' . $date_out1 . '");$("#out_data2").val("' . $date_out2 . '");$("#in_time11").val("' . $row['time_in11'] . '");$("#out_time1").val("' . $row['time_out1'] . '");$("#out_time2").val("' . $row['time_out2'] . '");$("#in_time12").val("' . $row['time_in12'] . '");$("#in_time22").val("' . $row['time_in22'] . '");$("#in_time21").val("' . $row['time_in21'] . '");';
+
 
         if ($row['days_tfpay'] == 1) echo '$("#days_tfpay").attr("checked","checked");';
 
@@ -787,7 +788,7 @@ if (!empty($_GET['order'])) {
         }
 
 
-        echo '$("#hidden_value_cl").html("<input type=\"hidden\" name=\"client\" id=\"client\" value=\"' . $cl_gruz_id . '\"><input type=\"hidden\" name=\"cl_pref\" id=\"cl_pref\" value=\"' . $cl_gruz_cl_pref . '\">");';
+        if(!$copy_order) echo '$("#hidden_value_cl").html("<input type=\"hidden\" name=\"client\" id=\"client\" value=\"' . $cl_gruz_id . '\"><input type=\"hidden\" name=\"cl_pref\" id=\"cl_pref\" value=\"' . $cl_gruz_cl_pref . '\">");';
         echo '$("#manager").val(' . (int)$cl_gruz_manager . ');$("#cl_cash").val(' . (int)$_GET['gruz_cl_cash'] . ');$("#cl_tfpay").val(10);$("#cl_event").val(4).change();$("#cl_nds").val(1).change();';
 
 
@@ -833,7 +834,7 @@ if (!empty($_GET['order'])) {
                 </div>
             </td>
             <td align="center">
-                <div id="order_agat_new" style="display: none;"></div>
+                <div id="order_international_new" style="display: none;"></div>
             </td>
         </tr>
     </table>
@@ -849,18 +850,7 @@ if (!empty($_GET['order'])) {
                                                                     value="0"></div>
     <div id="hidden_car_value" style="display: none;"><input type="hidden" name="car" id="car" value="0"></div>
     <div id="hidden_value">
-        <?php if ($order != "") {
-            if ($row['block'] == '1' || ($_SESSION["user_id"] != $row['manager'] && $_SESSION["group"] == '3')) {
 
-                // Managers can edit only their orders - now disabled
-                //echo '<input type="hidden" name="block" value="1"><script type="text/javascript">$("#block_info").html("Заблокирована");</script>';
-            }
-
-
-            echo '<input type="hidden" name="order" value="' . $row['id'] . '"><input type="hidden" name="data" value="' . $row['data'] . '"><input type="hidden" id="manager" name="manager" value="' . $row['manager'] . '"><input type="hidden" name="edit" value="1">';
-        } else {
-            echo '<input type="hidden" name="manager" id="manager" value="' . $_SESSION['user_id'] . '">';
-        } ?>
 
 
     </div>
@@ -1350,6 +1340,23 @@ Komiss();
         </div>
         <div id="order_tabs-6" style="height: 31em; overflow: auto">
 
+            <?php if ($order != "") {
+                if ($row['block'] == '1' || ($_SESSION["user_id"] != $row['manager'] && $_SESSION["group"] == '3')) {
+
+                    // Managers can edit only their orders - now disabled
+                    //echo '<input type="hidden" name="block" value="1"><script type="text/javascript">$("#block_info").html("Заблокирована");</script>';
+                }
+
+                $data = date("d/m/Y", strtotime($row['data']));
+
+                if ($copy_order){
+                    echo '<input type="hidden" name="order" value=""><input type="hidden" name="manager" id="manager" value="' . $_SESSION['user_id'] . '">';
+                } else  echo '<input type="hidden" name="order" value="' . $row['id'] . '"><input type="hidden" id="manager" name="manager" value="' . $row['manager'] . '"><input type="hidden" name="edit" value="1">';
+
+            } else {
+                $data = date('d-m-Y');
+                echo '<input type="hidden" name="manager" id="manager" value="' . $_SESSION['user_id'] . '">';
+            } ?>
 
             <?php
             if ($_SESSION["group"] == 1 || $_SESSION["group"] == 2 || $_SESSION["group"] == 4) {
@@ -1357,7 +1364,7 @@ Komiss();
                 echo '<fieldset><legend>Дата заявки:</legend>
 <table><tr> 
 <td align="right" width="80">
-  <b>Дата:</b>&nbsp;&nbsp;</td><td><input name="data" id="data" style="width: 80px;"  placeholder="-" class="input" value="' . date('d-m-Y') . '"></td>';
+  <b>Дата:</b>&nbsp;&nbsp;</td><td><input name="data" id="data" style="width: 80px;"  placeholder="-" class="input" value="'.$data.'"></td>';
 
 //<input name="order_id" id="order_id" style="width: 80px;" onchange=\'$("#fa_show_car").load("control/ord_check.php?ord_id="+$(this).val(),function(data){if(data!="")$("#fa_show_car").dialog({ title: "Внимание!" },{width: 410,height: 80,modal: true,resizable: false});});\' placeholder="-" class="input" value="">
 
@@ -1374,7 +1381,7 @@ Komiss();
 </table>
 </fieldset>';
 
-            } else echo '<input name="data" id="data" type="hidden" value="">';
+            } else echo '<input type="hidden" name="data" id="data" value="'.$data.'">';
 
             ?>
 

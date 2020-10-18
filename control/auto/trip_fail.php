@@ -20,7 +20,9 @@ $id_mass_trip[]=$str_ord[($str_ord_list-$m)];
 }
 
 
-$result = array_diff ($id_mass_order,$id_mass_trip);
-echo implode(', ' , $result);
+    if(isset($id_mass_order) && isset($id_mass_trip)){
+        $result = array_diff ($id_mass_order, $id_mass_trip);
+        echo implode(', ' , $result);
+    }
 }
 ?>

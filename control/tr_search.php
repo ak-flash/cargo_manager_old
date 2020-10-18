@@ -2,7 +2,7 @@
 include "../config.php";
  header("Content-type: text/script;charset=utf-8");
 $s_query = $_GET['q'];
-
+if (!isset($data)) $data = new stdClass();
   
   //подключаемся к базе
 $query = "SELECT `id`,`name`,`nds`,`pref`,`tr_time`,`tr_point`,`tr_cont`,`tr_manager` FROM `transporters` WHERE `name` LIKE '%".$s_query."%'";

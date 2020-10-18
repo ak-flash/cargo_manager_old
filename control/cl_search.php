@@ -3,7 +3,7 @@ include "../config.php";
 session_start();
  header("Content-type: text/script;charset=utf-8");
 $s_query = $_GET['q'];
-
+if (!isset($data)) $data = new stdClass();
   
 
 // Managers can see only their clients - now disabled
@@ -43,9 +43,14 @@ case '5': $pref_cl='&nbsp;&nbsp;&nbsp;';break;
 case '6': $pref_cl='&nbsp;&nbsp;&nbsp;Физ.Л.';break;
 case '7': $pref_cl='&nbsp;&nbsp;&nbsp;АО';break;
 }
-	               if(@$_GET['mmm']=='cl_add') {$data->results[]=array('id'=>$row[0],'name'=>$row[1]);} else {$data->results[]=array('id'=>$row[0].'|'.$row[2].'|'.$row[3].'|'.$pref_cl.'|'.$row[4].'|'.$row[5].'|'.$row[6],'name'=>$n);}
+	               if(@$_GET['mmm']=='cl_add') {
+                       $data->results[]=array('id'=>$row[0],'name'=>$row[1]);
+	               } else {
+	                   $data->results[]=array('id'=>$row[0].'|'.$row[2].'|'.$row[3].'|'.$pref_cl.'|'.$row[4].'|'.$row[5].'|'.$row[6],'name'=>$n);
+	               }
 	     	        }
 	         
   echo json_encode($data);
-} else {if(@$_GET['mmm']=='cl_add') echo '{"results":[{"id":"0","name":"Клиент отсутствует в базе..."}]}'; else echo '{"results":[{"id":"0","name":"Ничего не найдено..."}]}';}
+} else {
+     if(@$_GET['mmm']=='cl_add') echo '{"results":[{"id":"0","name":"Клиент отсутствует в базе..."}]}'; else echo '{"results":[{"id":"0","name":"Ничего не найдено..."}]}';}
 ?>
