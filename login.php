@@ -3,6 +3,21 @@ include('config.php');
 
 session_start();
 
+/*
+ * CREATE TABLE `authsessions` (
+  `session_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT '0',
+  `auth_code` varchar(50) DEFAULT NULL,
+  `user_agent` varchar(400) DEFAULT NULL,
+  `used` int(1) DEFAULT '0',
+  `ip` varchar(50) DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `Индекс 1` (`session_id`),
+  KEY `Индекс 2` (`user_id`),
+  CONSTRAINT `FK_authsessions_workers` FOREIGN KEY (`user_id`) REFERENCES `workers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ */
+
 // Function to get the client IP address
 function get_client_ip()
 {
@@ -48,53 +63,32 @@ if (isset($_SESSION['user_id'])) {
         if (@$_POST['password'] != '') {
 
 
-            $username = (isset($_POST['username'])) ? mysql_real_escape_string($_POST['username']) : '';
+            $username = (isset($_POST['username'])) ? (int)$_POST['username'] : '';
             $password = md5($_POST['password']);
 
-            $auth_code_from_email = (isset($_POST['authcode'])) ? mysql_real_escape_string($_POST['authcode']) : '';
-            $auth_code = isset($_COOKIE['authcode']) ? mysql_real_escape_string($_COOKIE['authcode']) : "";
 
-            if ($username == "0") $username = "admin";
+            if ($username == 0) $username = 1;
 
             $query = "SELECT *
 					FROM `workers`
-					WHERE `login`='{$username}' AND `password`='{$password}' AND `group`<>'5'
+					WHERE `id`='{$username}' AND `password`='{$password}' AND `group`<>'5'
 					LIMIT 1";
 
             $sql = mysql_query($query) or die(mysql_error());
 
+
             // если такой пользователь нашелся
-            if (mysql_num_rows($sql) == 1) {
+            if (mysql_num_rows($sql) > 0) {
 
                 $row = mysql_fetch_assoc($sql);
 
-                if ($auth_code != "") {
-
-
-                    $query_auth = "SELECT * FROM authsessions
-                                    WHERE user_id = " . $row['id'] . " AND auth_code = " . $auth_code;
-                    $result = mysql_query($query_auth) or die(mysql_error());
-                    //$auth = mysql_fetch_array($result);
-
-                    if (mysql_num_rows($result) > 0) {
-
-
-                        ////
-                        //if($user_ip!=$line['ip']&&$row['id']!=1&&$row['id']!=11&&$row['id']!=9&&$row['id']!=13&&$row['id']!=23&&$row['group']!=1&&$row['group']!=2&&$user_ip!="192.168.0.33"){
-                        //$query_logs = "INSERT INTO `logs` (`user`,`log_message`) VALUES ('".$row['id']."','Заход с чужого компьютера - ".$user_ip."')";
-                        //$result_logs = mysql_query($query_logs) or die(mysql_error());
-
-
-                        //valign="middle">&nbsp;&nbsp;&nbsp;<font size="4" color="red">Ошибка:</font> <font size="4">Вы попытались зайти в систему с чужого компьютера, уведомление директору отправлено!</font></td></tr> </table>';
-                        //} else
-                        //{
-                        $_SESSION['user_id'] = $row['id'];
-                        $_SESSION['own_transporter_ids'] = $own_transporter_ids;
-                        $_SESSION["user"] = $row['name'];
-                        $_SESSION["group"] = $row['group'];
-                        $_SESSION["email"] = $row['email'];
-                        //$_SESSION["mail_pass"]=$row['mail_pass'];
-                        $_SESSION["voip"] = $row['voip'];
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['own_transporter_ids'] = $own_transporter_ids;
+                $_SESSION["user"] = $row['name'];
+                $_SESSION["group"] = $row['group'];
+                $_SESSION["email"] = $row['email'];
+                //$_SESSION["mail_pass"]=$row['mail_pass'];
+                $_SESSION["voip"] = $row['voip'];
                         //$_SESSION["messages"]=$row['chat_mess'];
                         $_SESSION["user_ip"] = get_client_ip();
                         //$_SESSION["real_ip"]=$row['ip'];
@@ -120,83 +114,29 @@ if (isset($_SESSION['user_id'])) {
                         FROM `company` 
                         WHERE `active`='1'";
 
-                        $result_company = mysql_query($query_company) or die(mysql_error());
+                $result_company = mysql_query($query_company) or die(mysql_error());
 
-                        while ($company = mysql_fetch_row($result_company)) {
-                            if ($company[0] != 1) {
-                                $_SESSION["company"][$company[0]] = $company[1];
-                            }
-                        }
-
-                        //if($_SESSION["group"]==3) header('Location: orders'); else header('Location: main');
-                        header('Location: orders');
-
-                        exit;
-
-                    } else {
-
-
+                while ($company = mysql_fetch_row($result_company)) {
+                    if ($company[0] != 1) {
+                        $_SESSION["company"][$company[0]] = $company[1];
                     }
-
-                } else {
-
-                    if ($auth_code_from_email != "") {
-
-                        $query_auth = "SELECT session_id FROM authsessions
-                                    WHERE user_id = " . $row['id'] . " AND used = 0 AND auth_code = " . $auth_code_from_email;
-                        $result = mysql_query($query_auth) or die(mysql_error());
-
-                        if (mysql_num_rows($result) > 0) {
-
-                            $auth = mysql_fetch_array($result);
-                            $query_auth = "UPDATE authsessions SET used = 1
-                                    WHERE session_id = " . $auth['session_id'];
-                            $result = mysql_query($query_auth) or die(mysql_error());
-
-                            setcookie("authcode", $auth_code_from_email);
-                            $js_script = 'document.getElementById("form_login").submit();';
-                            $success = '<table align="center"><tr><td valign="middle"><td height="100" valign="middle"><font size="4" color="green"><b>Успешный вход!</b></font> Перенаправляем...</td></tr> </table>';
-
-                        } else $error_message = 'Неправильный проверочный код!';
-
-                    } else {
-
-                        if (isset($_SERVER['HTTP_USER_AGENT'])) {
-                            $user_agent = htmlspecialchars(strip_tags($_SERVER['HTTP_USER_AGENT']));
-                        } else {
-                            $user_agent = 'n/a';
-                        }
-
-                        $user_ip = get_client_ip();
-
-                        $query_auth_code_select = "SELECT auth_code FROM authsessions
-                                    WHERE user_id = " . $row['id'] . " AND used = 0";
-                        $result_code_select = mysql_query($query_auth_code_select) or die(mysql_error());
-
-                        if (mysql_num_rows($result_code_select) > 0) {
-                            $auth_code_select = mysql_fetch_array($result_code_select);
-
-                            $authcode_otp = $auth_code_select['auth_code'];
-
-                        } else {
-                            $authcode_otp = rand(100000, 999999);
-
-
-                            $query_auth = "INSERT INTO authsessions SET user_id = " . $row['id'] . ", auth_code = " . $authcode_otp . ", user_agent = '" . mysql_real_escape_string($user_agent) . "', ip = '" . $user_ip . "'";
-                            $result = mysql_query($query_auth) or die(mysql_error());
-                        }
-
-                        include_once("send_authcode.php");
-
-                        $subject = 'Необходима авторизация устройства';
-                        $body = 'Здравствуйте, <b>' . $row['name'] . '</b><br><br>Ваша учетная запись недавно была использована для входа на этом устройстве: ' . $user_agent . ' (IP: ' . $user_ip . ')<br><br><b>Ваш проверочный код</b>: <h2>' . $authcode_otp . '</h2>';
-
-                        send_email($row['email'], $subject, $body);
-
-                        $authcode_input = '<tr height="90"><td align="right" style="padding-top: 13px;margin-right: 3px;">Код:&nbsp;&nbsp;<br><small>из почты</small>&nbsp;&nbsp;</td><td style="padding-top: 13px;"><input type="text" class="input" id="authcode" name="authcode" value="" style=""></td></tr>';
-                    }
-
                 }
+
+                // Just to migrate to password_hash()
+                /*
+                 *
+                 */
+                $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                $query_update_pass = "UPDATE workers SET pass_hash = '" . $hashed_password . "'
+                                WHERE id = " . $row['id'];
+                $result_update_pass = mysql_query($query_update_pass) or die(mysql_error());
+
+                //if($_SESSION["group"]==3) header('Location: orders'); else header('Location: main');
+                if ($row['email'] == '@eurasia-logistic.com' || $row['email'] == '') header('Location: profile'); else header('Location: orders');
+
+                exit;
+
+
             } else {
                 $error_message = 'Неправильный пароль!';
             }
@@ -252,11 +192,6 @@ margin:0;padding:0;
 background:url(data/body-bg.gif) top left repeat;
 }
   </style>
-        <script type="text/javascript">
-            window.addEventListener("load", function(event) {
-                ' . $js_script . '
-            });
-        </script>
   	  </head>
 <body><br>
 
@@ -265,10 +200,10 @@ background:url(data/body-bg.gif) top left repeat;
 <img src="data/img/login.png"></div><br>	  <table class="frame" align="center"><tr><td colspan="2" align="center"><br></td></tr><tr><td align="right" width="85"><font size="4">Имя:</font>&nbsp;&nbsp;</td><td>
 
 <select name="username" style="width:160px; font-size: 1em;" class="input"><option value="0">Выберите...</option>';
-    $query = "SELECT `login`,`name`,`id` FROM `workers` WHERE `delete`='0' AND `group`<>'5' AND `group`<>'6' ORDER BY `name` ASC";
+    $query = "SELECT `id`,`name` FROM `workers` WHERE `delete`='0' AND `group`<>'5' AND `group`<>'6' ORDER BY `name` ASC";
     $result = mysql_query($query) or die(mysql_error());
     while ($user = mysql_fetch_row($result)) {
-        if ($user[2] != "1") {
+        if ($user[0] != "1") {
             $pieces = explode(" ", $user[1]);
             $print_add_name = $pieces[0] . " " . substr($pieces[1], 0, 2) . ". " . substr($pieces[2], 0, 2) . ".";
             if (isset($_POST['username']) && @$_POST['username'] != '0' && @$_POST['username'] == $user[0]) $selected = ' selected'; else $selected = '';
@@ -280,8 +215,7 @@ background:url(data/body-bg.gif) top left repeat;
     if (isset($_POST['password']) && @$_POST['password'] != '') echo $_POST['password'];
 
     echo '"></td></tr>
-    <tr><td></td><td height="55"><button type="submit" class="b_login">войти</button></td></tr>
-  ' . $authcode_input . '    
+    <tr><td></td><td height="55"><button type="submit" class="b_login">войти</button></td></tr>   
     </table>  ';
 
     if ($error_message != '') echo $err;

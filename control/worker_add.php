@@ -78,17 +78,20 @@ $zcity=(float)$_POST['w_zcity'];
 $zrepair=(float)$_POST['w_zrepair'];
 $zkm=(float)$_POST['w_zkm'];
 
-if(strlen($_POST['w_pass'])==32){$w_pass=$_POST['w_pass'];} else {$w_pass=md5($_POST['w_pass']);}
+if (strlen($_POST['w_pass']) > 32) $w_pass = $_POST['w_pass']; else {
+    $w_pass = password_hash($_POST['w_pass'], PASSWORD_DEFAULT);
+    $w_pass_old = md5($_POST['w_pass']);
+}
 
 	
 	if(@$_POST['edit']=="1")
 {
-$query = "UPDATE `workers` SET  `name`='$name',`fake_name`='$fake_name',`adress`='$w_adr',`group`='$w_group',`phone`='$w_phone',`date_start`='$w_data',`zarplata`='$zarplata',`motive`='$motive',`email`='$w_mail',`icq`='$w_icq',`password`='$w_pass',`ip`='$w_ip',`notify`='$w_notify',`pref_phone`='$w_pref_phone',`ndfl`='$w_ndfl',`passport`='$w_passport',`z_day`='$zday',`z_city`='$zcity',`z_repair`='$zrepair',`z_km`='$zkm',`date_birth`='$w_date_birth' WHERE `id`='$worker_id'";
+    $query = "UPDATE `workers` SET  `name`='$name',`fake_name`='$fake_name',`adress`='$w_adr',`group`='$w_group',`phone`='$w_phone',`date_start`='$w_data',`zarplata`='$zarplata',`motive`='$motive',`email`='$w_mail',`icq`='$w_icq',`password`='$w_pass_old',`pass_hash`='$w_pass',`ip`='$w_ip',`notify`='$w_notify',`pref_phone`='$w_pref_phone',`ndfl`='$w_ndfl',`passport`='$w_passport',`z_day`='$zday',`z_city`='$zcity',`z_repair`='$zrepair',`z_km`='$zkm',`date_birth`='$w_date_birth' WHERE `id`='$worker_id'";
 
 $result = mysql_query($query) or die(mysql_error());
 } else {
 
-$query = "INSERT INTO `workers` (`name`,`fake_name`,`adress`,`group`,`phone`,`date_start`,`zarplata`,`motive`,`email`,`icq`,`voip`,`login`,`password`,`ip`,`notify`,`pref_phone`,`ndfl`,`passport`,`z_day`,`z_city`,`z_repair`,`z_km`,`delete`,`date_birth`) VALUES ('$name','$fake_name','$w_adr','$w_group','$w_phone','$w_data','$zarplata','$motive','$w_mail','$w_icq','$w_voip','0','$w_pass','$w_ip','$w_notify','$w_pref_phone','$w_ndfl','$w_passport','$zday','$zcity','$zrepair','$zkm','0','$w_date_birth')";
+        $query = "INSERT INTO `workers` (`name`,`fake_name`,`adress`,`group`,`phone`,`date_start`,`zarplata`,`motive`,`email`,`icq`,`login`,`password`,`pass_hash`,`ip`,`notify`,`pref_phone`,`ndfl`,`passport`,`z_day`,`z_city`,`z_repair`,`z_km`,`delete`,`date_birth`) VALUES ('$name','$fake_name','$w_adr','$w_group','$w_phone','$w_data','$zarplata','$motive','$w_mail','$w_icq','0','$w_pass_old','$w_pass','$w_ip','$w_notify','$w_pref_phone','$w_ndfl','$w_passport','$zday','$zcity','$zrepair','$zkm','0','$w_date_birth')";
 
 $result = mysql_query($query) or die(mysql_error());
 $result_id=mysql_insert_id();

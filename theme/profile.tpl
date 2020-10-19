@@ -40,17 +40,17 @@ $('#btn_save').button();
     <table>
         <tr>
             <td width="240">Сменить пароль:</td>
-            <td><input type="password" name="now_month" id="now_month" style="width: 125px;" class="input"
-                       value="password"></td>
+            <td><input type="password" name="password" id="password" style="width: 125px;" class="input"
+                       value="" placeholder="*********"></td>
         </tr>
         <tr>
             <td>Почтовый ящик:</td>
-            <td><input name="email" id="email" style="width: 125px;" class="input" value="<?php echo $user[0];?>"></td>
+            <td><input name="email" id="email" style="width: 225px;" class="input" value="<?php echo $user[0];?>"></td>
         </tr>
 
         <tr>
             <td><a href="#" id="btn_save"
-                   onclick='$.post("control/admin.php?mode=profile", function(data) { toastr.success(data); });'
+                   onclick='$.post("control/admin.php?mode=profile", { "email": $("#email").val(), "password": $("#password").val() }, function(data) { toastr.success(data); });'
                    style="margin-top: 10px;">Сохранить</a>
             <td></td>
         </tr>

@@ -2,31 +2,45 @@
 include "../config.php";
 session_start();
 
-if(@$_GET['mode']=="save_date")
-{
-$now_month=(int)$_GET['now_month'];
-$last_month=(int)$_GET['last_month'];
-$now_date=(int)$_GET['now_date'];
+if (@$_GET['mode'] == "profile" && isset($_SESSION['user_id'])) {
+    $password = $_POST['password'];
+    $email = mysql_escape_string($_POST['email']);
+    $extra_query = '';
 
-$query = "UPDATE `settings` SET `all_day_month`='".mysql_escape_string($now_month)."',`day_last_month`='".mysql_escape_string($last_month)."',`work_day`='".mysql_escape_string($now_date)."',`now_date`='".date("Y-m-d")."'";
-$result = mysql_query($query) or die(mysql_error());
-echo 'Сохранено!';
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    if ($password != '') $extra_query = ", password = '" . md5($password) . "', pass_hash = '" . $hashed_password . "'";
+
+
+    $query_update_pass = "UPDATE workers SET email = '" . $email . "'" . $extra_query . " WHERE id = " . (int)$_SESSION['user_id'];
+    $result_update_pass = mysql_query($query_update_pass) or die(mysql_error());
+
+    echo 'Сохранено!';
 }
 
-if(@$_GET['mode']=="renew_agat")
-{
-$ord_agat_id=(int)$_GET['ord_agat_id'];
-$query_check = "SELECT `agat_number`,`cl_cont`,`tr_cont` FROM `orders` WHERE `id`='".$ord_agat_id."'";
-$result_check = mysql_query($query_check) or die(mysql_error());
-$check = mysql_fetch_row($result_check);
+if (@$_GET['mode'] == "save_date") {
+    $now_month = (int)$_GET['now_month'];
+    $last_month = (int)$_GET['last_month'];
+    $now_date = (int)$_GET['now_date'];
 
-if(((int)$check[1]==9||(int)$check[1]==10||(int)$check[2]==9||(int)$check[2]==10)&&$check[0]=="") {
-$query_settings = "SELECT `international_number` FROM `settings`";
-$result_settings = mysql_query($query_settings) or die(mysql_error());
-$settings = mysql_fetch_row($result_settings);
-$international_number='М-'.$settings[0];
-$query_settings = "UPDATE `settings` SET `international_number`='".((int)$settings[0]+1)."'";
-$result_settings = mysql_query($query_settings) or die(mysql_error());
+    $query = "UPDATE `settings` SET `all_day_month`='" . mysql_escape_string($now_month) . "',`day_last_month`='" . mysql_escape_string($last_month) . "',`work_day`='" . mysql_escape_string($now_date) . "',`now_date`='" . date("Y-m-d") . "'";
+    $result = mysql_query($query) or die(mysql_error());
+    echo 'Сохранено!';
+}
+
+if (@$_GET['mode'] == "renew_international") {
+    $ord_agat_id = (int)$_GET['ord_international_id'];
+    $query_check = "SELECT `international_number`,`cl_cont`,`tr_cont` FROM `orders` WHERE `id`='" . $ord_agat_id . "'";
+    $result_check = mysql_query($query_check) or die(mysql_error());
+    $check = mysql_fetch_row($result_check);
+
+    if (((int)$check[1] == 9 || (int)$check[1] == 10 || (int)$check[2] == 9 || (int)$check[2] == 10) && $check[0] == "") {
+        $query_settings = "SELECT `international_number` FROM `settings`";
+        $result_settings = mysql_query($query_settings) or die(mysql_error());
+        $settings = mysql_fetch_row($result_settings);
+        $international_number = 'М-' . $settings[0];
+        $query_settings = "UPDATE `settings` SET `international_number`='" . ((int)$settings[0] + 1) . "'";
+        $result_settings = mysql_query($query_settings) or die(mysql_error());
 $query_international_renew = "UPDATE `orders` SET `international_number`='".$international_number."' WHERE `id`='".$ord_agat_id."'";
 $result_international_renew = mysql_query($query_international_renew) or die(mysql_error());
 $message="Номер заявки: <b>".$international_number.'<b>';

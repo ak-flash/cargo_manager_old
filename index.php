@@ -3,8 +3,8 @@ session_start();
 
 $views_dir = 'theme/';
 
-
-if (isset($_SESSION['user_id']) && isset($_COOKIE['authcode'])) {
+// NEW - REPLACE ABOVE if (isset($_SESSION['user_id']) && isset($_COOKIE['authcode'])) {
+if (isset($_SESSION['user_id'])) {
     $whitelist = array('main', 'orders', 'docs', 'clients', 'transp', 'adress', 'notify', 'reports', 'profile', 'ways', 'ways_cl');
 
     if ($_SESSION["group"] == 1 || $_SESSION["group"] == 2 || $_SESSION["group"] == 4) {

@@ -25,8 +25,8 @@ $w_doc = explode('|',$row['passport']);
 echo '$("#w_passport1").val("'.$w_doc[0].'");$("#w_passport2").val("'.$w_doc[1].'");$("#w_passport3").val("'.$w_doc[2].'");';
 
 echo '$("#w_zday").val("'.$row['z_day'].'");$("#w_zcity").val("'.$row['z_city'].'");$("#w_zrepair").val("'.$row['z_repair'].'");$("#w_zkm").val("'.$row['z_km'].'");$("#w_group").val('.$row['group'].').change();$("#w_name").val("'.$row['name'].'");$("#fake_name").val("'.$row['fake_name'].'");$("#w_ndfl").val("'.$row['ndfl'].'");$("#w_login").val("'.$row['login'].'");$("#w_pref_phone").val("'.$row['pref_phone'].'");$("#w_phone").val("'.$row['phone'].'");$("#w_mail").val("'.$row['email'].'");$("#w_voip").val("'.$row['voip'].'");$("#w_icq").val("'.$row['icq'].'");$("#w_zarplata").val("'.$row['zarplata'].'");$("#w_motive").val('.$row['motive'].').change();';
-if($row['password']!="") echo '$("#w_pass").val("'.$row['password'].'");'; else echo '$("#w_pass").val("");';
-if($row['ip']!="") echo '$("#w_ip").val("'.$row['ip'].'");'; else echo '$("#w_ip").val("0.0.0.0");';
+if ($row['pass_hash'] != "") echo '$("#w_pass").val("' . $row['pass_hash'] . '");'; else echo '$("#w_pass").val("");';
+    if ($row['ip'] != "") echo '$("#w_ip").val("' . $row['ip'] . '");'; else echo '$("#w_ip").val("0.0.0.0");';
 }?>  
 
 // - - форма добавления сотрудника - сохранение  - - >
