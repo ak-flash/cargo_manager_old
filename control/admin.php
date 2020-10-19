@@ -315,9 +315,11 @@ if(isset($_GET['groupping']))
 {
     if(@$_GET['groupping']=="") {echo "Выберите заявку(и)!";} else {
         $str = explode(',',$_GET['groupping']);
+
         $res = (int)sizeof($str)-1;
         $f=0;
         $err_info = '';
+        asort($str);
         while ($f<=$res) {
 
             $query_ord = "SELECT `group_id` FROM `orders` WHERE `Id`='".mysql_escape_string($str[$f])."'";
@@ -327,8 +329,8 @@ if(isset($_GET['groupping']))
             $check_group_count = explode(',',$check_ord[0]);
 
             if($check_ord[0]==0||$check_ord[0]==''){
-                $query_orders = "UPDATE `orders` SET `group_id`='".mysql_escape_string($_GET['groupping'])."' WHERE `Id`='".mysql_escape_string($str[$f])."'";
-                $set=1;
+                $query_orders = "UPDATE `orders` SET `group_id`='" . mysql_escape_string(implode(',', $str)) . "' WHERE `Id`='" . mysql_escape_string($str[$f]) . "'";
+                $set = 1;
             } else {
                 if (sizeof($check_group_count) != sizeof($str)) {
                     $err_info = 'Выберите все заявки группы для разъединения!';
