@@ -7,27 +7,27 @@ session_start();
 if ($_GET['date_start']!=''){
 $start_elements  = explode("/",$_GET['date_start']);
 if ($start_elements[0]=='01'){$month=1;}
-$date_start=date("Y-m-d",strtotime($start_elements[2]."-".$start_elements[1]."-".$start_elements[0]));
+$date_start = date("Y-m-d", strtotime($start_elements[2] . "-" . $start_elements[1] . "-" . $start_elements[0]));
 
 
+    $end_elements = explode("/", $_GET['date_end']);
+    $date_end = date("Y-m-d", strtotime($end_elements[2] . "-" . $end_elements[1] . "-" . $end_elements[0]));
+}
 
-$end_elements  = explode("/",$_GET['date_end']);
-$date_end=date("Y-m-d",strtotime($end_elements[2]."-".$end_elements[1]."-".$end_elements[0]));}
 
+if (!isset($data)) $data = new stdClass();
 
-
-$page = addslashes($_GET['page']);      // Номер запришиваемой страницы
-$limit = addslashes($_GET['rows']);     // Количество запрашиваемых записей
-$sidx = addslashes($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку
-                            // Проще говоря поле, по которому следует производить сортировку
-$sord = addslashes($_GET['sord']);      // Направление сортировки
+$page = (int)$_GET['page'];      // Номер запришиваемой страницы
+$limit = (int)$_GET['rows'];     // Количество запрашиваемых записей
+$sidx = mysql_real_escape_string($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку // Проще говоря поле, по которому следует производить сортировку
+$sord = mysql_real_escape_string($_GET['sord']);      // Направление сортировки
 
 
 $query_clients = "SELECT `id`,`name` FROM `clients`";
 $result_clients = mysql_query($query_clients) or die(mysql_error());
 
-while($clients = mysql_fetch_row($result_clients)) {
-$client[$clients[0]]= $clients[1];
+while ($clients = mysql_fetch_row($result_clients)) {
+    $client[$clients[0]] = $clients[1];
 }
 
 $query_tr = "SELECT `id`,`name` FROM `transporters`";

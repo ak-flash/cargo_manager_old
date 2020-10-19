@@ -17,30 +17,31 @@ $('#btnReport').button();$('#btnReport_new').button();
 $('#btnMotive').button();
 $('#btnBill').button();
 $('#btnAdd').button();
-$('#btnAll').button();
-$('#btnDrivers').button();
-$('#btnManagers').button();
-$('#btnShowDel').button();
-               var table = $('#table');
-      table.jqGrid({
-                  url:'control/workers.php?mode=workers',
-                  datatype: 'json',
-                  mtype: 'GET',
-                  colNames:['№','Ф.И.О.', 'Статус','Телефон','Дата приема<br> на работу', 'Оклад'],
-                  colModel :[
-                    {name:'id', index:'id', width:5, align:  ['center']},
-                    {name:'name', index:'name', width:40},                    
-                    {name:'group', index:'group', width:20, align:  ['center']},
-                    {name:'phone', index:'phone', width:20, align:  ['center']},
-                    {name:'date_start', index:'date_start', width:15, align:  ['center']},
-                    {name:'zarplata', index:'zarplata', width:15, align:  ['center']}]
-                 , 
-                  rowNum:8,
-                  height:'auto',
-                  autowidth: true,
-                  viewrecords: true,
-                  sortname: 'id',
-                  sortorder: 'asc',
+        $('#btnAll').button();
+        $('#btnDrivers').button();
+        $('#btnManagers').button();
+        $('#btnShowDel').button();
+        var table = $('#table');
+        table.jqGrid({
+            url: 'control/workers.php?mode=workers',
+            datatype: 'json',
+            mtype: 'GET',
+            colNames: ['№', 'Ф.И.О.', 'Статус', 'Почта', 'Телефон', 'Дата приема<br> на работу', 'Оклад'],
+            colModel: [
+                {name:'id', index:'id', width:5, align:  ['center']},
+                {name:'name', index:'name', width:40},
+                {name:'group', index:'group', width:20, align:  ['center']},
+                {name:'email', index:'email', width:20, align:  ['center']},
+                {name:'phone', index:'phone', width:20, align:  ['center']},
+                {name:'date_start', index:'date_start', width:15, align:  ['center']},
+                {name:'zarplata', index:'zarplata', width:15, align:  ['center']}]
+            ,
+            rowNum: 8,
+            height: 'auto',
+            autowidth: true,
+            viewrecords: true,
+            sortname: 'id',
+            sortorder: 'asc',
                   caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление сотрудниками',
                   subGrid: true,
                   subGridUrl: 'control/workers.php?mode=desc',afterInsertRow: function(row_id, row_data){

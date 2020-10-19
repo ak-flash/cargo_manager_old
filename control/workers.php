@@ -1,27 +1,22 @@
 <?php
 // Подключение и выбор БД
-include "../config.php";	
+include "../config.php";
 
-
-
+if (!isset($data)) $data = new stdClass();
 
 $page = (int)$_GET['page'];      // Номер запришиваемой страницы
 $limit = (int)$_GET['rows'];     // Количество запрашиваемых записей
-$sidx = $_GET['sidx'];      // Номер элемента массива по котору следует производить сортировку
-                            // Проще говоря поле, по которому следует производить сортировку
-$sord = $_GET['sord'];      // Направление сортировки
+$sidx = mysql_real_escape_string($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку // Проще говоря поле, по которому следует производить сортировку
+$sord = mysql_real_escape_string($_GET['sord']);      // Направление сортировки
 
 
-
-
-if ($_GET['mode']=='workers') 
-{
+if ($_GET['mode'] == 'workers') {
 
 // Если не указано поле сортировки, то производить сортировку по первому полю
-if(!$sidx) $sidx =1;
+    if (!$sidx) $sidx = 1;
 
 // Выполним запрос, который вернет суммарное кол-во записей в таблице
-$result = mysql_query("SELECT COUNT(*) AS count FROM `workers` WHERE `delete`='0'");
+    $result = mysql_query("SELECT COUNT(*) AS count FROM `workers` WHERE `delete`='0'");
 
 if($_GET['m']=='managers')$result = mysql_query("SELECT COUNT(*) AS count FROM `workers` WHERE `group`='3' AND `delete`='0'");
 if($_GET['m']=='drivers')$result = mysql_query("SELECT COUNT(*) AS count FROM `workers` WHERE `group`='5' AND `delete`='0'");
@@ -82,10 +77,10 @@ if($row['id']=="51") {$group='Механик';$color='red';}
   if($row['motive']=="1")$motive="";  
   if($row['motive']=="2")$motive="";  
   if($row['motive']=="3")$motive="<br><font size='2'>(по направлению)</font>";  
-  if($row['motive']=="4")$motive="<br><font size='2'>(по перевозкам)</font>";  
-    
+  if($row['motive']=="4")$motive="<br><font size='2'>(по перевозкам)</font>";
+
     $data->rows[$i]['id'] = $row['id'];
-    $data->rows[$i]['cell'] = array($row['id'],"<b><font size=\"3\">".$row['name']."</font></b>",'<font size="3" color="'.$color.'"><b>'.$group."</b>".$motive."</font>","8 (".$row['pref_phone'].") ".$row['phone'],"<font size=\"4\">".date('d/m/Y',strtotime($row['date_start']))."</font>","<font size=\"4\">".$row['zarplata']."</font> руб.");
+    $data->rows[$i]['cell'] = array($row['id'], "<b><font size=\"3\">" . $row['name'] . "</font></b>", '<font size="3" color="' . $color . '"><b>' . $group . "</b>" . $motive . "</font>", $row['email'], "8 (" . $row['pref_phone'] . ") " . $row['phone'], "<font size=\"4\">" . date('d/m/Y', strtotime($row['date_start'])) . "</font>", "<font size=\"4\">" . $row['zarplata'] . "</font> руб.");
     $i++;
 }
 

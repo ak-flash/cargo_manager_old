@@ -112,14 +112,15 @@ echo '</div></div></li>';}
 
 </li>
 </div>
-<?php if($_SESSION["group"]==3){echo '<span class="amNumber"><div id="count_pay" style="display:inline;">+</div><div class="amAngle"></div></span>';}?>
 
 
 <br>
-<div style="float:right;margin: 5px;"> <?php $pieces = explode(" ", $_SESSION["user"]);$print_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2)."."; echo $_SESSION["group_name"].': <a href="profile" style="text-decoration:none;color:#000;font-size:22px;">'.$print_name.'</a>';?>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<input type="button" id="btnExit" onclick="window.location.href='index.php?mode=logout'" value="Выход" style="font-size: 14px;width: 80px;margin-right: 20px;">
+<div style="float:right;margin: 5px;"> <?php $pieces = explode(" ", $_SESSION["user"]);$print_name=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2)."."; echo $_SESSION["group_name"].': <a href="profile" style="text-decoration:none;color:#000;font-size:22px;">
+    '.$print_name.'</a>';?>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<input type="button" id="btnExit"
+                                                                       onclick="window.location.href='login.php?mode=logout'"
+                                                                       value="Выход"
+                                                                       style="font-size: 14px;width: 80px;margin-right: 20px;">
 
 
 </div>
 <br><br><br><hr style="width: 97%; height: 2px;background: #A8A8A8;">
-
-<div id="body_mail" style="visibility:hidden;background: #A8A8A8;border: 2px solid #A0A0A0;z-index:1003;border-radius: 5px;position:absolute;padding: 15px;padding-top: 25px;bottom:10px;right:10px;font-size:23px;">Новых писем: <b><div id="count_mail" style="color:red;display:inline;font-size:27px;">0</div></b>&nbsp;<a href="http://vtl-server/mail.php?mode=mail" target="_new" style="text-decoration:none;display:inline;float:right;"><img src="data/img/mail.png" style=""></a></div>
