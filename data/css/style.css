@@ -59,11 +59,9 @@ font-size: 18px;
     color: #000000;
     border-radius: 5px;
     font-size: 0.9em;
-    text-decoration: none;cursor: pointer;
-margin: 5px;
-
-
-
+    text-decoration: none;
+    cursor: pointer;
+    margin: 5px;
 }
 
 
@@ -81,6 +79,7 @@ margin: 5px;
     font-size: 0.9em;
     text-decoration: none;cursor: pointer;
 }
+
 .button3 {
    display: -moz-inline-stack;
    display: inline-block;
@@ -129,6 +128,23 @@ text-decoration: none;cursor: pointer;
 
 }
 
+.button6 {
+    display: -moz-inline-stack;
+    display: inline-block;
+    width: 180px;
+    height: 35px;
+    background: url("theme/default/images/ui-bg_diagonals-small_50_93c3cd_40x40.png");
+    line-height: 35px;
+    text-align: center;
+    color: #000000;
+    border-radius: 5px;
+    font-size: 0.9em;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 5px;
+
+
+}
 
 .search_btn {
    display: -moz-inline-stack;
