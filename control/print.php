@@ -208,26 +208,83 @@ $date_in=" c ";} else {$date_in2="";$date_in="";};
 
 if($orderform=='2'||$orderform=='3'||$orderform=='4'){
 $d = getdate(strtotime($row['data']));
-$month_d=$d[mon];
+    $month_d = $d['mon'];
 
-switch ($d[mon]) {
-case '1': $month='января';break;
-case '2': $month='февраля';break;
-case '3': $month='марта';break;
-case '4': $month='апреля';break;
-case '5': $month='мая';break;
-case '6': $month='июня';break;
-case '7': $month='июля';break;
-case '8': $month='августа';break;
-case '9': $month='сентября';break;
-case '10': $month='октября';break;
-case '11': $month='ноября';break;
-case '12': $month='декабря';break;
-}
+    switch ($d['mon']) {
+        case '1':
+            $month = 'января';
+            break;
+        case '2':
+            $month = 'февраля';
+            break;
+        case '3':
+            $month = 'марта';
+            break;
+        case '4':
+            $month = 'апреля';
+            break;
+        case '5':
+            $month = 'мая';
+            break;
+        case '6':
+            $month = 'июня';
+            break;
+        case '7':
+            $month = 'июля';
+            break;
+        case '8':
+            $month = 'августа';
+            break;
+        case '9':
+            $month = 'сентября';
+            break;
+        case '10':
+            $month = 'октября';
+            break;
+        case '11':
+            $month = 'ноября';
+            break;
+        case '12':
+            $month = 'декабря';
+            break;
+    }
 
 // Печать номера заявки
-if($row['international_number']!="0") $id = $row['international_number'].'-'.$row['id']; else $id = $row['id'];
+    if ($row['international_number'] != "0") $id = $row['international_number'] . '-' . $row['id']; else $id = $row['id'];
 
+// Gruz info
+    $gruz = '';
+    $gr_number = 0;
+    $gr_m = 0;
+    $gr_v = 0;
+    $in_adress = '';
+    $out_adress = '';
+
+    if ($row['group_id'] != '') {
+        $id = $row['group_id'];
+        $print_cash = 0;
+
+        $query_group = "SELECT in_adress, out_adress, tr_cash, gruz, gr_number, gr_m, gr_v FROM orders 
+                        WHERE id IN (" . $row['group_id'] . ")";
+        $result_group = mysql_query($query_group) or die(mysql_error());
+
+        while ($group = mysql_fetch_array($result_group)) {
+            $print_cash += $group['tr_cash'];
+            if ($gruz != '') $gruz = $gruz . ', ' . $group['gruz']; else $gruz = $group['gruz'];
+            if ($group['gr_number'] != 0) $gr_number += $group['gr_number'];
+            $gr_m += $group['gr_m'];
+            $gr_v += $group['gr_v'];
+            $in_adress .= $group['in_adress'];
+            $out_adress .= $group['out_adress'];
+        }
+    } else {
+        $gruz = $row['gruz'];
+        $gr_number = $row['gr_number'];
+        $gr_m = $row['gr_m'];
+        $gr_v = $row['gr_v'];
+        $in_adress = $row['in_adress'];
+        $out_adress = $row['out_adress'];
+    }
 
 //if($orderform=='4'){
 //$query_settings = "SELECT `agat_number` FROM `orders` WHERE `id`='".mysql_escape_string($id)."'";
@@ -256,11 +313,10 @@ case '3': $cl_tr_event='Поступление факсимильных доку
 case '4': $cl_tr_event='Поступление оригинальных документов'.$cl_tr_tfpay;break;}
 
 
-
-$output = str_replace("<<id>>",convert($id.'/'.$month_d),$output);
-$output = str_replace("<<mday>>",$d[mday],$output);
-$output = str_replace("<<month>>",convert($month),$output);
-$output = str_replace("<<year>>",$d[year],$output);
+    $output = str_replace("<<id>>", convert($id . '/' . $month_d), $output);
+    $output = str_replace("<<mday>>", $d['mday'], $output);
+    $output = str_replace("<<month>>", convert($month), $output);
+    $output = str_replace("<<year>>", $d['year'], $output);
 
 if ($_GET['mode']=='cl') {$output = str_replace("<<cont_name>>",convert($pref_print." «".$print_name."»"),$output);
 $output = str_replace("<<name>>",convert($pref_cont." «".$cont[1]."»"),$output);}
@@ -338,31 +394,28 @@ if($car[7]!=""||$car[8]!="") $output = str_replace("<<car_pp>>",convert(" (П/п
 
 $output = str_replace("<<car_gruz_kuz>>",convert($car[12]),$output);
 
-$output = str_replace("<<driver_phone>>",convert('тел. '.$car[11]),$output);
+    $output = str_replace("<<driver_phone>>", convert('тел. ' . $car[11]), $output);
 
 //$output = str_replace("<<tr_event>>",convert($cl_tr_event.'. Обязательное наличие 2-х экземпляров ТТН и ТН'),$output);
-$output = str_replace("<<tr_event>>",convert($cl_tr_event),$output);
+    $output = str_replace("<<tr_event>>", convert($cl_tr_event), $output);
 
-$output = str_replace("<<car_load>>",convert($car_load),$output);
-	
-
-	
-$output = str_replace("<<cash>>",convert($print_cash.' '.$print_currency),$output);
-if($row['gruz']!=0) $output = str_replace("<<car_gruz_num>>",convert($row['gr_number']),$output); else $output = str_replace("<<car_gruz_num>>","-",$output);
-$output = str_replace("<<car_gruz>>",convert($row['gruz']),$output);
-
-$output = str_replace("<<car_gruz_m>>",convert($row['gr_m'].' т'),$output);
-$output = str_replace("<<car_gruz_v>>",convert($row['gr_v'].' куб'),$output);
+    $output = str_replace("<<car_load>>", convert($car_load), $output);
 
 
-$output = str_replace("<<car_info>>",convert($row['car_notify']),$output);$output = str_replace("<<dop_info>>",convert(''),$output);
+    $output = str_replace("<<cash>>", convert($print_cash . ' ' . $print_currency), $output);
+    $output = str_replace("<<car_gruz_num>>", convert($gr_number), $output);
+    $output = str_replace("<<car_gruz>>", convert($gruz), $output);
+
+    $output = str_replace("<<car_gruz_m>>", convert($gr_m), $output);
+    $output = str_replace("<<car_gruz_v>>", convert($gr_v), $output);
 
 
+    $output = str_replace("<<car_info>>", convert($row['car_notify']), $output);
+    $output = str_replace("<<dop_info>>", convert(''), $output);
 
 
-
-$str_in = explode('&',$row['in_adress']);
-$str_adr_in =(int)sizeof($str_in)-2;
+    $str_in = explode('&', $in_adress);
+    $str_adr_in = (int)sizeof($str_in) - 2;
 $f=0;
 while ($f<=$str_adr_in) {
 $res_adr_in="";
@@ -422,8 +475,8 @@ $output = str_replace("<<adr_in_phone>>",convert($adr_in_phone.')'),$output);
 }
 
 
-$str_out = explode('&',$row['out_adress']);
-$str_adr_out =(int)sizeof($str_out)-2;
+    $str_out = explode('&', $out_adress);
+    $str_adr_out = (int)sizeof($str_out) - 2;
 $f=0;
 while ($f<=$str_adr_out) {
 $res_adr_out="";
@@ -578,9 +631,9 @@ class Plural {
     
  }
 // -----------
+    $plural_info = new Plural();
 
-
-$output = str_replace("<<cash_word>>",convert('( '.plural::asString((int)$print_cash,plural::FEMALE,array('','','')).')'),$output);
+    $output = str_replace("<<cash_word>>", convert('( ' . $plural_info->asString((int)$print_cash, plural::FEMALE, array('', '', '')) . ')'), $output);
 if ($_GET['mode']=='tr') $output = str_replace("<<tr_code_ati>>",convert('(АТИ: '.$trans[9].')'),$output);
 if ($_GET['mode']=='cl') $output = str_replace("<<tr_code_ati>>",convert('(АТИ: '.$cont [11].')'),$output);
 
