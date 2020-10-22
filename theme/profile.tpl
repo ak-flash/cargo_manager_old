@@ -28,6 +28,8 @@ $('#btn_save').button();
     $query_user = "SELECT email FROM `workers` WHERE id = ".mysql_real_escape_string($_SESSION['user_id']);
     $result_user = mysql_query($query_user) or die(mysql_error());
     $user = mysql_fetch_row($result_user);
+
+    echo get_order_group_number ();
 ?>
 
 <div id="result"></div>

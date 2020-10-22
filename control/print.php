@@ -260,12 +260,13 @@ $d = getdate(strtotime($row['data']));
     $in_adress = '';
     $out_adress = '';
 
-    if ($row['group_id'] != '') {
-        $id = $row['group_id'];
+    if ($row['group_id'] != 0) {
+        $id = 'ГР-' . $row['group_id'];
         $print_cash = 0;
 
+        //$query_group = "SELECT in_adress, out_adress, tr_cash, gruz, gr_number, gr_m, gr_v FROM orders WHERE id IN (" . $row['group_id'] . ")";
         $query_group = "SELECT in_adress, out_adress, tr_cash, gruz, gr_number, gr_m, gr_v FROM orders 
-                        WHERE id IN (" . $row['group_id'] . ")";
+                        WHERE group_id = " . $row['group_id'];
         $result_group = mysql_query($query_group) or die(mysql_error());
 
         while ($group = mysql_fetch_array($result_group)) {

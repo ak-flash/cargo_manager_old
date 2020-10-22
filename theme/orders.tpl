@@ -351,9 +351,8 @@ if($("#show_hide").val()=='0'){
 <div id="dialogp" style="display: none;">Выделите заявку!</div>
 <div id="dialog" style="display: none;">Выберите запись для удаления!</div>
 <div id="dialogpr" style="display: none;font-size: 1.2em;">Распечатать заявку:</div>
+
 <div class="main">
-        
-        
 
 <?php //Ограничения для добавления заявок бухгалтером
 if($_SESSION["group"]!=5){echo '<button class="button3" id="btnAdd" style="width:145px;">Добавить</button>';}?>
@@ -369,23 +368,41 @@ if($_SESSION["group"]!=5){echo '<button class="button3" id="btnAdd" style="width
 
 
 <!--- Поиск ---->
-<?php $description='по заявкам';include_once("theme/search.tpl");?>
-<!--- End Поиск ---->
+    <?php $description='по заявкам';include_once("theme/search.tpl");?>
+    <!--- End Поиск ---->
 
 
-<div class="main_container" id="main_container" style="width:99%;">
-<table id="table" align="center"></table>
+    <div class="main_container" id="main_container" style="width:99%;">
+        <table id="table" align="center"></table>
         <div id="tablePager"></div>
 
-    <fieldset style="height:35px;">
+        <fieldset style="height:35px;">
 
-        <button class="button2" id="btnGroupping" onclick='$.post("control/admin.php?groupping="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});' style="">Объединить</button>
-    &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="button2" id="btnGroupping"
+                    onclick='$.post("control/admin.php?groupping="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});'
+                    title="заявки в группу или разъединить">Объединить
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
 
-<?php if($_SESSION["group"]==1||$_SESSION["group"]==2){
-echo '<button id="btnBlock" onclick=\'$.post("control/admin.php?lock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' style="font-size: 0.9em;">Заблокировать</button>
-<input type="button" id="btnUnBlock" onclick=\'$.post("control/admin.php?unlock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="Разблокировать" style="font-size: 12px;">
-&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetVzaim" onclick=\'$.post("control/admin.php?vzaimozachet="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="«Взаимозачет»" style="font-size: 12px;width: 120px;">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetPretenz" onclick=\'$.post("control/admin.php?pretenzia="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' value="«Претензия»" style="font-size: 12px;width: 100px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<button class="button5" id="btnShowDel" onclick=\'$("#table").setGridParam({url:"control/orders.php?mode=orders&showdel=true"});jQuery("#table").trigger("reloadGrid");\' style="float:right;">Удалённые заявки</button>';
+            <?php if($_SESSION["group"]==1||$_SESSION["group"]==2){
+echo '<button id="btnBlock" onclick=\'$.post("control/admin.php?lock="+$("#table").jqGrid("getGridParam","selarrrow"), function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({ title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close"); } } });});\' style="font-size: 0.9em;">
+            Заблокировать</button>
+            <input type="button" id="btnUnBlock"
+                   onclick=\'$.post("control/admin.php?unlock="+$("#table").jqGrid("getGridParam","selarrrow"),
+                   function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({
+            title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() {
+            $(this).dialog("close"); } } });});\' value="Разблокировать" style="font-size: 12px;">
+            &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnSetVzaim"
+                                                                    onclick=\'$.post("control/admin.php?vzaimozachet="+$("#table").jqGrid("getGridParam","selarrrow"),
+                                                                    function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({
+            title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() {
+            $(this).dialog("close"); } } });});\' value="«Взаимозачет»" style="font-size: 12px;width: 120px;">&nbsp;&nbsp;&nbsp;&nbsp;<input
+                    type="button" id="btnSetPretenz"
+                    onclick=\'$.post("control/admin.php?pretenzia="+$("#table").jqGrid("getGridParam","selarrrow"),
+                    function(data) { $("#result").html(data);jQuery("#table").trigger("reloadGrid");$("#result").dialog({
+            title: "Готово" },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() {
+            $(this).dialog("close"); } } });});\' value="«Претензия»" style="font-size: 12px;width: 100px;">&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<button
+                    class="button5" id="btnShowDel" onclick=\'$("#table").setGridParam({url:"control/orders.php?mode=orders&showdel=true"});jQuery("#table").trigger("reloadGrid");\' style="float:right;">Удалённые заявки</button>';
 
 }
 

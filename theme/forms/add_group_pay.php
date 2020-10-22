@@ -9,27 +9,22 @@ $source.='<option value='.$company[0].'>«'.$company[1].'»</option>';
 ?>
 
 
-
-
-
-
-
 <script type="text/javascript">
-$('#save_pay_group').button();
-$('#btnClose_pay_group').button();
-$("#date_pay_group").datepicker();
+    $('#save_pay_group').button();
+    $('#btnClose_pay_group').button();
+    $("#date_pay_group").datepicker();
+
+    $("#autopays_tabs").tabs({fx: {opacity: 'toggle', duration: 1}});
 
 
+    $.mask.definitions['~'] = '[+-]';
+    $('#date').mask('99/99/9999');
 
-
-$.mask.definitions['~']='[+-]';
-$('#date').mask('99/99/9999'); 
-
-function number_format( number, decimals, dec_point, thousands_sep ) {	// Format a number with grouped thousands
-	// 
-	// +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
-	// +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-	// +	 bugfix by: Michael White (http://crestidg.com)
+    function number_format(number, decimals, dec_point, thousands_sep) {	// Format a number with grouped thousands
+        //
+        // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+        // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+        // +	 bugfix by: Michael White (http://crestidg.com)
 
 	var i, j, kw, kd, km;
 
@@ -62,109 +57,310 @@ function number_format( number, decimals, dec_point, thousands_sep ) {	// Format
 }
 
 
+    $("#form_pay_group").submit(function () {
+        validate = true;
 
-$("#form_pay_group").submit(function() {  
-  validate=true;    
 
-   
-   if(validate){ 
-   
-     $("#save_pay_group").attr("disabled","disabled");
-     
-      var perfTimes = $("#form_pay_group").serialize(); 
-      $.post("control/add_listpay_tr.php?create=gr&mode=group", perfTimes, function(data) {
-      
-      var arr = data.split(/[|]/);
-      $('#result').html(arr[0]);
-      if(arr[1]==1){$("#fa_pay_group").dialog("close");} else $("#save_pay_group").attr("disabled","");
-      
-      $("#result").dialog({ title: 'Готово' },{ width: 410 },{ modal: true },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close");jQuery("#table").trigger("reloadGrid"); } } });}); 
- }
-  
-  return false;
-    
-  }); 
+        if (validate) {
 
-$('table input').keydown(function(e) {
-    var td;
-    switch (e.keyCode) {
-      case 39: // right
-        td = $(this).parent('td').next();
-        break;
-      
-      case 37: // left
-        td = $(this).parent('td').prev();
-        break;
-        
-      case 40: // down
-        var i = $(this).parent().index() + 1;
-        td = $(this).closest('tr').next().find('td:nth-child(' + i + ')');
-        break;
-        
-      case 38: // up
-        var i = $(this).parent().index() + 1;
-        td = $(this).closest('tr').prev().find('td:nth-child(' + i + ')');
-        break;
+            $("#save_pay_group").attr("disabled", "disabled");
+
+            var perfTimes = $("#form_pay_group").serialize();
+            $.post("control/add_listpay_tr.php?create=gr&mode=order", perfTimes, function (data) {
+
+                var arr = data.split(/[|]/);
+                $('#result').html(arr[0]);
+                if (arr[1] == 1) {
+                    $("#fa_pay_group").dialog("close");
+                } else $("#save_pay_group").attr("disabled", "");
+
+                $("#result").dialog({title: 'Готово'}, {width: 410}, {modal: true}, {resizable: false}, {
+                    buttons: {
+                        "Ok": function () {
+                            $(this).dialog("close");
+                            jQuery("#table").trigger("reloadGrid");
+                        }
+                    }
+                });
+            });
+        }
+
+        return false;
+
+    });
+
+    function check_tr_cash(num, order_id) {
+
+        $('#plan_cash_' + num).load('control/pay_load.php?order_id=' + order_id + '&mode=2&way=2', function (data) {
+            var arr = data.split(/[|]/);
+
+            if (arr[0] == 'not_exist') {
+                $('#result').html('Заявка №<b>' + order_id + '</b> не существует!');
+            }
+
+            if (arr[0] == 'fully_payed') {
+                $('#result').html('Заявка №<b>' + order_id + '</b> оплачена!');
+            }
+
+            if (arr[0] == 'success') {
+                $('#plan_cash_' + num).html(arr[3]);
+                $('#payed_cash_' + num).html(arr[2]);
+                $('#ord_pay_cash_' + num).val(arr[1]);
+                $('#plan_cash_currency_' + num).html(arr[4]);
+            } else {
+                $('#plan_cash_' + num).html('');
+                $('#ord_pay_' + num).val('');
+                $("#result").dialog({title: 'Внимание'}, {width: 300}, {modal: true}, {resizable: false}, {
+                    buttons: {
+                        "Ok": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        });
     }
-    td.find('input').focus();
-  });
+
+    function load_orders_group(group_id) {
+
+        $.get('control/pay_load.php?group_id=' + group_id + '&mode=2&way=2', function (data) {
+            var arr = data.split(/[|]/);
+
+            if (arr[0] == 'not_exist') {
+                $('#result').html('Группы заявок №<b>' + group_id + '</b> не существует!');
+            }
+
+            if (arr[0] == 'fully_payed') {
+                $('#result').html('Группа заявок №<b>' + group_id + '</b> оплачена!');
+            }
+
+            if (arr[0] == 'success') {
+
+                var order_info = JSON.parse(arr[1]);
+                let response = "";
+
+                $('#orders_group_plan_cash').html('<b>' + order_info['tr_total_cash'] + '</b> ' + order_info['tr_currency']);
+                $('#orders_group_payed_cash').html(order_info['tr_total_payed']);
+
+
+                let group_array = order_info['group_info'];
+                for (let group_info in order_info['group_info']) {
+                    response += '<tr><td align="center">' + group_array[group_info].id + '<input type="hidden" name="order_pay[]" value="' + group_array[group_info].id + '"></td><td align="center">' + group_array[group_info].tr_cash + '</td><td align="center" style="color: green; font-weight: bold;">' + group_array[group_info].tr_payed + '</td><td align="center"><input type="text" name="cash_pay[]" style="width:60px;margin: 3px;" value="' + (group_array[group_info].tr_cash - group_array[group_info].tr_payed) + '" class="input group-pay" onchange="var sum = 0;\n' +
+                        '$(\'.group-pay\').each(function(){\n' +
+                        '    sum += parseFloat(this.value);\n' +
+                        '});$(\'#orders_group_cash\').html(sum)"></td></tr>';
+                }
+                $("#group_id_info").html(response);
+
+                $('#orders_group_cash').html(order_info['tr_total_cash']);
+
+            } else {
+                $("#group_id_info").html('');
+                $('#orders_group_plan_cash').html('');
+                $('#orders_group_payed_cash').html('');
+                $('#orders_group_id_pay').val('');
+                $("#result").dialog({title: 'Внимание'}, {width: 300}, {modal: true}, {resizable: false}, {
+                    buttons: {
+                        "Ok": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+
 </script>
 <form method="post" id="form_pay_group">
 
-<fieldset style="width:93%;margin-top:0;"><legend>Платежи:</legend>
-<table><tr><td align="right" width="50">Дата:</td><td width="150"><input type="text" id="date_pay_group" name="date_pay_group" style="width:80px;" value="<?php echo date('d/m/Y');?>" class="input"></td><td><input type="checkbox" name="transaction" id="transaction" onclick="if(this.checked){$('#prov').html('<u>ПРОВЕДЕНИЕ</u>');$('#transaction').val(1);} else {$('#prov').html('<u>ПЛАНИРОВАНИЕ</u>');$('#transaction').val(0);}" value="0">&nbsp;&nbsp;<font size="3">Провести</font></td></tr>
-</table>
-</fieldset>
+    <fieldset style="width:93%;margin-top:0;">
+        <legend>Платежи:</legend>
+        <table>
+            <tr>
+                <td align="right" width="50">Дата:</td>
+                <td width="150"><input type="text" id="date_pay_group" name="date_pay_group" style="width:80px;"
+                                       value="<?php echo date('d/m/Y'); ?>" class="input"></td>
+                <td><input type="checkbox" name="transaction" id="transaction"
+                           onclick="if(this.checked){$('#prov').html('<u>ПРОВЕДЕНИЕ</u>');$('#transaction').val(1);} else {$('#prov').html('<u>ПЛАНИРОВАНИЕ</u>');$('#transaction').val(0);}"
+                           value="0">&nbsp;&nbsp;<div style="font-size: medium;font-weight: bold;display: inline;">
+                        Провести
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
 
-<fieldset style="width:93%;margin-top:0;"><legend>По заявкам:</legend>
-<table style="width:98%;border-collapse: collapse;" border="1" align="center">
-<tr style="background: #b0e0e6;"><td width="90" align="center"><b>Заявка:</b></td><td width="50" align="center">Оплатить полностью</td><td width="100" align="center"><b>Сумма заявки</b></td><td align="center"><b>Сумма оплаты</b></td>
-</tr>
+    <div id="autopays_tabs">
 
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_1" value="" class="input" onchange="$('#plan_cash_1').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_1').html('');alert('Заявки '+$('#ord_pay_1').val()+' не существует!');$('#ord_pay_1').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_1').html('');alert('Заявка '+$('#ord_pay_1').val()+' оплачена!');$('#ord_pay_1').val('');} else {$('#plan_cash_1').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_1" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_1').val(1);} else {$(this).val(0);$('#trans_id_1').val(0);}"></td><td><div id="plan_cash_1"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
+        <ul style="font-size: 18px;height: 28px;">
+            <li><a href="#autopays_tabs-1">По заявкам:</a></li>
+            <li><a href="#autopays_tabs-2">По группе заявок</a></li>
+        </ul>
+
+        <div id="autopays_tabs-1">
+
+            <table style="width:98%;border-collapse: collapse;" border="1" align="center">
+                <tr style="background: #b0e0e6;">
+                    <td width="90" align="center"><b>Заявка:</b></td>
+                    <td width="80" align="center"><b>Ставка</b></td>
+                    <td width="100" align="center"><b>Оплачено</b></td>
+                    <td align="center"><b>Оплатить</b></td>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="order_pay[]" style="width:80px;margin: 3px;" id="ord_pay_1" value=""
+                               class="input" onchange="check_tr_cash (1, $(this).val())"></td>
+                    <td align="center">
+                        <div id="plan_cash_1"></div>
+                    </td>
+                    <td align="center">
+                        <div id="payed_cash_1" style="color: green;font-weight: bold;"></div>
+                    </td>
+                    <td><input name="cash_pay[]" id="ord_pay_cash_1" type="text" style="width:80px;margin: 3px;"
+                               class="input" value="">&nbsp;&nbsp;<div id="plan_cash_currency_1"
+                                                                       style="display: inline;"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="order_pay[]" style="width:80px;margin: 3px;" id="ord_pay_2" value=""
+                               class="input" onchange="check_tr_cash (2, $(this).val())"></td>
+                    <td align="center">
+                        <div id="plan_cash_2"></div>
+                    </td>
+                    <td align="center">
+                        <div id="payed_cash_2" style="color: green;font-weight: bold;"></div>
+                    </td>
+                    <td><input name="cash_pay[]" id="ord_pay_cash_2" type="text" style="width:80px;margin: 3px;"
+                               class="input" value="">&nbsp;&nbsp;<div id="plan_cash_currency_2"
+                                                                       style="display: inline;"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="order_pay[]" style="width:80px;margin: 3px;" id="ord_pay_3" value=""
+                               class="input" onchange="check_tr_cash (3, $(this).val())"></td>
+                    <td align="center">
+                        <div id="plan_cash_3"></div>
+                    </td>
+                    <td align="center">
+                        <div id="payed_cash_3" style="color: green;font-weight: bold;"></div>
+                    </td>
+                    <td><input name="cash_pay[]" id="ord_pay_cash_3" type="text" style="width:80px;margin: 3px;"
+                               class="input" value="">&nbsp;&nbsp;<div id="plan_cash_currency_3"
+                                                                       style="display: inline;"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="order_pay[]" style="width:80px;margin: 3px;" id="ord_pay_4" value=""
+                               class="input" onchange="check_tr_cash (4, $(this).val())"></td>
+                    <td align="center">
+                        <div id="plan_cash_4"></div>
+                    </td>
+                    <td align="center">
+                        <div id="payed_cash_4" style="color: green;font-weight: bold;"></div>
+                    </td>
+                    <td><input name="cash_pay[]" id="ord_pay_cash_4" type="text" style="width:80px;margin: 3px;"
+                               class="input" value="">&nbsp;&nbsp;<div id="plan_cash_currency_4"
+                                                                       style="display: inline;"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="order_pay[]" style="width:80px;margin: 3px;" id="ord_pay_5" value=""
+                               class="input" onchange="check_tr_cash (5, $(this).val())"></td>
+                    <td align="center">
+                        <div id="plan_cash_5"></div>
+                    </td>
+                    <td align="center">
+                        <div id="payed_cash_5" style="color: green;font-weight: bold;"></div>
+                    </td>
+                    <td><input name="cash_pay[]" id="ord_pay_cash_5" type="text" style="width:80px;margin: 3px;"
+                               class="input" value="">&nbsp;&nbsp;<div id="plan_cash_currency_5"
+                                                                       style="display: inline;"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="order_pay[]" style="width:80px;margin: 3px;" id="ord_pay_6" value=""
+                               class="input" onchange="check_tr_cash (6, $(this).val())"></td>
+                    <td align="center">
+                        <div id="plan_cash_6"></div>
+                    </td>
+                    <td align="center">
+                        <div id="payed_cash_6" style="color: green;font-weight: bold;"></div>
+                    </td>
+                    <td><input name="cash_pay[]" id="ord_pay_cash_6" type="text" style="width:80px;margin: 3px;"
+                               class="input" value="">&nbsp;&nbsp;<div id="plan_cash_currency_6"
+                                                                       style="display: inline;"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="text" name="order_pay[]" style="width:80px;margin: 3px;" id="ord_pay_7" value=""
+                               class="input" onchange="check_tr_cash (7, $(this).val())"></td>
+                    <td align="center">
+                        <div id="plan_cash_7"></div>
+                    </td>
+                    <td align="center">
+                        <div id="payed_cash_7" style="color: green;font-weight: bold;"></div>
+                    </td>
+                    <td><input name="cash_pay[]" id="ord_pay_cash_7" type="text" style="width:80px;margin: 3px;"
+                               class="input" value="">&nbsp;&nbsp;<div id="plan_cash_currency_7"
+                                                                       style="display: inline;"></div>
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div id="autopays_tabs-2">
+            <table style="width:98%;border-collapse: collapse;" border="1" align="center">
+
+                <tr style="background: #007F7F;color: #FFF;">
+                    <td align="center"><b>Группа заявок:</b></td>
+                    <td align="center"><b>Ставка перевозчика</b></td>
+                    <td align="center"><b>Оплачено</b></td>
+                    <td align="center"><b>Предлагается</b></td>
+                </tr>
+
+                <tr>
+                    <td align="center">№ <input type="text" name="orders_group_id_pay" style="width:60px;margin: 3px;"
+                                                id="orders_group_id_pay" value="" class="input"
+                                                onchange="load_orders_group($(this).val())"></td>
+                    <td align="center">
+                        <div id="orders_group_plan_cash"></div>
+                    </td>
+                    <td align="center">
+                        <div id="orders_group_payed_cash"></div>
+                    </td>
+                    <td align="center">
+                        <div id="orders_group_cash"></div>
+                    </td>
+                </tr>
+
+            </table>
+
+            <table style="margin-top: 10px; width:98%;border-collapse: collapse;" border="1" align="center">
+                <tr style="background: #b0e0e6;">
+                    <td width="90" align="center"><b>Заявка:</b></td>
+                    <td width="80" align="center"><b>Ставка</b></td>
+                    <td width="100" align="center"><b>Оплачено</b></td>
+                    <td align="center"><b>Оплатить</b></td>
+                </tr>
+                <tbody id="group_id_info">
+                </tbody>
+            </table>
+        </div>
 
 
+        <button type="submit" id="save_pay_group" style="width: 150px;margin: 10px;margin-left: 100px;">Создать</button>
+        <input type="button" id="btnClose_pay_group" onclick="$('#fa_pay_group').dialog('close');" value="Закрыть"
+               style="width: 100px;margin-left: 30px;">
 
-
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_2" value="" class="input" onchange="$('#plan_cash_2').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_2').html('');alert('Заявки '+$('#ord_pay_2').val()+' не существует!');$('#ord_pay_2').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_2').html('');alert('Заявка '+$('#ord_pay_2').val()+' оплачена!');$('#ord_pay_2').val('');} else {$('#plan_cash_2').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_2" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_2').val(1);} else {$(this).val(0);$('#trans_id_2').val(0);}"></td><td><div id="plan_cash_2"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
-
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_3" value="" class="input" onchange="$('#plan_cash_3').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_3').html('');alert('Заявки '+$('#ord_pay_3').val()+' не существует!');$('#ord_pay_3').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_3').html('');alert('Заявка '+$('#ord_pay_3').val()+' оплачена!');$('#ord_pay_3').val('');} else {$('#plan_cash_3').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_3" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_3').val(1);} else {$(this).val(0);$('#trans_id_3').val(0);}"></td><td><div id="plan_cash_3"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
-
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_4" value="" class="input" onchange="$('#plan_cash_4').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_4').html('');alert('Заявки '+$('#ord_pay_4').val()+' не существует!');$('#ord_pay_4').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_4').html('');alert('Заявка '+$('#ord_pay_4').val()+' оплачена!');$('#ord_pay_4').val('');} else {$('#plan_cash_4').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_4" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_4').val(1);} else {$(this).val(0);$('#trans_id_4').val(0);}"></td><td><div id="plan_cash_4"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
-
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_5" value="" class="input" onchange="$('#plan_cash_5').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_5').html('');alert('Заявки '+$('#ord_pay_5').val()+' не существует!');$('#ord_pay_5').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_5').html('');alert('Заявка '+$('#ord_pay_5').val()+' оплачена!');$('#ord_pay_5').val('');} else {$('#plan_cash_5').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_5" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_5').val(1);} else {$(this).val(0);$('#trans_id_5').val(0);}"></td><td><div id="plan_cash_5"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
-
-
-
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_6" value="" class="input" onchange="$('#plan_cash_6').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_6').html('');alert('Заявки '+$('#ord_pay_6').val()+' не существует!');$('#ord_pay_6').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_6').html('');alert('Заявка '+$('#ord_pay_6').val()+' оплачена!');$('#ord_pay_6').val('');} else {$('#plan_cash_6').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_6" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_6').val(1);} else {$(this).val(0);$('#trans_id_6').val(0);}"></td><td><div id="plan_cash_6"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
-
-
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_7" value="" class="input" onchange="$('#plan_cash_7').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_7').html('');alert('Заявки '+$('#ord_pay_7').val()+' не существует!');$('#ord_pay_7').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_7').html('');alert('Заявка '+$('#ord_pay_7').val()+' оплачена!');$('#ord_pay_7').val('');} else {$('#plan_cash_7').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_7" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_7').val(1);} else {$(this).val(0);$('#trans_id_7').val(0);}"></td><td><div id="plan_cash_7"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
-
-
-<tr><td><input type="text" name="order_pay[]" style="width:80px;" id="ord_pay_8" value="" class="input" onchange="$('#plan_cash_8').load('control/pay_load.php?order_id='+$(this).val()+'&mode=2&way=2', function(data){
-if(data=='Заявки не существует!') {$('#plan_cash_8').html('');alert('Заявки '+$('#ord_pay_8').val()+' не существует!');$('#ord_pay_8').val('');} else if(data=='Заявка оплачена!') {$('#plan_cash_8').html('');alert('Заявка '+$('#ord_pay_8').val()+' оплачена!');$('#ord_pay_8').val('');} else {$('#plan_cash_8').html('&nbsp;&nbsp;'+data+'<input name=cash[] type=hidden value='+data+'>')};
-});"></td><td align="center"><input name="transaction_full[]" id="trans_id_8" value="0" type="hidden"><input type="checkbox" value="1" onclick="if(this.checked){$(this).val(1);$('#trans_id_8').val(1);} else {$(this).val(0);$('#trans_id_8').val(0);}"></td><td><div id="plan_cash_8"></div></td><td><input name="cash_pay[]" type="text" style="width:80px;" class="input" value=""></td></tr>
-
-</table>
-</fieldset>
-<br>
-<div align="center" style="float:left;margin-left:60px;margin-top:-10px;"><input type="submit" id="save_pay_group" value="Создать" style="width: 150px;">
-<input type="button" id="btnClose_pay_group" onclick="$('#fa_pay_group').dialog('close');" value="Отмена" style="width: 100px;">
-</div>
 
 </form>

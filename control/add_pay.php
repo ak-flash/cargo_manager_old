@@ -68,8 +68,8 @@ $appointment=(int)$_POST['appointment'];
 $order=(int)$_POST['order'];
 //if(strpos($_POST['cash'], ",")){str_replace(",", ".",$_POST['cash']);$cash=(float)$_POST['cash']*100;} else 
 
-$cash=(float)$_POST['cash']*100;
-$status=$_POST['transaction'];
+$cash = (float)$_POST['cash'] * 100;
+ $status = (int)$_POST['transaction'];
 
 
 $currency = $_POST['currency'];

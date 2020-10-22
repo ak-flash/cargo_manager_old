@@ -425,11 +425,17 @@ $cl_cash = number_format($row['cl_cash'], 0 , "", " " );
                 $tr_pay_plus_minus = '<br><font size="1">(+' . number_format($tr_pay_plus / 100, 0, ',', '') . '/-' . number_format($tr_pay_minus / 100, 0, ',', '') . ')</font>';
             } else $tr_pay_plus_minus = '';
 
-if($row['group_id']!='') $group_id = '<br><small><b>Группа:</b> '.$row['group_id'].'</small>'; else $group_id = '';
+            if ($row['group_id'] != 0) {
+                $group_id = '<br><small><b>Группа №</b> ' . $row['group_id'] . '</small>';
+                $group_num = "заявок №" . $row['group_id'];
+            } else {
+                $group_id = '';
+                $group_num = 'нет группы';
+            }
 
 
             $data->rows[$i]['id'] = $row['id'];
-            $data->rows[$i]['cell'] = array($row['id'], $order_number . '<br>' . date("d/m/Y", strtotime($row['data'])) . $vzaimozachet, '<font size="3">' . $adresses[$res_in] . '</font>', '<font size="3">' . $adresses[$res_out] . '</font>', $pref_cl . ' <b><i>«' . $client[$row['client']] . '»</b></i><br>(' . $users[$row['manager']] . ')', $row['data'], '<font size="4">' . $cl_cash . $cl_kop . '</font> ' . $row['cl_currency'] . '<br><b>' . $nds_cl . '</b> <font size="1">' . $dop_cl_rashod_info_1 . $dop_cl_rashod_info_2 . '</font>', '<b>' . $cl_pay_show . '</b> ' . $row['cl_currency'] . $cl_pay_plus_minus . $pretenzia, $pref_tr . ' <b><i>«' . $transporters[$row['transp']] . '»</i></b><br>(' . $users[$row['tr_manager']] . ')<font size="1">' . $cont_cl . $cont_tr . '</font>'.$group_id, '<font size="4">' . $tr_cash . '</font> ' . $row['tr_currency'] . '<br><b>' . $nds_tr . '</b> <font size="1">' . $dop_tr_rashod_info_1 . '</font>', '<b>' . number_format($tr_pay / 100, 0, ',', ' ') . '</b> ' . $row['tr_currency'] . $tr_pay_plus_minus, $row['block'], $row['manager'], $row['rent'], $status_cl, $status_tr, $status_all, $row['vzaimozachet'], $row['pretenzia'], $row['group_id']);
+            $data->rows[$i]['cell'] = array($row['id'], $order_number . '<br>' . date("d/m/Y", strtotime($row['data'])) . $vzaimozachet, '<font size="3">' . $adresses[$res_in] . '</font>', '<font size="3">' . $adresses[$res_out] . '</font>', $pref_cl . ' <b><i>«' . $client[$row['client']] . '»</b></i><br>(' . $users[$row['manager']] . ')', $row['data'], '<font size="4">' . $cl_cash . $cl_kop . '</font> ' . $row['cl_currency'] . '<br><b>' . $nds_cl . '</b> <font size="1">' . $dop_cl_rashod_info_1 . $dop_cl_rashod_info_2 . '</font>', '<b>' . $cl_pay_show . '</b> ' . $row['cl_currency'] . $cl_pay_plus_minus . $pretenzia, $pref_tr . ' <b><i>«' . $transporters[$row['transp']] . '»</i></b><br>(' . $users[$row['tr_manager']] . ')<font size="1">' . $cont_cl . $cont_tr . '</font>' . $group_id, '<font size="4">' . $tr_cash . '</font> ' . $row['tr_currency'] . '<br><b>' . $nds_tr . '</b> <font size="1">' . $dop_tr_rashod_info_1 . '</font>', '<b>' . number_format($tr_pay / 100, 0, ',', ' ') . '</b> ' . $row['tr_currency'] . $tr_pay_plus_minus, $row['block'], $row['manager'], $row['rent'], $status_cl, $status_tr, $status_all, $row['vzaimozachet'], $row['pretenzia'], $group_num);
             $i++;
 
 

@@ -328,30 +328,35 @@ $result = mysql_query($query) or die(mysql_error());
 if(isset($_GET['groupping']))
 {
     if(@$_GET['groupping']=="") {echo "Выберите заявку(и)!";} else {
-        $str = explode(',',$_GET['groupping']);
+        $str = explode(',', $_GET['groupping']);
 
-        $res = (int)sizeof($str)-1;
-        $f=0;
+        $group_number = get_order_group_number() + 1;
+
+        $res = (int)sizeof($str) - 1;
+        $f = 0;
         $err_info = '';
         asort($str);
-        while ($f<=$res) {
+        while ($f <= $res) {
 
-            $query_ord = "SELECT `group_id` FROM `orders` WHERE `Id`='".mysql_escape_string($str[$f])."'";
+            $query_ord = "SELECT `group_id` FROM `orders` WHERE `Id`='" . mysql_escape_string($str[$f]) . "'";
             $result_ord = mysql_query($query_ord) or die(mysql_error());
-            $check_ord= mysql_fetch_row($result_ord);
+            $check_ord = mysql_fetch_row($result_ord);
 
             $check_group_count = explode(',',$check_ord[0]);
 
-            if($check_ord[0]==0||$check_ord[0]==''){
-                $query_orders = "UPDATE `orders` SET `group_id`='" . mysql_escape_string(implode(',', $str)) . "' WHERE `Id`='" . mysql_escape_string($str[$f]) . "'";
+            if($check_ord[0]==0||$check_ord[0]=='') {
+                // Order ID in group_id column: mysql_escape_string(implode(',', $str))
+                $query_orders = "UPDATE `orders` SET `group_id`='" . $group_number . "' WHERE `Id`='" . mysql_escape_string($str[$f]) . "'";
                 $set = 1;
             } else {
+                /*
                 if (sizeof($check_group_count) != sizeof($str)) {
                     $err_info = 'Выберите все заявки группы для разъединения!';
                 } else {
-                    $query_orders = "UPDATE `orders` SET `group_id`='' WHERE `Id`='" . mysql_escape_string($str[$f]) . "'";
-                    $set = 2;
-                }
+                */
+                $query_orders = "UPDATE `orders` SET `group_id`=0 WHERE `Id`='" . mysql_escape_string($str[$f]) . "'";
+                $set = 2;
+                //}
 
             }
 

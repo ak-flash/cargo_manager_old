@@ -52,19 +52,19 @@ $("#date_end").datepicker();
                     {name:'del_id', index:'del_id', width:0,hidden:true},
                     {name:'deleted', index:'deleted', width:0,hidden:true},
                     {name:'owner', index:'owner', width:0,hidden:true}],
-                    
-                  viewrecords: true,
-                  rowNum:8,minHeight: 500,
-                  height:'auto',
-			multiselect: true,
-                  autowidth: true,caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление платежами',
-                  sortname: 'date',
-                  sortorder: 'desc',
-afterInsertRow: function(row_id, row_data){
+
+        viewrecords: true,
+        rowNum:8,minHeight: 500,
+        height:'auto',
+        multiselect: true,
+        autowidth: true,caption: '&nbsp;&nbsp;&nbsp;&nbsp;Управление платежами',
+        sortname: 'id',
+        sortorder: 'desc',
+        afterInsertRow: function(row_id, row_data){
 
 
-if(row_data.owner=='1'){
-$('#table').jqGrid('setCell',row_id,'add_name','',{'background-color':'#EDFFEE'});
+            if(row_data.owner=='1'){
+            $('#table').jqGrid('setCell',row_id,'add_name','',{'background-color':'#EDFFEE'});
 } else $('#table').jqGrid('setCell',row_id,'add_name','',{'background-color':'#FFEFEF'});
 
 
@@ -126,27 +126,27 @@ function updateTable(value) {
 
 // - - кнопка добавление направления - - >
 $("#btnAdd").click(function(){
-$("#fa_pay").load("theme/forms/add_pay.php"); 
-    $("#fa_pay").dialog({ title: 'Новый платеж' },{
-			width: 670,height: 860,
-			modal: true,resizable: false
-});
-});
+            $("#fa_pay").load("theme/forms/add_pay.php");
+            $("#fa_pay").dialog({title: 'Новый платеж'},{
+            width: 670,height: 860,
+            modal: true,resizable: false
+        });
+        });
 
-// - - кнопка добавление направления - - >
-$("#btnAdd_group").click(function(){
-$("#fa_pay_group").load("theme/forms/add_group_pay.php"); 
-    $("#fa_pay_group").dialog({ title: 'Создать платежи для РОССИЙСКИХ заявок' },{
-			width: 430,height: 540,
-			modal: true,resizable: false
-});
-});
+        // - - кнопка добавление направления - - >
+        $("#btnAdd_group").click(function(){
+            $("#fa_pay_group").load("theme/forms/add_group_pay.php");
+            $("#fa_pay_group").dialog({title: 'Создать платежи оплаты для ПЕРЕВОЗЧИКА'},{
+            width: 530,height: 560,
+            modal: true,resizable: false
+        });
+        });
 
-// - - кнопка "показать" при выборе числового периода заявок  - - >
-$("#btnData").click(function(){
-if(document.getElementById('date_start').value<=document.getElementById('date_end').value){
+        // - - кнопка "показать" при выборе числового периода заявок - - >
+        $("#btnData").click(function(){
+            if(document.getElementById('date_start').value<=document.getElementById('date_end').value){
 
-$('#table').setGridParam({url:'control/pays.php?mode=pays&date_start='+document.getElementById('date_start').value+'&date_end='+document.getElementById('date_end').value});
+            $('#table').setGridParam({url:'control/pays.php?mode=pays&date_start='+document.getElementById('date_start').value+'&date_end='+document.getElementById('date_end').value});
 jQuery("#table").trigger("reloadGrid");
 
 } else {alert('Дата окончания периода должна быть позже даты начала!');}
@@ -177,22 +177,24 @@ jQuery("#table").trigger("reloadGrid");
 
 <div id="fa_listpay" style="background:#F8F8F8;"></div>
 
-<div id="result"></div><div id="result_temp"></div>
+<div id="result"></div>
+<div id="result_temp"></div>
 
 <div id="dialogp" style="display: none;"></div>
 <div id="dialog" style="display: none;"></div>
 
 <div class="main">
-<button class="button3" id="btnAdd" style="width:138px;">Добавить</button>
-&nbsp;<button id="btnAdd_group" class="button4" style="">Платежи по заявкам</button>
+    <button class="button3" id="btnAdd" style="width:138px;" title="платёж">Добавить</button>
+    &nbsp;<button id="btnAdd_group" class="button4" title="платежей по заявкам для перевозчика">Автосоздание</button>
 
-&nbsp;&nbsp;&nbsp;&nbsp;
-За период: с <input type="text" id="date_start" name="date_start" style="width:80px;" value="" class="input"> по <input type="text" id="date_end" name="date_end" style="width:80px;" class="input">
-&nbsp;<a class="button" id="btnData" href="javascript:" style="width:80px;">показать</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    За период: с <input type="text" id="date_start" name="date_start" style="width:80px;" value="" class="input"> по
+    <input type="text" id="date_end" name="date_end" style="width:80px;" class="input">
+    &nbsp;<a class="button" id="btnData" href="javascript:" style="width:80px;">показать</a>
 
-<!--- Поиск ---->
-<?php $description='по платежам';include_once("theme/search.tpl");?>
-<!--- End Поиск ---->
+    <!--- Поиск ---->
+    <?php $description='по платежам';include_once("theme/search.tpl");?>
+    <!--- End Поиск ---->
 
 
 

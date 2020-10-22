@@ -95,8 +95,10 @@ if($row['order']!='0') {
 
 
 
-if(mb_stristr($row['id'], $_GET['s_data'])||mb_stristr($appoint, $_GET['s_data'])||mb_stristr($order, $_GET['s_data'])||mb_stristr($row['date'], $_GET['s_data'])||mb_stristr($row['cash'], $_GET['s_data'])||$docs[$row['order']]==$_GET['s_data']||(mb_stristr($row_transp[0], $_GET['s_data'])&&$row['way']=='2'))	{
-$id_mass[$g]=$row['id'];$g++;}
+if (mb_stristr($row['id'], $_GET['s_data']) || mb_stristr($order, $_GET['s_data']) || mb_stristr($row['date'], $_GET['s_data']) || mb_stristr($row['cash'], $_GET['s_data']) || $docs[$row['order']] == $_GET['s_data'] || (mb_stristr($row_transp[0], $_GET['s_data']) && $row['way'] == '2')) {
+    $id_mass[$g] = $row['id'];
+    $g++;
+}
 
 
 }
