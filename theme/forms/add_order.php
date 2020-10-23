@@ -595,38 +595,16 @@ if (!empty($_GET['order'])) {
                     document.getElementById('security_code').style.visibility = "visible";
                     $("#order_code").val("");
                 } else {
+
                     if (arr[1] == 1) {
                         if ($("#transporter").val() == '2' || $("#transporter").val() == '462') {
-                            $('#dialogpr').dialog({modal: true,
-                                buttons: [{
-                                    text: 'Клиенту', click: function () {
-                                        window.open('control/print.php?order_type=1&mode=cl&id=' + base64encode(arr[2]));
-                                        $(this).dialog('close');
-                                    }
-                                }]
-                            }, {resizable: false});
+                            load_print_dialog(arr[2], base64encode(arr[2]), 1);
                         } else {
-
-                            $('#dialogpr').dialog({modal: true,
-                                buttons: [{
-                                    text: 'Клиенту', click: function () {
-                                        window.open('control/print.php?order_type=1&mode=cl&id=' + base64encode(arr[2]));
-                                        $(this).dialog('close');
-                                    }
-                                }, {
-                                    text: 'Перевозчику', click: function () {
-                                        window.open('control/print.php?order_type=1&mode=tr&id=' + base64encode(arr[2]));
-                                        $(this).dialog('close');
-                                    }
-                                }]
-                            }, {resizable: false});
+                            load_print_dialog(arr[2], base64encode(arr[2]), 0);
                         }
                     }
                 }
-
-
-    //$("#result").dialog({title: 'Сообщение'}, {modal: true}, {resizable: false}, { buttons: {"Ok": function () {}}});
-
+                
 
                 jQuery("#table").trigger("reloadGrid");
             });

@@ -197,7 +197,7 @@ function updateTable(value) {
       .setGridParam({url:"control/orders.php?mode=orders&user=<?php echo $_SESSION["user_id"];?>&group=<?php echo $_SESSION["group"];?>&search=true&s_data="+value, page:1})
       .trigger("reloadGrid");
   }
-  
+
 
 
 
@@ -249,12 +249,12 @@ jQuery("#table").trigger("reloadGrid");
 });
 
 
- // - - кнопка показа за месяц заявок  - - >  
+ // - - кнопка показа за месяц заявок  - - >
  $("#btnMonth").click(function(){
  $("#date_start").val('<?php echo "01".date("/m/Y"); ?>');
  $("#date_end").val('<?php echo date("d/m/Y"); ?>');
 $('#table').setGridParam({url:'control/orders.php?mode=orders&user=<?php echo $_SESSION["user_id"];?>&group=<?php echo $_SESSION["group"];?>&date_start=<?php echo "01".date("/m/Y"); ?>&date_end=<?php echo date("d/m/Y"); ?>'});
-jQuery("#table").trigger("reloadGrid");});  
+jQuery("#table").trigger("reloadGrid");});
   });  
     
     
@@ -304,25 +304,43 @@ if($("#show_hide").val()=='0'){
         $('#table').jqGrid(
             'groupingGroupBy',
             ['group_id'],
-            { groupText: ['<b>Группа: {0}</b>'], groupColumnShow: [false], groupOrder : ['desc']}
-        );
+            { groupText: ['
+    <b>Группа: {0}</b>
+    '], groupColumnShow: [false], groupOrder : ['
+    desc
+    '] }
+);
+}
 
- 
-  }
+function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
+    $('#dialogpr').dialog(
+            {title: 'Распечатать заявку №' + order_id},
+            {width: 350, height: 140, modal: true, resizable: false}
+    );
+    if (only_cl_print_btn == 1) $('#print_btn_tr').css('display', 'none');
+
+    print_btn_cl.onclick = function () {
+        window.open('control/print.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+    };
+
+    print_btn_tr.onclick = function () {
+        window.open('control/print.php?mode=tr&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+    };
+}
 
 </script>
 
 </head>
-<body>	
+<body>
 <input type="hidden" id="show_hide" value="0">
 
 <?php include_once("data/menu.html");?>
 
 
-<! - - форма добавления заявки  - - >  
+<! - - форма добавления заявки - - >
 <div id="fa" style="background:url('data/bg_order.png') top left repeat;"></div>
 
-<! - - форма отчет по автопарку  - - >  
+<! - - форма отчет по автопарку - - >
 <div id="fa_car_report" style="background:#F8F8F8;"></div>
 
 <!  - - форма добавления адреса  - - >  
@@ -332,29 +350,42 @@ if($("#show_hide").val()=='0'){
 <div id="fa_extra" style="background:#F8F8F8;"></div>
 
 
-<!  - - форма добавления перевозчика  - - >  
+<! - - форма добавления перевозчика - - >
 <div id="fa_tr" style="background:#F8F8F8;"></div>
 
 
-<!  - - форма добавления автотранспорта  - - >  
+<! - - форма добавления автотранспорта - - >
 <div id="fa_car" style="background:#F8F8F8;"></div>
 <div id="fa_show_car" style="background:#F8F8F8;"></div>
 
 
-
-<!  - - форма добавления клиента  - - >  
+<! - - форма добавления клиента - - >
 <div id="fa_cl" style="background:#F8F8F8;"></div>
 
 
-<div id="result" style="display: none;"></div><div id="result_temp" style="display: none;"></div>
+<div id="result" style="display: none;"></div>
+<div id="result_temp" style="display: none;"></div>
 
 <div id="dialogp" style="display: none;">Выделите заявку!</div>
 <div id="dialog" style="display: none;">Выберите запись для удаления!</div>
-<div id="dialogpr" style="display: none;font-size: 1.2em;">Распечатать заявку:</div>
+
+<div id="dialogpr" style="display: none;text-align: center;">
+    <input type="radio" value="1" name="print_template_type" style="margin-right: 10px;" checked>Заявка<input
+            type="radio" value="2" name="print_template_type" style="margin-left: 30px; margin-right: 7px;">Договор-заявка
+    <br>
+    <button class="button4" id="print_btn_cl" style="width: 140px; margin-top: 15px; height: 45px; font-size:  1.3em;">
+        Клиенту
+    </button>
+    <button class="button3" id="print_btn_tr"
+            style="width:  140px; height: 45px; margin-left: 20px; font-size:  1.3em;">Перевозчику
+    </button>
+
+
+</div>
 
 <div class="main">
 
-<?php //Ограничения для добавления заявок бухгалтером
+    <?php //Ограничения для добавления заявок бухгалтером
 if($_SESSION["group"]!=5){echo '<button class="button3" id="btnAdd" style="width:145px;">Добавить</button>';}?>
 <a class="button" id="btnMonth" href="#" style="width:90px;">За месяц</a>
 <select name="orders_filter"  id="orders_filter" class="select" style="width:145px;margin-left:20px;margin-right:20px;">

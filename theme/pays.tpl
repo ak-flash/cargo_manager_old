@@ -197,15 +197,9 @@ jQuery("#table").trigger("reloadGrid");
     <!--- End Поиск ---->
 
 
-
 <div class="main_container" id="main_container">
 <table id="table" align="center"></table>
         <div id="tablePager"></div>
-
-
-
-
-
 
 <fieldset><legend>Дополнительно: </legend>
 

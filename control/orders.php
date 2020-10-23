@@ -680,49 +680,62 @@ case '2': $tr_event=$row['date_out1'];break;
 
 case '3': $query_docs = "SELECT `date_tr_receve` FROM `docs` WHERE `order`='".mysql_escape_string($row['Id'])."'";
 $result_docs = mysql_query($query_docs) or die(mysql_error());
-$tr_events=mysql_fetch_row($result_docs);
-if(mysql_num_rows($result_docs)>0&&$tr_events[0]!="0000-00-00"&&$tr_events[0]!="1970-01-01"&&$tr_events[0]!=""){
-$tr_event=$tr_events[0];};break;
+$tr_events = mysql_fetch_row($result_docs);
+    if (mysql_num_rows($result_docs) > 0 && $tr_events[0] != "0000-00-00" && $tr_events[0] != "1970-01-01" && $tr_events[0] != "") {
+        $tr_event = $tr_events[0];
+    };
+    break;
 
-case '4': $query_docs = "SELECT `date_tr_receve` FROM `docs` WHERE `order`='".mysql_escape_string($row['id'])."'";
-$result_docs = mysql_query($query_docs) or die(mysql_error());
-$tr_events=mysql_fetch_row($result_docs);
-if(mysql_num_rows($result_docs)>0&&$tr_events[0]!="0000-00-00"&&$tr_events[0]!="1970-01-01"&&$tr_events[0]!=""){
-$tr_event=$tr_events[0];};break;
+    case '4':
+        $query_docs = "SELECT `date_tr_receve` FROM `docs` WHERE `order`='" . mysql_escape_string($row['id']) . "'";
+        $result_docs = mysql_query($query_docs) or die(mysql_error());
+        $tr_events = mysql_fetch_row($result_docs);
+        if (mysql_num_rows($result_docs) > 0 && $tr_events[0] != "0000-00-00" && $tr_events[0] != "1970-01-01" && $tr_events[0] != "") {
+            $tr_event = $tr_events[0];
+        };
+        break;
 }
-if($tr_event!="0000-00-00"&&$tr_event!="1970-01-01"&&$tr_event!=""){
-$tr_event_date=" (".date('d/m/Y', strtotime('+'.(int)$row['tr_tfpay'].' day', strtotime($tr_event)))."г.)";
-} else $tr_event_date='';
-if($row['transp']=='2'){$pr_vtl="";
-$query_driver = "SELECT `id`,`name` FROM `workers` WHERE `id`='".$car_info[4]."'";
-$result_driver = mysql_query($query_driver) or die(mysql_error());
-$drivers = mysql_fetch_row($result_driver);
+                if ($tr_event != "0000-00-00" && $tr_event != "1970-01-01" && $tr_event != "") {
+                    $tr_event_date = " (" . date('d/m/Y', strtotime('+' . (int)$row['tr_tfpay'] . ' day', strtotime($tr_event))) . "г.)";
+                } else $tr_event_date = '';
+                if ($row['transp'] == '2') {
+                    $only_cl_print_btn = 1;
+                    $query_driver = "SELECT `id`,`name` FROM `workers` WHERE `id`='" . $car_info[4] . "'";
+                    $result_driver = mysql_query($query_driver) or die(mysql_error());
+                    $drivers = mysql_fetch_row($result_driver);
 
-$driver=$drivers[1];
-$drv_phone=$car_info[5];
-$dop_car=$car_info[3];
-$dop_car_name=$car_info[2];
-} else {$pr_vtl=",{text: 'Перевозчику',click: function() {window.open('control/print.php?mode=tr&id=".base64_encode($row['id'])."');\$(this).dialog('close');}}";
-$driver=$car_info[2];
-$drv_phone=$car_info[3];
-$dop_car=$car_info[5];
-$dop_car_name=$car_info[4];}
+                    $driver = $drivers[1];
+                    $drv_phone = $car_info[5];
+                    $dop_car = $car_info[3];
+                    $dop_car_name = $car_info[2];
+                } else {
+                    $only_cl_print_btn = 0;
+                    $driver = $car_info[2];
+                    $drv_phone = $car_info[3];
+                    $dop_car = $car_info[5];
+                    $dop_car_name = $car_info[4];
+                }
 
-$query_docs = "SELECT `id` FROM `docs` WHERE `order`='".mysql_escape_string($row['id'])."'";
-$result_docs = mysql_query($query_docs) or die(mysql_error());
-$docs=mysql_fetch_row($result_docs);
+                $query_docs = "SELECT `id` FROM `docs` WHERE `order`='" . mysql_escape_string($row['id']) . "'";
+                $result_docs = mysql_query($query_docs) or die(mysql_error());
+                $docs = mysql_fetch_row($result_docs);
+
+// Print dialog $('#dialogpr').dialog({ buttons: [{text: 'Клиенту',click: function() {window.open('control/print.php?mode=cl&id=" . base64_encode($row['id']) . "');\$(this).dialog('close');}}" . $pr_vtl . "] },{ modal:true,resizable: false });
+
+                $print_dialog_form = "";
 
 //Для бухгалтеров
-if ($_SESSION["group"] != 5) {
-    $navigation = "<a class=\"button\" id=\"btnDocs\" href=\"#\" onclick=\"window.location.href='docs.php?doc_id=" . $docs[0] . "'\">Документы</a><br><button class=\"button\" id=\"btnEdit\" onclick=\"$('#fa').load('theme/forms/add_order.php?order=" . $row['id'] . "');$('#fa').dialog({ title: 'Редактировать заявку №" . $row['id'] . "' },{width: 970,position:[150,50],modal: true,resizable: false});\" style=\"height: 45px;\"><b>Редактировать</b></button><br><a  class=\"button6\" id=\"btnPrint\" href=\"javascript:;\" onclick=\"$('#dialogpr').dialog({ buttons: [{text: 'Клиенту',click: function() {window.open('control/print.php?mode=cl&id=" . base64_encode($row['id']) . "');\$(this).dialog('close');}}" . $pr_vtl . "] },{ modal:true,resizable: false });\">Распечатать</a><br><a  class=\"button\" id=\"btnPrint_dov\" href=\"javascript:;\" onclick=\"window.open('control/print_dov.php?mode=dov&id=" . base64_encode($row['id']) . "');\">Доверенность</a><hr style=\"width: 100%; height: 2px;\" /><button class=\"button3\" id=\"btnDelete\" onclick=\"$('#result').html('Удалить выбранную заявку?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {\$.post('control/orders.php?mode=delete&id=" . $row['id'] . "', function(data) {jQuery('#table').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 400 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {\$(this).dialog('close');}}] });\" style=\"font-size: 1.2em;width:140px;\">Удалить</button><br>";
+                if ($_SESSION["group"] != 5) {
+                    $navigation = "<a class=\"button\" id=\"btnDocs\" href=\"#\" onclick=\"window.location.href='docs.php?doc_id=" . $docs[0] . "'\">Документы</a><br><button class=\"button\" id=\"btnEdit\" onclick=\"$('#fa').load('theme/forms/add_order.php?order=" . $row['id'] . "');$('#fa').dialog({ title: 'Редактировать заявку №" . $row['id'] . "' },{width: 970,position:[150,50],modal: true,resizable: false});\" style=\"height: 45px; font-size: 1.2em;\"><b>Редактировать</b></button><br><a  class=\"button6\" id=\"btnPrint\" href=\"javascript:;\" onclick='load_print_dialog(" . $row['id'] . ", \"" . base64_encode($row['id']) . "\", " . $only_cl_print_btn . ");' style=\"font-size: 1.1em;\">Распечатать</a><br><a  class=\"button\" id=\"btnPrint_dov\" href=\"javascript:;\" onclick=\"window.open('control/print_dov.php?mode=dov&id=" . base64_encode($row['id']) . "');\">Доверенность</a><hr style=\"width: 100%; height: 2px;\" /><button class=\"button3\" id=\"btnDelete\" onclick=\"$('#result').html('Удалить выбранную заявку?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {\$.post('control/orders.php?mode=delete&id=" . $row['id'] . "', function(data) {jQuery('#table').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 400 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {\$(this).dialog('close');}}] });\" style=\"font-size: 1.2em;width:140px;\">Удалить</button><br>";
 
 
-} else {
-    $navigation = "";
-}
+                } else {
+                    $navigation = "";
+                }
 
-if($row['km']!="0"&&$row['km']!=NULL)$km="<br><br><hr><fieldset style='width:160px;'><legend><b>Расстояние:</b></legend><b><font size='5'>".$row['km']."</font></b> км</fieldset>"; else {$km="";
-	
+                if ($row['km'] != "0" && $row['km'] != NULL) $km = "<br><br><hr><fieldset style='width:160px;'><legend><b>Расстояние:</b></legend><b><font size='5'>" . $row['km'] . "</font></b> км</fieldset>"; else {
+                    $km = "";
+
 //$str_in = explode('&',$row['in_adress']);
 //$str_adr_in = (int)sizeof($str_in)-2;
 //$res_in = $str_in[$str_adr_in];
@@ -756,7 +769,7 @@ while($company = mysql_fetch_row($result_company)) {
 if($company[0]==$row['cl_cont'])$cl_company=$company[1];
 if($company[0]==$row['tr_cont'])$tr_company=$company[1];
 }
-if ($row['krugoreis']=='1')$krugoreis='&nbsp;&nbsp;<img src="data/img/gtk-refresh.png" style="width:20px;float:right;display:inline;margin-top:-10px;"><div style="margin-top:-10px;float:right;display:inline;"><b>кругорейс</b>&nbsp;&nbsp;</div>'; else $krugoreis='';
+                if ($row['krugoreis'] == '1') $krugoreis = '&nbsp;&nbsp;<img src="data/img/gtk-refresh.png" style="width:20px;float:right;display:inline;margin-top:-10px;"><div style="margin-top:-10px;float:right;display:inline;"><b>кругорейс</b>&nbsp;&nbsp;</div>'; else $krugoreis = '';
 
 if($row['gr_number']==0)$row['gr_number']='-';
 if($row['gr_m']==0)$row['gr_m']='-';
@@ -781,22 +794,22 @@ $tr_pay.=''.date( 'd/m/Y',strtotime($pay[0])).'-'.($pay[1]/100).' руб. ; ';
 if($tr_pay=='') $tr_pay='отсутствуют';
 if($row['transp']=='2') $tr_pay='-';
 
-if($transp[1]!='')$code_ati=$transp[1]; else $code_ati='-';
+                if ($transp[1] != '') $code_ati = $transp[1]; else $code_ati = '-';
 
 //if($row['client']==627||$row['client']==630||$row['client']==632||$row['client']==639) $bill_text="Транспортные услуги по маршруту ".$bill_adr_in.",водитель ".$driver.", ".$car_info[0]." ".$car_info[1].$d_car.", торг-12 № от , по доверенностии № от г."; else 
 
-$bill_text="Транспортно-экспедиционные услуги по маршруту ".$bill_adr_in.", водитель ".$driver.", ".$car_info[0]." ".$car_info[1].$d_car.", заявка №".$row['id']." от ".date("d.m.Y",strtotime($row['data']))." г.";
+                $bill_text = "Транспортно-экспедиционные услуги по маршруту " . $bill_adr_in . ", водитель " . $driver . ", " . $car_info[0] . " " . $car_info[1] . $d_car . ", заявка №" . $row['id'] . " от " . date("d.m.Y", strtotime($row['data'])) . " г.";
 
 
-if($row['tr_days']!=0) $tr_days='&nbsp;&nbsp;&nbsp;<b>Простой:</b> '.$row['tr_days'].' сут.'; else $tr_days='';
+                if ($row['tr_days'] != 0) $tr_days = '&nbsp;&nbsp;&nbsp;<b>Простой:</b> ' . $row['tr_days'] . ' сут.'; else $tr_days = '';
 
-	              $data->rows[$i]['cell'] =array("<b><div style=\"font-size: 26px;float:left;\">".$cash."</div> руб.</b> (".round($cash_ok,1)."%)".$km."<hr style=\"width: 100%; height: 2px;float:right;\" />".$navigation."<br><br><img src=\"data/img/parcel.png\"><br><button class=\"button3\" id=\"btnCopy\" onclick=\"$('#fa').load('theme/forms/add_order.php?mode=copy&order=".$row['id']."');$('#fa').dialog({ title: 'Новая заявка' },{width: 970,position:[150,50],modal: true,resizable: false});return false\" style=\"height: 45px;\"><b>Скопировать</b></button>","<b>Дата заявки: <font color=\"red\" size=\"4\">".$data_order."</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Менеджер заявки:</b> <font color=green>".$order_manager."</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Менеджер по транспорту:</b> <font color=green>".$tr_manager."</font><hr><fieldset><legend>Груз:</legend><b>Наименование груза:</b> ".$row['gruz'].'&nbsp;&nbsp;&nbsp;'."<b>Вес:</b> ".$row['gr_m'].' т&nbsp;&nbsp;&nbsp;'."<b>Обьем:</b> ".$row['gr_v']." м3&nbsp;&nbsp;&nbsp;<b>Количество:</b> ".$row['gr_number'].' шт.&nbsp;&nbsp;&nbsp;'."<b>Вид погрузки:</b> ".$gr_load."
-</fieldset><fieldset><legend><b>Загрузка:</b></legend><b>Дата загрузки:</b> ".$date_in.$date_in1.$date_in2.$krugoreis."<hr>".$res_adr_in."</fieldset><fieldset><legend><b>Выгрузка:</b></legend><b>Дата выгрузки:</b> ".$date_out.$date_out1.$date_out2.$krugoreis."<hr>".$res_adr_out."</fieldset>
+                $data->rows[$i]['cell'] = array("<b><div style=\"font-size: 26px;float:left;\">" . $cash . "</div> руб.</b> (" . round($cash_ok, 1) . "%)" . $km . "<hr style=\"width: 100%; height: 2px;float:right;\" />" . $navigation . "<br><br><img src=\"data/img/parcel.png\"><br><button class=\"button3\" id=\"btnCopy\" onclick=\"$('#fa').load('theme/forms/add_order.php?mode=copy&order=" . $row['id'] . "');$('#fa').dialog({ title: 'Новая заявка (копия заявки №" . $row['id'] . ")' },{width: 970,position:[150,50],modal: true,resizable: false});return false\" style=\"height: 45px;\"><b>Скопировать</b></button>", "<b>Дата заявки: <font color=\"red\" size=\"4\">" . $data_order . "</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Менеджер заявки:</b> <font color=green>" . $order_manager . "</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Менеджер по транспорту:</b> <font color=green>" . $tr_manager . "</font><hr><fieldset><legend>Груз:</legend><b>Наименование груза:</b> " . $row['gruz'] . '&nbsp;&nbsp;&nbsp;' . "<b>Вес:</b> " . $row['gr_m'] . ' т&nbsp;&nbsp;&nbsp;' . "<b>Обьем:</b> " . $row['gr_v'] . " м3&nbsp;&nbsp;&nbsp;<b>Количество:</b> " . $row['gr_number'] . ' шт.&nbsp;&nbsp;&nbsp;' . "<b>Вид погрузки:</b> " . $gr_load . "
+</fieldset><fieldset><legend><b>Загрузка:</b></legend><b>Дата загрузки:</b> " . $date_in . $date_in1 . $date_in2 . $krugoreis . "<hr>" . $res_adr_in . "</fieldset><fieldset><legend><b>Выгрузка:</b></legend><b>Дата выгрузки:</b> " . $date_out . $date_out1 . $date_out2 . $krugoreis . "<hr>" . $res_adr_out . "</fieldset>
 
-<fieldset><legend>Автотранспорт</legend><b>".$car_info[0]."</b> - Г/н: <b>".$car_info[1]."</b> (П/п: ".$dop_car_name." - <b>".$dop_car."</b>)&nbsp;&nbsp;&nbsp;Водитель: <b>".$driver."</b>&nbsp;&nbsp;&nbsp;Телефон: <font color=green>".$drv_phone."</font>".$car_check."</fieldset>	<fieldset><legend>Требования к машине (Особые условия):</legend>".$row['car_notify']."</fieldset>
-<fieldset><legend>Клиент:</legend><b>Получатель:</b> «".$cl_company."»&nbsp;&nbsp;&nbsp;<b>Плановая дата оплаты:</b> ".date("d/m/Y",strtotime($row['date_plan']))." г.&nbsp;&nbsp;&nbsp; <b>Ставка клиента:</b> ".$row['cl_cash']." руб. (<b>".$nds_cl."</b>)<hr><b>Срок оплаты:</b> ".$cl_event." + <b>".$row['cl_tfpay']." дн.</b>&nbsp;&nbsp;&nbsp;<b>Платежи:</b> ".$cl_pay."</fieldset><fieldset><legend>Перевозчик (Код в АТИ: <font size='4'>".$code_ati."</font>)</legend><b>Плательщик:</b> «".$tr_company."»&nbsp;&nbsp;&nbsp;<b>Получатель:</b> «".$transp[0]."»&nbsp;&nbsp;&nbsp;<b>Ставка перевозчика:</b> ".$row['tr_cash']." руб. (<b>".$nds_tr."</b>)<hr><b>Срок оплаты:</b> ".$tr_eventsss." + <b>".$row['tr_tfpay']." дн.</b> ".$tr_event_date."&nbsp;&nbsp;&nbsp;<b>Платежи:</b> ".$tr_pay.$tr_days."</fieldset>".$print_text."<fieldset style='background: #aed2d9;color:#000;'><legend>Счёт:</legend><textarea style='width:97%;' rows='3'>".$bill_text."</textarea></fieldset><fieldset><legend>Примечание:</legend>".$row['notify']."</fieldset>");
-	                $i++;
-	        }
+<fieldset><legend>Автотранспорт</legend><b>" . $car_info[0] . "</b> - Г/н: <b>" . $car_info[1] . "</b> (П/п: " . $dop_car_name . " - <b>" . $dop_car . "</b>)&nbsp;&nbsp;&nbsp;Водитель: <b>" . $driver . "</b>&nbsp;&nbsp;&nbsp;Телефон: <font color=green>" . $drv_phone . "</font>" . $car_check . "</fieldset>	<fieldset><legend>Требования к машине (Особые условия):</legend>" . $row['car_notify'] . "</fieldset>
+<fieldset><legend>Клиент:</legend><b>Получатель:</b> «" . $cl_company . "»&nbsp;&nbsp;&nbsp;<b>Плановая дата оплаты:</b> " . date("d/m/Y", strtotime($row['date_plan'])) . " г.&nbsp;&nbsp;&nbsp; <b>Ставка клиента:</b> " . $row['cl_cash'] . " руб. (<b>" . $nds_cl . "</b>)<hr><b>Срок оплаты:</b> " . $cl_event . " + <b>" . $row['cl_tfpay'] . " дн.</b>&nbsp;&nbsp;&nbsp;<b>Платежи:</b> " . $cl_pay . "</fieldset><fieldset><legend>Перевозчик (Код в АТИ: <font size='4'>" . $code_ati . "</font>)</legend><b>Плательщик:</b> «" . $tr_company . "»&nbsp;&nbsp;&nbsp;<b>Получатель:</b> «" . $transp[0] . "»&nbsp;&nbsp;&nbsp;<b>Ставка перевозчика:</b> " . $row['tr_cash'] . " руб. (<b>" . $nds_tr . "</b>)<hr><b>Срок оплаты:</b> " . $tr_eventsss . " + <b>" . $row['tr_tfpay'] . " дн.</b> " . $tr_event_date . "&nbsp;&nbsp;&nbsp;<b>Платежи:</b> " . $tr_pay . $tr_days . "</fieldset>" . $print_text . "<fieldset style='background: #aed2d9;color:#000;'><legend>Счёт:</legend><textarea style='width:97%;' rows='3'>" . $bill_text . "</textarea></fieldset><fieldset><legend>Примечание:</legend>" . $row['notify'] . "</fieldset>");
+                $i++;
+            }
 	        } else {
             
          
