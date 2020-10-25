@@ -545,22 +545,24 @@ $f=0;
 $city='';
 
 while ($f<=$str_adr_in) {
-$query_adress = "SELECT * FROM `adress` WHERE `id`='".$str_in[($str_adr_in-$f)]."'";
-$result_adress = mysql_query($query_adress) or die(mysql_error());
-$adress = mysql_fetch_row($result_adress);
-if($adress[8]=="0") $flat=""; else $flat=' кв.'.$adress[8];
-if($adress[3]==""||$adress[3]=="0") $obl=""; else $obl=$adress[3]." обл.";	
-if($adress[6]==""||$adress[6]=="0") $dom=""; else $dom=" д.".$adress[6];
-if($adress[7]==""||$adress[7]=="0") $dom_extra=""; else $dom_extra='/'.$adress[7];
-	
-$res_adr_in =$res_adr_in."<div style='padding: 5px;margin: 10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>".($f+1).") ".$adress[2].', '.$obl.' '.$adress[4].' ул. '.$adress[5].$dom.$dom_extra.$flat.' ('.$adress[9].' - '.$adress[10].')</div>';
+    $query_adress = "SELECT * FROM `adress` WHERE `id`='" . $str_in[($str_adr_in - $f)] . "'";
+    $result_adress = mysql_query($query_adress) or die(mysql_error());
+    $adress = mysql_fetch_row($result_adress);
+    if ($adress[8] == "0") $flat = ""; else $flat = ' кв.' . $adress[8];
+    if ($adress[3] == "" || $adress[3] == "0") $obl = ""; else $obl = $adress[3] . " обл.";
+    if ($adress[6] == "" || $adress[6] == "0") $dom = ""; else $dom = " д." . $adress[6];
+    if ($adress[7] == "" || $adress[7] == "0") $dom_extra = ""; else $dom_extra = '/' . $adress[7];
+
+    if ($adress[15] == "") $adr_place = ""; else $adr_place = '<br><b style="margin-left:17px;">Комментарий:</b> <i>' . $adress[15] . '</i>';
+
+    $res_adr_in = $res_adr_in . "<div style='padding: 5px;margin: 10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>" . ($f + 1) . ") " . $adress[2] . ', ' . $obl . ' ' . $adress[4] . ' ул. ' . $adress[5] . $dom . $dom_extra . $flat . ' (' . $adress[9] . ' - ' . $adress[10] . ') ' . $adr_place . '</div>';
 
 
-if($city!=$adress[4])$bill_adr_in.=$obl.", ".$adress[4]." - ";
+    if ($city != $adress[4]) $bill_adr_in .= $obl . ", " . $adress[4] . " - ";
 
-$city=$adress[4];
+    $city = $adress[4];
 
-$f++;
+    $f++;
 }
 
 
@@ -572,23 +574,23 @@ $city='';
 
 $res_adr_out ='';
 while ($f<=$str_adr_out) {
-$query_adress = "SELECT * FROM `adress` WHERE `id`='".$str_out[($str_adr_out-$f)]."'";
-$result_adress = mysql_query($query_adress) or die(mysql_error());
-$adress = mysql_fetch_row($result_adress);
-if($adress[8]=="0") $flat=""; else $flat=' кв.'.$adress[8];
-if($adress[3]==""||$adress[3]=="0") $obl=""; else $obl=$adress[3]." обл.";	
-if($adress[6]==""||$adress[6]=="0") $dom=""; else $dom=" д.".$adress[6];
-if($adress[7]==""||$adress[7]=="0") $dom_extra=""; else $dom_extra='/'.$adress[7];
+    $query_adress = "SELECT * FROM `adress` WHERE `id`='" . $str_out[($str_adr_out - $f)] . "'";
+    $result_adress = mysql_query($query_adress) or die(mysql_error());
+    $adress = mysql_fetch_row($result_adress);
+    if ($adress[8] == "0") $flat = ""; else $flat = ' кв.' . $adress[8];
+    if ($adress[3] == "" || $adress[3] == "0") $obl = ""; else $obl = $adress[3] . " обл.";
+    if ($adress[6] == "" || $adress[6] == "0") $dom = ""; else $dom = " д." . $adress[6];
+    if ($adress[7] == "" || $adress[7] == "0") $dom_extra = ""; else $dom_extra = '/' . $adress[7];
 
+    if ($adress[15] == "") $adr_place = ""; else $adr_place = '<br><b style="margin-left:17px;">Комментарий:</b> <i>' . $adress[15] . '</i>';
 
-	
-$res_adr_out =$res_adr_out."<div style='padding: 5px;margin:10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>".($f+1).") ".$adress[2].', '.$obl.' '.$adress[4].' ул. '.$adress[5].$dom.$dom_extra.$flat.' ('.$adress[9].' - '.$adress[10].')</div>';
+    $res_adr_out = $res_adr_out . "<div style='padding: 5px;margin:10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>" . ($f + 1) . ") " . $adress[2] . ', ' . $obl . ' ' . $adress[4] . ' ул. ' . $adress[5] . $dom . $dom_extra . $flat . ' (' . $adress[9] . ' - ' . $adress[10] . ') ' . $adr_place . '</div>';
 
-if($city!=$adress[4])$bill_adr_in.=$obl.", ".$adress[4]." - ";
+    if ($city != $adress[4]) $bill_adr_in .= $obl . ", " . $adress[4] . " - ";
 
-$city=$adress[4];
+    $city = $adress[4];
 
-$f++;
+    $f++;
 }
 
 $bill_adr_in=substr($bill_adr_in, 0, -3);

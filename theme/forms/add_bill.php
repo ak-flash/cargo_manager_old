@@ -42,22 +42,30 @@ $("#form_company_bill").submit(function() {
  var perfTimes = $("#form_company_bill").serialize();
 
 
-$.post("control/company_add_bill.php", perfTimes, function(data) {
-     
-     var arr = data.split(/[|]/);
-      if(arr[1]==1){$("#fa_add_bill").dialog("close");$('#form_company_bill').unbind();$('#c_bill_show').load('/control/c_bill.php?mode=all');}
-      
+    $.post("control/company_add_bill.php", perfTimes, function (data) {
 
-      $('#result').html(arr[0]);
-      
-      $("#result").dialog({ title: 'Готово' },{ modal: true },{ width: 400 },{ resizable: false },{ buttons: { "Ok": function() { $(this).dialog("close");jQuery("#table").trigger("reloadGrid");
-      
-       } } });
-      
-   
+        var arr = data.split(/[|]/);
+        if (arr[1] == 1) {
+            $("#fa_add_bill").dialog("close");
+            $('#form_company_bill').unbind();
+            $('#c_bill_show').load('/control/c_bill.php?mode=all');
+        }
 
 
-      }); 
+        $('#result').html(arr[0]);
+
+        $("#result").dialog({title: 'Готово'}, {modal: true}, {width: 400}, {resizable: false}, {
+            buttons: {
+                "Ok": function () {
+                    $(this).dialog("close");
+                    $('#s_bill_show').load('/control/c_bill.php?mode=show&company=<?php echo $company;?>');
+
+                }
+            }
+        });
+
+
+    });
 
      
       
@@ -89,22 +97,47 @@ $result_c = mysql_query($query_c) or die(mysql_error());
 $row_c = mysql_fetch_row($result_c);
 echo '<b><font size="5">'.$row_c[0].'</font></b>';
  ?>
-<br>
-<fieldset style="width:300px;"><legend>Реквизиты:</legend>
-<table border="0">
-<tr><td align="right">р/сч:</td><td><input type="number" name="company_rs" id="company_rs" style="width: 200px;"  placeholder="" class="input"></td></tr>
-<tr><td align="right">Банк:</td><td><input name="company_bank" id="company_bank" style="width: 360px;"  placeholder="" class="input"></td></tr>
-<tr><td align="right">БИК:</td><td><input type="number" name="company_bik" id="company_bik" style="width: 100px;"  placeholder="" class="input"></td></tr>
-<tr><td align="right">к/сч:</td><td><input type="number" name="company_ks" id="company_ks" style="width: 200px;"  placeholder="" class="input"></td></tr>
-<tr><td align="right"><br>Баланс:</td><td><br><input name="company_cash" id="company_cash" style="width: 100px;"  placeholder="0" class="input"> руб.</td></tr>
-</table></fieldset>
+    <br>
+    <fieldset style="width:300px;">
+        <legend>Реквизиты:</legend>
+        <table border="0">
+            <tr>
+                <td align="right">р/сч:</td>
+                <td><input type="text" name="company_rs" id="company_rs" style="width: 200px;" placeholder=""
+                           class="input"></td>
+            </tr>
+            <tr>
+                <td align="right">Банк:</td>
+                <td><input name="company_bank" id="company_bank" style="width: 360px;" placeholder="" class="input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">БИК:</td>
+                <td><input type="text" name="company_bik" id="company_bik" style="width: 100px;" placeholder=""
+                           class="input"></td>
+            </tr>
+            <tr>
+                <td align="right">к/сч:</td>
+                <td><input type="text" name="company_ks" id="company_ks" style="width: 200px;" placeholder=""
+                           class="input"></td>
+            </tr>
+            <tr>
+                <td align="right"><br>Баланс:</td>
+                <td><br><input name="company_cash" id="company_cash" style="width: 100px;" placeholder="0"
+                               class="input"> руб.
+                </td>
+            </tr>
+        </table>
+    </fieldset>
 
 
-
-
-
-<br><div align="center"><input type="submit" id="save_bill" value="<?php if ($c_bill!="") echo 'Сохранить'; else echo 'Добавить'; ?>" style="width: 250px;">
-<input type="button" id="btnClose_add_bill" onclick="$('#fa_add_bill').dialog('close');" value="Закрыть" style="width: 150px;">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <br>
+    <div align="center"><input type="submit" id="save_bill"
+                               value="<?php if ($c_bill!="") echo 'Сохранить'; else echo 'Добавить'; ?>"
+                               style="width: 250px;">
+        <button type="button" id="btnClose_add_bill" onclick="$('#fa_add_bill').dialog('close');" style="width: 150px;">
+            Закрыть
+        </button>
+    </div>
 
 </form>

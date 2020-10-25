@@ -504,6 +504,7 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
     $str_in = explode('&', $in_adress);
     $str_adr_in = (int)sizeof($str_in) - 2;
     $f = 0;
+    $adress_in = '';
     while ($f <= $str_adr_in) {
         $res_adr_in = "";
         $adr_in_cont = "";
@@ -521,15 +522,15 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
         $adr_in_cont = $adr_in_cont . " " . $adress[9];
         $city_start = $adress[4];
         $adr_in_phone = $adr_in_phone . " " . $adress[10];
+
+
+        if ($f == $str_adr_in) $par = ''; else $par = '\par ';
+        $adress_in .= ($f + 1) . ') ' . $res_adr_in . ' { \b ' . $adress[15] . '} (' . $adr_in_cont . $adr_in_phone . ')' . $par;
+
         $f++;
-
-        $output = preg_replace('/<<adr_in>>/si', convert($res_adr_in), $output, 1);
-        $output = preg_replace('/<<adr_in_org>>/si', convert($adress[15]), $output, 1);
-        $output = preg_replace('/<<adr_in_cont>>/si', convert('(' . $adr_in_cont), $output, 1);
-        $output = preg_replace('/<<adr_in_phone>>/si', convert($adr_in_phone . ')\par'), $output, 1);
-
     }
 
+    $output = str_replace('<<adr_in>>', convert($adress_in), $output);
 
     if ($row['date_in1'] != "1970-01-01" && $row['date_in1'] != "0000-00-00") {
         $date_in1 = date("d/m/Y", strtotime($row['date_in1']));
@@ -557,14 +558,6 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
     if ($print_support != '') $print_support = '' . $print_support;
     $output = str_replace("<<support>>", convert($print_support), $output);
 
-    $output = str_replace("<<adr_in>>", "\r", $output);
-    $output = str_replace("<<adr_in_org>>", "\r", $output);
-    $output = str_replace("<<adr_in_cont>>", "\r", $output);
-    $output = str_replace("<<adr_in_phone>>", "\r", $output);
-
-    // $output = str_replace("<<adr_in>>", convert($res_adr_in), $output);
-    // $output = str_replace("<<adr_in_cont>>", convert('(' . $adr_in_cont), $output);
-    // $output = str_replace("<<adr_in_phone>>", convert($adr_in_phone . ')'), $output);
 
 
     $str_out = explode('&', $out_adress);
@@ -584,15 +577,14 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
         $city_end = $adress[4];
         $adr_out_cont = $adr_out_cont . " " . $adress[9];
         $adr_out_phone = $adr_out_phone . " " . $adress[10];
+
+        if ($f == $str_adr_out) $par = ''; else $par = '\par ';
+        $adress_out .= ($f + 1) . ') ' . $res_adr_out . ' { \b ' . $adress[15] . '} (' . $adr_out_cont . $adr_out_phone . ')' . $par;
+
         $f++;
-
-        $output = preg_replace('/<<adr_out>>/si', convert($res_adr_out), $output, 1);
-        $output = preg_replace('/<<adr_out_org>>/si', convert($adress[15]), $output, 1);
-        $output = preg_replace('/<<adr_out_cont>>/si', convert('(' . $adr_out_cont), $output, 1);
-        $output = preg_replace('/<<adr_out_phone>>/si', convert($adr_out_phone . ')\par'), $output, 1);
-
     }
 
+    $output = str_replace('<<adr_out>>', convert($adress_out), $output);
 
     if ($row['date_out1'] != "0000-00-00" && $row['date_out1'] != "1970-01-01") {
         $date_out1 = date("d/m/Y", strtotime($row['date_out1']));

@@ -43,19 +43,65 @@ $result_adress = mysql_query($query_adress) or die(mysql_error());
 	         
 	       
             while($adress = mysql_fetch_row($result_adress)) {
-     if($adress[1]=="0") $postcode=""; else $postcode=$adress[1];       	
-    if($adress[8]=="0") $flat=""; else $flat=" - кв/офис ".$adress[8];        	
-    if($adress[6]=="0") $dom=""; else $dom=' д.'.$adress[6];
-            if($adress[7]=="") $dom_ext=""; else $dom_ext='('.$adress[7].')';	
-            
-            	if($mode=='2'||$mode=='1'){$data->results[]=array('id'=>$adress[0],'name'=>$adress[2].' '.$adress[3].' обл. '.$adress[4].' ул. '.$adress[5].'&nbsp;'.$dom.$dom_ext.$flat.' ('.$adress[9].') ');} 
-            	if($mode=='3'||$mode=='4'){ $data->results[]=array('id'=>$adress[0],'name'=>$postcode.' '.$adress[2].' '.$adress[3].' обл. '.$adress[4].' ул.'.$adress[5].' '.$dom.$dom_ext.$flat);}
-	             if($mode=='5'){ $data->results[]=array('id'=>$adress[0],'name'=>$postcode.' '.$adress[2].' '.$adress[3].' обл. '.$adress[4].' ул.'.$adress[5].' '.$dom.$dom_ext.$flat);}  
-	     	}        
-	     	
+                if ($adress[1] == "0") $postcode = ""; else $postcode = $adress[1];
+                if ($adress[8] == "0") $flat = ""; else $flat = " - кв/офис " . $adress[8];
+                if ($adress[6] == "0") $dom = ""; else $dom = ' д.' . $adress[6];
+                if ($adress[7] == "") $dom_ext = ""; else $dom_ext = '(' . $adress[7] . ')';
 
- echo json_encode($data);
-  
- } else {echo '{"results":[{"id":"0","name":"Ничего не найдено..."}]}';}
+                if ($mode == '2' || $mode == '1') {
+                    $data->results[] = array('id' => $adress[0], 'name' => $adress[2] . ' ' . $adress[3] . ' обл. ' . $adress[4] . ' ул. ' . $adress[5] . '&nbsp;' . $dom . $dom_ext . $flat . ' (' . $adress[9] . ') ');
+                }
+                if ($mode == '3' || $mode == '4') {
+                    $data->results[] = array('id' => $adress[0], 'name' => $postcode . ' ' . $adress[2] . ' ' . $adress[3] . ' обл. ' . $adress[4] . ' ул.' . $adress[5] . ' ' . $dom . $dom_ext . $flat);
+                }
+                if ($mode == '5') {
+                    $data->results[] = array('id' => $adress[0], 'name' => $postcode . ' ' . $adress[2] . ' ' . $adress[3] . ' обл. ' . $adress[4] . ' ул.' . $adress[5] . ' ' . $dom . $dom_ext . $flat);
+                }
+            }
+
+
+            echo json_encode($data);
+
+        } else {
+     echo '{"results":[{"id":"0","name":"Ничего не найдено..."}]}';
  }
+}
+
+if (isset($_GET['new'])) {
+    $mode = $_GET['new'];
+    $s_query = $_GET['q'];
+
+    switch ($mode) {
+        case 'city':
+            $fmode = 'city';
+            break;
+        case 'street':
+            $fmode = 'street';
+            break;
+        case 'region':
+            $fmode = 'obl';
+            break;
+    }
+
+
+    $query_adress = "SELECT * FROM adress WHERE " . $fmode . " LIKE '%" . mysql_escape_string($s_query) . "%'";
+    $result_adress = mysql_query($query_adress) or die(mysql_error());
+
+
+    if (mysql_num_rows($result_adress) > 0) {
+
+
+        while ($adress = mysql_fetch_array($result_adress)) {
+
+            $data->results[] = array('id' => $adress[$fmode], 'name' => $adress[$fmode]);
+
+        }
+
+
+        echo json_encode($data);
+
+    } else {
+        echo '{"results":[{"id":"0","name":"Ничего не найдено..."}]}';
+    }
+}
 ?>

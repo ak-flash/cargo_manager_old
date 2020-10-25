@@ -1,28 +1,33 @@
 <?php
 set_time_limit(0);
 session_start();
-if (isset($_SESSION['user_id']))
-{
-if($_SESSION["group"]==1||$_SESSION["group"]==2||$_SESSION["group"]==4){
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
-include "../config.php";
-include_once "komissia.php";
+if (isset($_SESSION['user_id'])) {
+    if ($_SESSION["group"] == 1 || $_SESSION["group"] == 2 || $_SESSION["group"] == 4) {
 
-set_include_path(get_include_path() . PATH_SEPARATOR .
-'PhpExcel/Classes/');
-//подключаем и создаем класс PHPExcel
-include_once 'PHPExcel.php';
-$pExcel = new PHPExcel();
 
-$boldFont = array(
-	'font'=>array(
-		'name'=>'Arial Cyr',
-		'size'=>'10',
-		'bold'=>true
-	)
-);
-$mFont = array(
+        include "../config.php";
+        include_once "komissia.php";
+
+// Load Composer's autoloader
+        require '../vendor/autoload.php';
+
+
+        $pExcel = new Spreadsheet();
+
+
+        $boldFont = array(
+            'font' => array(
+                'name' => 'Arial Cyr',
+                'size' => '10',
+                'bold' => true
+            )
+        );
+        $mFont = array(
 	'font'=>array(
 		'name'=>'Arial Cyr',
 		'size'=>'8',
@@ -37,44 +42,44 @@ $hiFont = array(
 );
 //и позиционирование
 $center = array(
-	'alignment'=>array(
-		'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-		'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER
-	)
+	'alignment'=> array(
+        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+    )
 );
 
 $right = array(
-	'alignment'=>array(
-		'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-		'vertical'=>PHPExcel_Style_Alignment::VERTICAL_TOP
-	)
+	'alignment'=> array(
+        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP
+    )
 );
 $top = array(
-	'alignment'=>array(
-				'vertical'=>PHPExcel_Style_Alignment::VERTICAL_TOP
-	)
+	'alignment'=> array(
+        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP
+    )
 );
 
 $styleArray = array(
 'borders' => array(
 	'allborders' => array(
-		'style' => PHPExcel_Style_Border::BORDER_MEDIUM
-		),
+        'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM
+    ),
 	),
 );
 $styleArray2 = array(
 'borders' => array(
 	'allborders' => array(
-		'style' => PHPExcel_Style_Border::BORDER_THIN
-		),
+        'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+    ),
 	),
 );
 
 $hr = array(
 'borders' => array(
 	'bottom' => array(
-		'style' => PHPExcel_Style_Border::BORDER_THIN
-		),
+        'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+    ),
 	),
 );
 
@@ -281,7 +286,7 @@ $aSheet->setCellValue('AG1',"Долг клиента");
 $aSheet->getStyle('AG1')->applyFromArray($center)->applyFromArray($boldFont);
 $aSheet->getStyle('AG1')->getAlignment()->setWrapText(true);
 
-$aSheet->getStyle('A1:AH1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('EAEAEA');
+    $aSheet->getStyle('A1:AH1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('EAEAEA');
 
 $aSheet->getStyle('A1:AH1')->applyFromArray($styleArray2);
 $aSheet->getStyle('A1:AH1')->applyFromArray($mFont);
@@ -365,7 +370,7 @@ $komissia = 0;
 
 $komissia = komissia($row['cl_cash'],$row['cl_minus'],$row['cl_plus'],$row['cl_nds'],$row['tr_cash'],$row['tr_minus'],$row['tr_plus'],$row['tr_nds']);
 
-$cash_ok=$komissia*100/(int)$row['cl_cash'];
+    if ($row['cl_cash'] != 0) $cash_ok = $komissia * 100 / (int)$row['cl_cash']; else $cash_ok = $komissia * 100;
 
 
 
@@ -445,7 +450,7 @@ if($row['pretenzia']==1) $pretenzia='Претензия'; else $pretenzia='';
 
 $aSheet->setCellValue('C'.$p,$row['id']);
 	$aSheet->getStyle('C'.$p)->applyFromArray($center)->applyFromArray($boldFont);
-	
+
 
 
 if(@$_GET['mode_id']==6){
@@ -726,38 +731,39 @@ $aSheet->getColumnDimension('Y')->setWidth(15);
 	$aSheet->getColumnDimension('AE')->setWidth(15);
 	$aSheet->getColumnDimension('AF')->setWidth(15);
 	$aSheet->getColumnDimension('AG')->setWidth(10);
-	$aSheet->getColumnDimension('AH')->setWidth(15);
+    $aSheet->getColumnDimension('AH')->setWidth(15);
 }
 
-	$aSheet->setCellValue('X1', "ПРИБЫЛЬ");
-	$aSheet->getStyle('X1')->applyFromArray($center)->applyFromArray($boldFont);
+    $aSheet->setCellValue('X1', "ПРИБЫЛЬ");
+    $aSheet->getStyle('X1')->applyFromArray($center)->applyFromArray($boldFont);
 
 // Filter
-	$aSheet->setAutoFilter('A1:AH' . ($p - 1));
+    $aSheet->setAutoFilter('A1:AH' . ($p - 1));
 
 
-	$aSheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+    $aSheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 //$aSheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
-	$aSheet->getPageSetup()->setPrintArea('A1:AH' . ($p + 1));
-	$aSheet->getPageSetup()->setFitToPage(true);
-	$aSheet->getPageSetup()->setFitToWidth(1);
-	$aSheet->getPageSetup()->setFitToHeight(0);
-
-//отдаем пользователю в браузер
-	include("PHPExcel/Writer/Excel5.php");
-$pExcel->setActiveSheetIndex(0);
-$pExcel->removeSheetByIndex(1);
+    $aSheet->getPageSetup()->setPrintArea('A1:AH' . ($p + 1));
+    $aSheet->getPageSetup()->setFitToPage(true);
+    $aSheet->getPageSetup()->setFitToWidth(1);
+    $aSheet->getPageSetup()->setFitToHeight(0);
 
 
-$objWriter = new PHPExcel_Writer_Excel5($pExcel);
-header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="Отчет.xls"');
-header('Cache-Control: max-age=0');
-$objWriter->save('php://output');
+    $pExcel->setActiveSheetIndex(0);
+    $pExcel->removeSheetByIndex(1);
 
 
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="Отчёт.xlsx"');
+    header('Cache-Control: max-age=0');
 
-} else {echo 'НЕ найдено ни одной заявки, удовлетворяющей требованиям!';}
+    $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($pExcel, 'Xlsx');
+    $writer->save('php://output');
+
+
+} else {
+    echo 'НЕ найдено ни одной заявки, удовлетворяющей требованиям!';
+}
 
 
 } else {echo "<b><h1>&nbsp;&nbsp;&nbsp;&nbsp;Доступ запрещен</h1></b>";}
@@ -765,6 +771,3 @@ $objWriter->save('php://output');
 header('Location: index.php');
 	exit;
 }
-?>
-
-

@@ -3,25 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Управление заявками</title>
-<?php include_once("data/header.html");?>
+    <title>Управление заявками</title>
+    <?php include_once("data/header.html");?>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-// - - главная таблица на странице заявок- -
-$(function(){
+        // - - главная таблица на странице заявок- -
+        $(function () {
 
-    $("#orders_menu").css({"background": "#607269","text-shadow":"1px 1px 1px #000"});
+            $("#orders_menu").css({"background": "#607269", "text-shadow": "1px 1px 1px #000"});
 
 
-    $('#btnAdd').button({ icons: { primary: "ui-icon-plusthick" } });
-    $('#btnUnBlock').button();
-    $('#btnSetVzaim').button();
-    $('#btnBlock').button();
-    $('#btnShowDel').button();
-    $('#btnSetPretenz').button();
-    $('#btnCl_info').button();
-    $('#btnNDSTr').button();
+            $('#btnAdd').button({icons: {primary: "ui-icon-plusthick"}});
+            $('#btnUnBlock').button();
+            $('#btnSetVzaim').button();
+            $('#btnBlock').button();
+            $('#btnShowDel').button();
+            $('#btnSetPretenz').button();
+            $('#btnCl_info').button();
+            $('#btnNDSTr').button();
     $('#btnGroupping').button();
 
     <?php
@@ -305,21 +305,20 @@ if($("#show_hide").val()=='0'){
             'groupingGroupBy',
             ['group_id'],
             { groupText: ['
-    <b>Группа: {0}</b>
-    '], groupColumnShow: [false], groupOrder : ['
-    desc
-    '] }
-);
-}
+            <b>Группа: {0}</b>
+            '], groupColumnShow: [false], groupOrder : ['
+            desc
+            '] });
+        }
 
-function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
-    $('#dialogpr').dialog(
-            {title: 'Распечатать заявку №' + order_id},
-            {width: 350, height: 140, modal: true, resizable: false}
-    );
-    if (only_cl_print_btn == 1) $('#print_btn_tr').css('display', 'none');
+        function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
+            $('#dialogpr').dialog(
+                    {title: 'Распечатать заявку №' + order_id},
+                    {width: 350, height: 140, modal: true, resizable: false}
+            );
+            if (only_cl_print_btn == 1) $('#print_btn_tr').css('display', 'none');
 
-    print_btn_cl.onclick = function () {
+            print_btn_cl.onclick = function () {
         window.open('control/print.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
     };
 

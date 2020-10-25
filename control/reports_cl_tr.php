@@ -1,24 +1,27 @@
 <?php
 session_start();
-set_time_limit(250); 
+set_time_limit(250);
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 include "../config.php";
 include_once "komissia.php";
 
 
-set_include_path(get_include_path() . PATH_SEPARATOR .
-'PhpExcel/Classes/');
-//подключаем и создаем класс PHPExcel
-include_once 'PHPExcel.php';
-$pExcel = new PHPExcel();
+// Load Composer's autoloader
+require '../vendor/autoload.php';
+
+$pExcel = new Spreadsheet();
 
 
 $boldFont = array(
-	'font'=>array(
-		'name'=>'Arial Cyr',
-		'size'=>'10',
-		'bold'=>true
-	)
+    'font' => array(
+        'name' => 'Arial Cyr',
+        'size' => '10',
+        'bold' => true
+    )
 );
 $hFont = array(
 	'font'=>array(
@@ -35,44 +38,44 @@ $hiFont = array(
 );
 //и позиционирование
 $center = array(
-	'alignment'=>array(
-		'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-		'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER
-	)
+	'alignment'=> array(
+        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+    )
 );
 
 $right = array(
-	'alignment'=>array(
-		'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-		'vertical'=>PHPExcel_Style_Alignment::VERTICAL_TOP
-	)
+	'alignment'=> array(
+        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP
+    )
 );
 $top = array(
-	'alignment'=>array(
-				'vertical'=>PHPExcel_Style_Alignment::VERTICAL_TOP
-	)
+	'alignment'=> array(
+        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP
+    )
 );
 
 $styleArray = array(
 'borders' => array(
 	'allborders' => array(
-		'style' => PHPExcel_Style_Border::BORDER_MEDIUM
-		),
+        'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM
+    ),
 	),
 );
 $styleArray2 = array(
 'borders' => array(
 	'allborders' => array(
-		'style' => PHPExcel_Style_Border::BORDER_THIN
-		),
+        'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+    ),
 	),
 );
 
 $hr = array(
 'borders' => array(
 	'bottom' => array(
-		'style' => PHPExcel_Style_Border::BORDER_THIN
-		),
+        'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+    ),
 	),
 );
 
@@ -175,7 +178,7 @@ $aSheet->setCellValue('O1',"Комиссия (руб.)");
 $aSheet->getStyle('O1')->applyFromArray($center)->applyFromArray($boldFont);
 $aSheet->getStyle('O1')->getAlignment()->setWrapText(true);
 
-$aSheet->getStyle('A1:O1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('EAEAEA');
+$aSheet->getStyle('A1:O1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('EAEAEA');
 
 $aSheet->getStyle('A1:O1')->applyFromArray($styleArray2);
 
@@ -410,10 +413,10 @@ if($row['tr_manager']==$row['manager']) {
 	$aSheet->setCellValue('O'.$p,$komissia);
 } else {
 
-if($_SESSION["group"]==3) $komissia = $komissia/2; 
+    if ($_SESSION["group"] == 3) $komissia = $komissia / 2;
 
-	$aSheet->setCellValue('O'.$p,$komissia);
-	$aSheet->getStyle('O'.$p)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FF765E');
+    $aSheet->setCellValue('O' . $p, $komissia);
+    $aSheet->getStyle('O' . $p)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('FF765E');
 }
 
 
@@ -490,49 +493,54 @@ $aSheet->getColumnDimension('K')->setWidth(13);
 $aSheet->getColumnDimension('L')->setWidth(13);
 $aSheet->getColumnDimension('M')->setWidth(13);
 $aSheet->getColumnDimension('N')->setWidth(10);
-$aSheet->getColumnDimension('O')->setWidth(10);
-$aSheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+    $aSheet->getColumnDimension('O')->setWidth(10);
+    $aSheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 //$aSheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
 $aSheet->getPageSetup()->setPrintArea('A1:G25');
-$aSheet->getPageSetup()->setFitToPage(true);
-$aSheet->getPageSetup()->setFitToWidth(1);
-$aSheet->getPageSetup()->setFitToHeight(0);
-
-//отдаем пользователю в браузер
-include("PHPExcel/Writer/Excel5.php");
-$pExcel->setActiveSheetIndex(0);
-$pExcel->removeSheetByIndex(1);
+    $aSheet->getPageSetup()->setFitToPage(true);
+    $aSheet->getPageSetup()->setFitToWidth(1);
+    $aSheet->getPageSetup()->setFitToHeight(0);
 
 
+    $pExcel->setActiveSheetIndex(0);
+    $pExcel->removeSheetByIndex(1);
 
-header('Content-Type: application/vnd.ms-excel');
 
-if(@$_GET['mode']=='cl'){
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-	switch ((int)$_GET['mode_id']) {
-		case '1': $report_file_name= '_'.$pref_cl.'_'.str_replace(' ','_',$cl).'.xls"' ; break;
-		case '2': $report_file_name= '_'.$_GET['date_start'].'_'.$_GET['date_end'].'.xls"' ; break;
-		case '3': $report_file_name= '_'.$pref_cl.'_'.str_replace(' ','_',$cl).'.xls"' ; break;
+    if (@$_GET['mode'] == 'cl') {
+
+        switch ((int)$_GET['mode_id']) {
+            case '1':
+                $report_file_name = '_' . $pref_cl . '_' . str_replace(' ', '_', $cl) . '.xlsx"';
+                break;
+            case '2':
+                $report_file_name = '_' . $_GET['date_start'] . '_' . $_GET['date_end'] . '.xlsx"';
+                break;
+            case '3':
+                $report_file_name = '_' . $pref_cl . '_' . str_replace(' ', '_', $cl) . '.xlsx"';
+                break;
+        }
+
+        header('Content-Disposition: attachment;filename="report_cl' . $report_file_name);
 }
 
-header('Content-Disposition: attachment;filename="report_cl'.$report_file_name);
+if(@$_GET['mode']=='tr') {
+    if (@$_GET['mode_id'] == 3) {
+        header('Content-Disposition: attachment;filename="report_tr_' . $pref_tr . '_' . str_replace(' ', '_', $tr) . '.xlsx"');
+    }
+    if (@$_GET['mode_id'] == 2) {
+        header('Content-Disposition: attachment;filename="report_tr_' . $_GET['date_start'] . '_' . $_GET['date_end'] . '.xlsx"');
+    }
+    if (@$_GET['mode_id'] == 1) {
+        header('Content-Disposition: attachment;filename="report_tr.xlsx"');
+    }
 }
 
-if(@$_GET['mode']=='tr'){
-if(@$_GET['mode_id']==3){header('Content-Disposition: attachment;filename="report_tr_'.$pref_tr.'_'.str_replace(' ','_',$tr).'.xls"');}if(@$_GET['mode_id']==2){header('Content-Disposition: attachment;filename="report_tr_'.$_GET['date_start'].'_'.$_GET['date_end'].'.xls"');}
-if(@$_GET['mode_id']==1){header('Content-Disposition: attachment;filename="report_tr.xls"');}
-}
 
-header('Cache-Control: max-age=0');
+    header('Cache-Control: max-age=0');
 
-$objWriter = new PHPExcel_Writer_Excel5($pExcel);
-$objWriter->save('php://output');
-
-
-
+    $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($pExcel, 'Xlsx');
+    $writer->save('php://output');
 
 }
-
-?> 
-
-     			

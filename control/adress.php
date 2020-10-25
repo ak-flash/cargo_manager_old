@@ -107,13 +107,15 @@ if(mysql_num_rows($result_order) >= 1){
 
 	            $i = 0;
             while($row = mysql_fetch_array($result_order)) {
-            	
-if($row['adr_mode']==1||$row['adr_mode']==2){$place="<b>Место выгрузки/загрузки:</b> <font size=5>".stripslashes($row['adr_place'])."</font><br><b>Контактное лицо:</b> <font size=4>".stripslashes($row['contact_name'])."</font><br><b>Номер телефона:</b> <font size=4>".stripslashes($row['contact_phone'])."</font>";}
- 
-         
-	              $data->rows[$i]['cell'] =array("<a class=\"button\" id=\"btnEdit\" href=\"#\" onclick=\"$('#fa_adr').load('theme/forms/add_adr.php?adr_id=".$row['id']."');$('#fa_adr').dialog({ title: 'Редактировать адрес №".$row['id']."' },{width: 470,height: 580,modal: true,resizable: false});\">Редактировать</a></fieldset><br><a class=\"button\" id=\"btnDelete\" href=\"#\" onclick=\"$('#result').html('Удалить выбранный адрес?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {\$.post('control/adress.php?mode=delete&id=".$row['id']."', function(data) {jQuery('#table').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание'},{ modal: true },{ resizable: false },{ buttons: { 'Ok': function() { $(this).dialog('close');}}});});}},{text: 'Нет',click: function() {\$(this).dialog('close');}}] });\">Удалить</a></fieldset>",$place);
-	                $i++;
-	        }
+
+                if ($row['adr_mode'] == 1 || $row['adr_mode'] == 2) {
+                    $place = "<b>Место выгрузки/загрузки:</b> <font size=5>" . stripslashes($row['adr_place']) . "</font><br><b>Контактное лицо:</b> <font size=4>" . stripslashes($row['contact_name']) . "</font><br><b>Номер телефона:</b> <font size=4>" . stripslashes($row['contact_phone']) . "</font>";
+                }
+
+
+                $data->rows[$i]['cell'] = array("<a class=\"button\" id=\"btnEdit\" href=\"#\" onclick=\"$('#fa_adr').load('theme/forms/add_adr.php?adr_id=" . $row['id'] . "');$('#fa_adr').dialog({ title: 'Редактировать адрес №" . $row['id'] . "' },{width: 470,height: 650,modal: true,resizable: false});\">Редактировать</a></fieldset><br><a class=\"button\" id=\"btnDelete\" href=\"#\" onclick=\"$('#result').html('Удалить выбранный адрес?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {\$.post('control/adress.php?mode=delete&id=" . $row['id'] . "', function(data) {jQuery('#table').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание'},{ modal: true },{ resizable: false },{ buttons: { 'Ok': function() { $(this).dialog('close');}}});});}},{text: 'Нет',click: function() {\$(this).dialog('close');}}] });\">Удалить</a></fieldset>", $place);
+                $i++;
+            }
 	        }
 
 header("Content-type: text/script;charset=utf-8");
