@@ -304,11 +304,7 @@ if($("#show_hide").val()=='0'){
         $('#table').jqGrid(
             'groupingGroupBy',
             ['group_id'],
-            { groupText: ['
-            <b>Группа: {0}</b>
-            '], groupColumnShow: [false], groupOrder : ['
-            desc
-            '] });
+            { groupText: ['<b>Группа: {0}</b>'], groupColumnShow: [false], groupOrder : ['desc'] });
         }
 
         function load_print_dialog(order_id, order_hash, only_cl_print_btn) {

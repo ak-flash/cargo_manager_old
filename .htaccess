@@ -13,4 +13,7 @@ RewriteRule ^([^\.]+)$ /index.php?page=$1 [NC]
 #RewriteRule ^([^\.]+)$ $1.php [NC,L]
 
 # URL rewrite in NGINX:
-# try_files $uri $uri/ /$uri.php;
+# IN location / { ...
+#if (!-e $request_filename){
+#	rewrite ^/([^\.]+)$ /index.php?page=$1;
+#}

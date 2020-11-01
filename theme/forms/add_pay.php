@@ -247,10 +247,11 @@ echo '$("#way").val('.$del_row['way'].').change();$("#payment_source").val('.$de
                                 } ?> style="width:180px;float:left;">
                                     <option value='0'>Выберите...</option>
                                     <?php
-$query_bill = "SELECT `id`,`c_cash`,`c_bill`,`c_bank`,`company` FROM `bill` WHERE `delete`='0'";
+$query_bill = "SELECT bill.id, bill.c_cash, bill.c_bill, bill.c_bank, bill.company,company.name FROM bill LEFT JOIN company ON bill.company=company.id WHERE bill.delete=0 ORDER BY bill.id DESC, company.name ASC";
 $result_bill = mysql_query($query_bill) or die(mysql_error());
 while($bill_info = mysql_fetch_row($result_bill)) {
-    echo '<option value=' . $bill_info[0] . ' onclick=\'$("#payment_source_id").val("' . $bill_info[4] . '");$("#pay_bill").val("' . $bill_info[0] . '");$("#bill_info_bank").html("' . addslashes($bill_info[3]) . '");$("#bill_info").html("<b>' . $bill_info[2] . '</b>");$("#bill_info_balance").html("<font size=4>Баланс: <b>' . number_format($bill_info[1] / 100, 2, ',', ' ') . '</b></font>");\'>' . $bill_info[2] . '</option>';
+    if($bill_info[0]!=1) $bill_name = substr($bill_info[5], 0, 15).'... - *'.substr($bill_info[2], -4, 4); else $bill_name = $bill_info[5].' - '.$bill_info[2];
+    echo '<option value=' . $bill_info[0] . ' onclick=\'$("#payment_source_id").val("' . $bill_info[4] . '");$("#pay_bill").val("' . $bill_info[0] . '");$("#bill_info_bank").html("' . addslashes($bill_info[3]) . '");$("#bill_info").html("<b>' . $bill_info[2] . '</b>");$("#bill_info_balance").html("<font size=4>Баланс: <b>' . number_format($bill_info[1] / 100, 2, ',', ' ') . '</b></font>");\'>' .$bill_name. '</option>';
 
 } ?> 
 </select></td><td>

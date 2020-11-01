@@ -10,7 +10,7 @@
     <script type="text/javascript">
         $(function () {
 
-            $("#control_menu_css").css({"background": "#BCBCBC", "color": "#000", "text-shadow": "1px 2px 2px #FFF"});
+            $("#control_menu_css").css({ "background": "#BCBCBC", "color": "#000", "text-shadow": "1px 2px 2px #FFF"});
             $('#btnPass').button();
             $('#btnReport').button();
             $('#btnReport_new').button();
@@ -21,7 +21,7 @@
             $('#btnDrivers').button();
             $('#btnManagers').button();
             $('#btnShowDel').button();
-            var table = $('#table');
+            let table = $('#table');
             table.jqGrid({
                 url: 'control/workers.php?mode=workers',
                 datatype: 'json',
