@@ -443,7 +443,7 @@ $tr_pay=(int)$pay[0]+(int)$tr_pay;
 }
 if($tr_pay!="0") $tr_p=($tr_pay/100); else $tr_p="-";
 
-if($cl_pay==$row['cl_cash']*100&&$tr_pay==$row['tr_cash']*100) $aSheet->getStyle('A'.$p.':AH'.$p)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('C7FFA3');
+if($cl_pay==$row['cl_cash']*100&&$tr_pay==$row['tr_cash']*100) $aSheet->getStyle('A'.$p.':AH'.$p)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('C7FFA3');
 
 
 if($row['pretenzia']==1) $pretenzia='Претензия'; else $pretenzia='';
