@@ -681,8 +681,11 @@ $aSheet->getStyle('J'.($p+1))->applyFromArray($center)->applyFromArray($boldFont
 $aSheet->setCellValue('H'.($p+1),'=SUM(H2:H'.($p-1).')');
 $aSheet->getStyle('H'.($p+1))->applyFromArray($center)->applyFromArray($boldFont)->getNumberFormat()->setFormatCode('#,##0.0;[Red](#,##0.0)');
 } else {
-$aSheet->setCellValue('X'.($p+1),'=SUM(X2:X'.($p-1).')');
-$aSheet->getStyle('X'.($p+1))->applyFromArray($center)->applyFromArray($boldFont)->getNumberFormat()->setFormatCode('#,##0;[Red](#,##0)');
+    $aSheet->setCellValue('X' . ($p + 1), '=SUM(X2:X' . ($p - 1) . ')');
+    $aSheet->getStyle('X' . ($p + 1))->applyFromArray($center)->applyFromArray($boldFont)->getNumberFormat()->setFormatCode('#,##0;[Red](#,##0)');
+
+    $aSheet->setCellValue('AG' . ($p + 1), '=SUM(AG2:AG' . ($p - 1) . ')');
+    $aSheet->getStyle('AG' . ($p + 1))->applyFromArray($center)->applyFromArray($boldFont)->getNumberFormat()->setFormatCode('#,##0;[Red](#,##0)');
 }
 
 $aSheet->getColumnDimension('A')->setWidth(15);

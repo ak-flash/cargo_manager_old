@@ -213,27 +213,31 @@ jQuery("#table").trigger("reloadGrid");
 
 &nbsp;&nbsp;|&nbsp;&nbsp;
 <input type="button" id="btnPaymentsList" onclick='$("#fa_listpay").load("theme/forms/add_listpay.php");$("#fa_listpay").dialog({ title: "Список на оплату" },{width: 1050,height: 770,modal: true,resizable: false});' value="Список на оплату" style="font-size: 14px;width: 160px;height:35px;">
-&nbsp;&nbsp;|&nbsp;&nbsp;<input type="button" id="btnDocs" onclick='if(document.getElementById("date_start").value!=""&&document.getElementById("date_end").value!="")window.location.href="control/print_listpay.php?mode=print&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}' value="Непров. выплаты" style="font-size: 12px;width: 150px;height:30px;">
-&nbsp;&nbsp;|&nbsp;&nbsp;
+&nbsp;&nbsp;|&nbsp;&nbsp;<input type="button" id="btnDocs" onclick='if(document.getElementById("date_start").value!=""&&document.getElementById("date_end").value!="")window.location.href="control/print_listpay.php?mode=print&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}'
+                                value="Непров. выплаты" style="font-size: 12px;width: 150px;height:30px;">
+    &nbsp;&nbsp;|&nbsp;&nbsp;
 
-<select name="pays_appoints" style="width:115px;" id="pays_appoints" class="select"><option value="0">Выберите...</option><option value="1000">По всем категориям</option>
-<option value="1033">Наличные</option>
-  <?php
-$query = "SELECT `id`,`app` FROM `pays_appoints` WHERE `auth_id`='3'";
+    <select name="pays_appoints" style="width:115px;" id="pays_appoints" class="select">
+        <option value="0">Выберите...</option>
+        <option value="1000">По всем категориям</option>
+        <option value="1033">Наличные</option>
+        <?php
+$query = "SELECT `id`,`app` FROM `pays_appoints`";
 $result = mysql_query($query) or die(mysql_error());
  while($pays_app= mysql_fetch_row($result)) {
- if($pays_app[0]==2) echo '<option value="'.$pays_app[0].'">'.$pays_app[1].'</option>';
-if($pays_app[0]>6) echo '<option value="'.$pays_app[0].'">'.$pays_app[1].'</option>';
- } 
-  
-  ?>
+ if($pays_app[0]==2||$pays_app[0]==1) echo '<option value="'.$pays_app[0].'">'.$pays_app[1].'</option>';
+        if($pays_app[0]>6) echo '
+        <option value="'.$pays_app[0].'">'.$pays_app[1].'</option>
+        ';
+        }
 
-  
-  </select>
-
+        ?>
 
 
-<input type="button" id="btnPaysReport" onclick='if(document.getElementById("date_start").value!=""&&document.getElementById("date_end").value!="")window.location.href="control/pays_reports.php?mode=pays&app_id="+$("#pays_appoints").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}' value="Отчет" style="font-size: 12px;">
+    </select>
+
+
+    <input type="button" id="btnPaysReport" onclick='if(document.getElementById("date_start").value!=""&&document.getElementById("date_end").value!="")window.location.href="control/pays_reports.php?mode=pays&app_id="+$("#pays_appoints").val()+"&date_start="+document.getElementById("date_start").value+"&date_end="+document.getElementById("date_end").value; else {$("#result").html("Выберите период для отчета!");$("#result").dialog({ title: "Внимание" },{width: 250,height: 140,modal: true,resizable: false},{ buttons: { "Ok": function() { $(this).dialog("close"); } } });}' value="Отчет" style="font-size: 12px;">
 
 
 

@@ -2,12 +2,15 @@
 
 include "../config.php";
 
+
 if (!isset($data)) $data = new stdClass();
 
 $page = (int)$_GET['page'];      // Номер запришиваемой страницы
 $limit = (int)$_GET['rows'];     // Количество запрашиваемых записей
 $sidx = mysql_real_escape_string($_GET['sidx']);      // Номер элемента массива по котору следует производить сортировку // Проще говоря поле, по которому следует производить сортировку
 $sord = mysql_real_escape_string($_GET['sord']);      // Направление сортировки
+
+$ord_cash = [];
 
 $query_pays = "SELECT `cash`,`order` FROM `pays` WHERE `delete`='0' AND `appoint`='1' AND `status`='1'";
 $result_pays = mysql_query($query_pays) or die(mysql_error());
@@ -17,17 +20,16 @@ while ($pay = mysql_fetch_row($result_pays)) {
 }
 
 
-if ($_GET['mode'] == 'rp_load')
-{
+if ($_GET['mode'] == 'rp_load') {
 
-$query_user = "SELECT `id`,`name` FROM `workers`";
-$result_user = mysql_query($query_user) or die(mysql_error());
+    $query_user = "SELECT `id`,`name` FROM `workers`";
+    $result_user = mysql_query($query_user) or die(mysql_error());
 
-while($user = mysql_fetch_row($result_user)) {
-$pieces = explode(" ", $user[1]);
-$managers=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2).".";
-$users[$user[0]]= $managers;
-}
+    while ($user = mysql_fetch_row($result_user)) {
+        $pieces = explode(" ", $user[1]);
+        $managers = $pieces[0] . " " . substr($pieces[1], 0, 2) . ". " . substr($pieces[2], 0, 2) . ".";
+        $users[$user[0]] = $managers;
+    }
 
 
 
@@ -125,9 +127,9 @@ case '4': $pref='ЗАО';break;
 case '5': $pref='';break;}
 
 
-
-if ($date_start!=''){
-$query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan` FROM `orders` WHERE `client`='".$row['id']."' AND DATE(`data`) BETWEEN '".$date_start."' AND '".$date_end."' ORDER BY `Id` DESC";} else $query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan` FROM `orders` WHERE `client`='".$row['id']."' ORDER BY `Id` DESC";
+    if ($date_start != '') {
+        $query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan`,`cl_rashod_sb`,`tr_gruz_worker`,`cl_rashod_na_cl` FROM `orders` WHERE `client`='" . $row['id'] . "' AND DATE(`data`) BETWEEN '" . $date_start . "' AND '" . $date_end . "' ORDER BY `Id` DESC";
+    } else $query_ord = "SELECT `id`,`cl_cash`,`cl_tfpay`,`cl_event`,`date_in1`,`date_in2`,`date_out1`,`date_out2`,`date_plan`,`cl_rashod_sb`,`tr_gruz_worker`,`cl_rashod_na_cl` FROM `orders` WHERE `client`='" . $row['id'] . "' ORDER BY `Id` DESC";
 
 
 $result_ord = mysql_query($query_ord) or die(mysql_error());
@@ -180,7 +182,7 @@ if($difference_in_days>0)$cash_el_plan=(int)$cash_el_plan+((int)$orders[1]-(int)
 
 $cl_pay_all=(int)$cl_pay_all+(int)$ord_cash[$orders[0]];
 
-$cl_pay_need=(int)$cl_pay_need+(int)$orders[1];
+    $cl_pay_need = (int)$cl_pay_need + (int)$orders[1] - (int)$orders[9] - (int)$orders[10] - (int)$orders[11];
 
 } 
 

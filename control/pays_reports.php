@@ -317,26 +317,32 @@ $data=date("d/m/Y",strtotime($row['date']));
 $cash=$row['cash']/100;
 
 $aSheet->setCellValue('A'.$p,$row['order']);
-$aSheet->getStyle('A'.$p)->applyFromArray($center);
-$aSheet->setCellValue('B'.$p,$data);
-$aSheet->getStyle('B'.$p)->applyFromArray($center);
-$aSheet->setCellValue('C'.$p,$cash);
-$aSheet->getStyle('C'.$p)->applyFromArray($center);
-$aSheet->setCellValue('D'.$p,$status);
-$aSheet->getStyle('D'.$p)->applyFromArray($center); 
-$aSheet->setCellValue('E'.$p,$с_info[0]);
+$aSheet->getStyle('A' . $p)->applyFromArray($center);
+    $aSheet->setCellValue('B' . $p, $data);
+    $aSheet->getStyle('B' . $p)->applyFromArray($center);
+    $aSheet->setCellValue('C' . $p, $cash);
+    $aSheet->getStyle('C' . $p)->applyFromArray($center);
+    $aSheet->setCellValue('D' . $p, $status);
+    $aSheet->getStyle('D' . $p)->applyFromArray($center);
+    $aSheet->setCellValue('E' . $p, $с_info[0]);
 
 
-$aSheet->getStyle('E'.$p)->applyFromArray($center); 
-
-if($app_id==2) {
-$query_tr = "SELECT `transp`,`tr_manager`,`tr_cont` FROM `orders` WHERE `id`='".mysql_escape_string($row['order'])."'";
-$result_tr = mysql_query($query_tr) or die(mysql_error());
-$tr= mysql_fetch_row($result_tr);
+    $aSheet->getStyle('E' . $p)->applyFromArray($center);
+    $aSheet->setCellValue('F' . $p, $car_name . ' ' . $row['notify']);
 
 
+    if ($app_id == 2) {
+        $query_tr = "SELECT `transp`,`tr_manager`,`tr_cont` FROM `orders` WHERE `id`='" . mysql_escape_string($row['order']) . "'";
+        $result_tr = mysql_query($query_tr) or die(mysql_error());
+        $tr = mysql_fetch_row($result_tr);
 
-$aSheet->setCellValue('F'.$p,$transporters[$tr[0]]);} else $aSheet->setCellValue('F'.$p,$car_name.' '.$row['notify']);
+        $aSheet->setCellValue('F' . $p, $transporters[$tr[0]]);
+
+    }
+
+
+
+
 $aSheet->getStyle('A'.$p.':F'.$p)->applyFromArray($styleArray3);
 if($с_info[0]=='Касса') $aSheet->setCellValue('E'.$p,$company_search[$tr[2]].' (НАЛ)'); else $aSheet->setCellValue('E'.$p,$company_search[$tr[2]]);
 
@@ -398,18 +404,29 @@ $cash=$row['cash']/100;
 $aSheet->setCellValue('A'.($m+$p),$row['id']);
 $aSheet->getStyle('A'.($m+$p))->applyFromArray($center);
 $aSheet->setCellValue('B'.($m+$p),$data);
-$aSheet->getStyle('B'.($m+$p))->applyFromArray($center);
-$aSheet->setCellValue('C'.($m+$p),$cash);
-$aSheet->getStyle('C'.($m+$p))->applyFromArray($center);
-$aSheet->setCellValue('D'.($m+$p),$status);
-$aSheet->getStyle('D'.($m+$p))->applyFromArray($center); 
-$aSheet->setCellValue('E'.($m+$p),$с_info[0]);
+    $aSheet->getStyle('B' . ($m + $p))->applyFromArray($center);
+    $aSheet->setCellValue('C' . ($m + $p), $cash);
+    $aSheet->getStyle('C' . ($m + $p))->applyFromArray($center);
+    $aSheet->setCellValue('D' . ($m + $p), $status);
+    $aSheet->getStyle('D' . ($m + $p))->applyFromArray($center);
+    $aSheet->setCellValue('E' . ($m + $p), $с_info[0]);
 
-$aSheet->setCellValue('F'.($m+$p),$row['notify']);
+    $aSheet->setCellValue('F' . ($m + $p), $row['notify']);
 
-$aSheet->getStyle('A'.($m+$p).':F'.($m+$p))->applyFromArray($styleArray3);
+    $aSheet->getStyle('A' . ($m + $p) . ':F' . ($m + $p))->applyFromArray($styleArray3);
 
-$m++;
+    if ($app_id == 1) {
+        $query_cl = "SELECT orders.client, orders.manager, orders.cl_cont, clients.name FROM orders LEFT JOIN clients ON orders.client=clients.id WHERE orders.id=" . (int)$row['order'];
+        $result_cl = mysql_query($query_cl) or die(mysql_error());
+        $cl = mysql_fetch_row($result_cl);
+
+        $aSheet->setCellValue('G' . ($m + $p), $cl[3]);
+        $aSheet->setCellValue('G' . ($p + 4), 'Клиент');
+        $aSheet->getStyle('G' . ($p + 4))->applyFromArray($center)->applyFromArray($boldFont);
+    }
+
+
+    $m++;
 }
 
 $aSheet->setCellValue('E'.($m+$p+1),($m-5).' платежей');
@@ -641,7 +658,7 @@ case '1': $status='Проведен';break;
 $query_order= "SELECT `manager`,`client` FROM `orders` WHERE `Id`=".mysql_escape_string($row['order']);
 $result_order = mysql_query($query_order) or die(mysql_error());
 $row_order = mysql_fetch_array($result_order);
-  
+
 $query_cl = "SELECT `pref`,`name` FROM `clients` WHERE `id`='".mysql_escape_string($row_order['client'])."'";
 $result_cl = mysql_query($query_cl) or die(mysql_error());
 $client = mysql_fetch_row($result_cl);
@@ -698,33 +715,33 @@ $aSheet->setCellValue('C'.($m+7),'(Гришкевич И.А.)');
 $aSheet->mergeCells('C'.($m+7).':D'.($m+7));
 
 $aSheet->setCellValue('D'.($m+6),'Принял');
-$aSheet->getStyle('D'.($m+6))->applyFromArray($right)->applyFromArray($boldFont);
+    $aSheet->getStyle('D' . ($m + 6))->applyFromArray($right)->applyFromArray($boldFont);
 
-$aSheet->setCellValue('E'.($m+7),'(Коробко Д.И.)');
+    $aSheet->setCellValue('E' . ($m + 7), '(Коробко Д.И.)');
 
 
-$aSheet->getStyle('C'.($m+6))->applyFromArray($styleArray4);
-$aSheet->getStyle('E'.($m+6))->applyFromArray($styleArray4);
+    $aSheet->getStyle('C' . ($m + 6))->applyFromArray($styleArray4);
+    $aSheet->getStyle('E' . ($m + 6))->applyFromArray($styleArray4);
 
 }
 
-$aSheet->getColumnDimension('A')->setAutoSize(t​rue);
-$aSheet->getColumnDimension('B')->setAutoSize(t​rue);
-$aSheet->getColumnDimension('C')->setAutoSize(t​rue);
-$aSheet->getColumnDimension('D')->setAutoSize(t​rue);
-$aSheet->getColumnDimension('E')->setAutoSize(t​rue);
-$aSheet->getColumnDimension('F')->setAutoSize(t​rue);
-$aSheet->getColumnDimension('G')->setAutoSize(t​rue);
-$aSheet->getColumnDimension('N')->setAutoSize(t​rue);
+    $aSheet->getColumnDimension('A')->setAutoSize(true);
+    $aSheet->getColumnDimension('B')->setAutoSize(true);
+    $aSheet->getColumnDimension('C')->setAutoSize(true);
+    $aSheet->getColumnDimension('D')->setAutoSize(true);
+    $aSheet->getColumnDimension('E')->setAutoSize(true);
+    $aSheet->getColumnDimension('F')->setAutoSize(true);
+    $aSheet->getColumnDimension('G')->setAutoSize(true);
+    $aSheet->getColumnDimension('N')->setAutoSize(true);
 
-$aSheet->getPageSetup()->setFitToPage(true);
-$aSheet->getPageSetup()->setFitToWidth(1);
-$aSheet->getPageSetup()->setFitToHeight(0);
+    $aSheet->getPageSetup()->setFitToPage(true);
+    $aSheet->getPageSetup()->setFitToWidth(1);
+    $aSheet->getPageSetup()->setFitToHeight(0);
 
 //отдаем пользователю в браузер
-include("PHPExcel/Writer/Excel5.php");
-$pExcel->setActiveSheetIndex(0);
-$pExcel->removeSheetByIndex(1);
+    include("PHPExcel/Writer/Excel5.php");
+    $pExcel->setActiveSheetIndex(0);
+    $pExcel->removeSheetByIndex(1);
 
 
 $objWriter = new PHPExcel_Writer_Excel5($pExcel);
