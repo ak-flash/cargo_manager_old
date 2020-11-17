@@ -155,33 +155,33 @@ if (!empty($_GET['order'])) {
 
         var cash = data * 100 / cl_cash;
         if (cash.toPrecision(2) >= 20) {
-            $quality = 'отличная';
-            $cash_ok = 2;
+            quality = 'отличная';
+            cash_ok = 2;
         }
         if (cash.toPrecision(2) < 20 && cash.toPrecision(2) >= 10) {
-            $quality = 'хорошая';
-            $cash_ok = 2;
+            quality = 'хорошая';
+            cash_ok = 2;
             document.getElementById('security_code').style.visibility = "hidden";
         }
         if (cash.toPrecision(2) < 10 && cash.toPrecision(2) >= 6) {
-            $quality = 'удовлетворительная';
-            $cash_ok = 2;
+            quality = 'удовлетворительная';
+            cash_ok = 2;
             document.getElementById('security_code').style.visibility = "hidden";
         }
         if (cash.toPrecision(2) < 6 && cash.toPrecision(2) >= 0) {
-            $quality = 'заявка сомнительной рентабельности';
-            $cash_ok = 2;
+            quality = 'заявка сомнительной рентабельности';
+            cash_ok = 2;
             document.getElementById('security_code').style.visibility = "hidden";
         }
         if (cash.toPrecision(2) < 0) {
-            $quality = 'Внимание! Доход отсутствует!';
-            $cash_ok = 2;
+            quality = 'Внимание! Доход отсутствует!';
+            cash_ok = 2;
             document.getElementById('security_code').style.visibility = "hidden";
         }
 
-        $('#quality').html(cash.toPrecision(3) + '% - ' + $quality);
+        $('#quality').html(cash.toPrecision(3) + '% - ' + quality);
         $('#komissia').html(data.toFixed(0));
-        $('#cash_ok').html('<input type="hidden" name="cash_ok" id="cash_ok" value="' + $cash_ok + '">');
+        $('#cash_ok').html('<input type="hidden" name="cash_ok" id="cash_ok" value="' + cash_ok + '">');
 
     }
 

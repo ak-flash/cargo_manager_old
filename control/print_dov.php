@@ -75,7 +75,7 @@ return iconv("UTF-8", "windows-1251", $temp);
          9=>'девятьсот'
          );
     
-     protected function _ending($value, array $endings = array()) {
+     protected static function _ending($value, array $endings = array()) {
          $result = '';
          if ($value < 2) $result = $endings[0];
          elseif ($value < 5) $result = $endings[1];
@@ -84,7 +84,7 @@ return iconv("UTF-8", "windows-1251", $temp);
          return $result;   
      }
     
-     protected function _triade($value, $mode = self::MALE, array $endings = array()) {
+     protected static function _triade($value, $mode = self::MALE, array $endings = array()) {
          $result = '';
          if ($value == 0) { return $result; }
          $triade = str_split(str_pad($value,3,'0',STR_PAD_LEFT));
@@ -96,7 +96,7 @@ return iconv("UTF-8", "windows-1251", $temp);
          return $result;
      }
     
-     public function asString($value, $mode = self::MALE, array $endings = array()) {
+     public static function asString($value, $mode = self::MALE, array $endings = array()) {
          if (empty($endings)) { $endings = array('','',''); }
          $result = '';
          $steps = ceil(strlen($value)/3);

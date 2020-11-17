@@ -27,11 +27,11 @@ if(@$_POST['w_phone']==""||mb_ereg("[^0-9-]",$_POST['w_phone'])){echo $error.'"�
 
 //if((int)$_POST['w_group']!=5&&@$_POST['w_login']==""||mb_ereg("[^A-Za-z0-9_-]",$_POST['w_login'])){echo $error.'"Логин"'.$err.ValFail('w_login'); $validate=false;} else {echo ValOk('w_login');}
 
-if((int)$_POST['w_group']!=5&&@$_POST['w_voip']!=""&&mb_ereg("[^A-Za-z0-9_-]",$_POST['w_voip'])){echo $error.'"Логин Rynga.com"'.$err.ValFail('w_voip'); $validate=false;} else {echo ValOk('w_voip');}
+//if((int)$_POST['w_group']!=5&&@$_POST['w_voip']!=""&&mb_ereg("[^A-Za-z0-9_-]",$_POST['w_voip'])){echo $error.'"Логин Rynga.com"'.$err.ValFail('w_voip'); $validate=false;} else {echo ValOk('w_voip');}
 
 //if(@$_POST['w_icq']!=""&&mb_ereg("[^0-9]",$_POST['w_icq'])){echo $error.'"ICQ"'.$err.ValFail('w_icq'); $validate=false;}  else {echo ValOk('w_icq');}
 
-if(@$_POST['w_pass']!=""&&mb_ereg("[^A-Za-z0-9_-]",$_POST['w_pass'])){echo $error.'"Пароль. (Только латинские буквы и цифры!)"'.$err.ValFail('w_pass'); $validate=false;} else {echo ValOk('w_pass');}
+//if(@$_POST['w_pass']!=""&&mb_ereg("[^A-Za-z0-9_-]",$_POST['w_pass'])){echo $error.'"Пароль. (Только латинские буквы и цифры!)"'.$err.ValFail('w_pass'); $validate=false;} else {echo ValOk('w_pass');}
 
 if(@$_POST['w_data']==""){echo $error.'"Дата приема на работу"'.$err.ValFail('w_data'); $validate=false;}  else {echo ValOk('w_data');}
 	

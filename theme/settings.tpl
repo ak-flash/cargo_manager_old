@@ -59,6 +59,7 @@ $dates_num= mysql_fetch_row($result_date);
 </div><div id="fa_app" style="background:#F8F8F8;"></div>
 
 
+<!--
 <fieldset style="float:left;width:320px;margin:20px;font-size:15px;"><legend>Настройки</legend>
 <table><tr>
 <td width="240">Рабочих дней в текущем месяце: </td><td><input name="now_month" id="now_month" style="width: 25px;" class="input" value="<?php echo $dates_num[0];?>"></td></tr>
@@ -70,22 +71,32 @@ $dates_num= mysql_fetch_row($result_date);
 <td><a href="#" id="btn_save" onclick='$.post("control/admin.php?mode=save_date&now_month="+$("#now_month").val()+"&last_month="+$("#last_month").val()+"&now_date="+$("#now_date").val(), function(data) {alert(data);});' style="font-size:16px;">Сохранить</a><td></td></tr>
 </table>
 </fieldset>
+--!>
+
+<fieldset style="float:left;width:320px;margin:20px;font-size:15px;"><legend>Ссылки</legend>
+	<a class="button3" href="tools/file/file.php" style="">Файловый менеджер</a>
+	<a class="button" href="tools/mysql.php" style="">Менеджер базы данных</a>
+</fieldset>
+
 
 <fieldset style="width:520px;margin:20px;font-size:15px;"><legend>Дополнительно: </legend>
 &nbsp;&nbsp;<button class="button3" id="btnBackup" onclick="backupDB('cf2efc22cf2')" style="width:230px;">Сохранить БАЗУ данных</button>
-&nbsp;&nbsp;|&nbsp;&nbsp;
-<a class="button" id="btnAppoints" href="javascript:" onclick='$("#fa_app").load("theme/forms/add_appoints.php");$("#fa_app").dialog({ title: "Назначения платежей" },{width: 950,height: 710,modal: true,resizable: false});' style="width:170px;">Категории платежей</a>
+
+
 
 
 
 </fieldset>
 
-<fieldset style="width:520px;margin:20px;font-size:15px;"><legend>Заявки: </legend>
+<fieldset style="width:520px;margin:20px;font-size:15px;"><legend>Программы: </legend>
     <div id="security_code_admin" style="display: none;">
         Пароль: <input name="order_code_admin" id="order_code_admin" value="" class="input" style="width: 135px;">
     </div>
     <input type="button" id="btnPass" onclick='$("#security_code_admin").dialog({ "title": "Для сохранения нерентабельной заявки" },{ width: 300 },{ modal: true },{ resizable: false },{ buttons: { "Добавить": function() {if ($("#order_code_admin").val()!=""){$.post("control/admin.php?order_code="+$("#order_code_admin").val(), function(data) {alert(data);}); $("#order_code_admin").val(""); $(this).dialog("close");} else {alert("Пароль не может быть пустым!");} } } });' value="Уст. пароль" style="font-size: 12px;width: 100px;height:35px;margin-top:5px;">
+	&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a class="button" id="btnAppoints" href="javascript:" onclick='$("#fa_app").load("theme/forms/add_appoints.php");$("#fa_app").dialog({ title: "Назначения платежей" },{width: 950,height: 710,modal: true,resizable: false});' style="width:170px;">Категории платежей</a>
 </fieldset>
+
 <!--------
 
 <div id="payments_list">

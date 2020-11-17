@@ -14,6 +14,9 @@ RewriteRule ^([^\.]+)$ /index.php?page=$1 [NC]
 
 # URL rewrite in NGINX:
 # IN location / { ...
-#if (!-e $request_filename){
+#if (!-f $request_filename){
+#	set $rule_0 1$rule_0;
+#}
+#if ($rule_0 = "1"){
 #	rewrite ^/([^\.]+)$ /index.php?page=$1;
 #}
