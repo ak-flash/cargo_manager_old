@@ -1,5 +1,5 @@
 <?php
-$_GET['qqfile']=iconv('UTF-8', 'windows-1251', $_GET['qqfile']);
+//$_GET['qqfile']=iconv('windows-1251', 'UTF-8', $_GET['qqfile']);
 /**
  * Handle file uploads via XMLHttpRequest
  */

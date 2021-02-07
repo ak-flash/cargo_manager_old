@@ -63,7 +63,7 @@ $query_car = "SELECT * FROM `tr_autopark` WHERE `id`='".$car_id."'";
 $result_car = mysql_query($query_car) or die(mysql_error());
 $car_info = mysql_fetch_row($result_car);
      
-echo '$("#car_name").val("'.addslashes($car_info[2]).'");$("#car_number").val("'.addslashes($car_info[3]).'");$("#car_m").val("'.$car_info[4].'");$("#car_v").val("'.$car_info[5].'");$("#car_kuzov").val("'.$car_info[12].'").change();$("#car_extra_name").val("'.$car_info[7].'");$("#car_extra_number").val("'.$car_info[8].'");$("#car_driver_name").val("'.$car_info[9].'");$("#car_driver_phone").val("'.$car_info[11].'");$("#car_owner").val("'.addslashes($car_info[14]).'");$("#car_owner_doc").val("'.addslashes($car_info[15]).'");$("#car_owner_check").val("'.$car_info[18].'").change();';
+echo '$("#car_name").val("'.addslashes($car_info[2]).'");$("#car_number").val("'.addslashes($car_info[3]).'");$("#car_m").val("'.$car_info[4].'");$("#car_v").val("'.$car_info[5].'");$("#car_kuzov").val("'.$car_info[12].'").change();$("#car_extra_name").val("'.$car_info[7].'");$("#car_extra_number").val("'.$car_info[8].'");$("#car_driver_name").val("'.$car_info[9].'");$("#car_driver_phone").val("'.$car_info[11].'");$("#car_driver_inn").val("'.$car_info[20].'");$("#car_owner").val("'.addslashes($car_info[14]).'");$("#car_owner_doc").val("'.addslashes($car_info[15]).'");$("#car_owner_type").val("'.$car_info[21].'").change();';
 
 $car_doc = explode('|',$car_info[10]); 
 echo '$("#car_driver_doc1").val("'.$car_doc[0].'");$("#car_driver_doc2").val("'.$car_doc[1].'");$("#car_driver_doc3").val("'.$car_doc[2].'");';
@@ -144,20 +144,23 @@ if (@$_GET['edit']=="1"){echo '<input type="hidden" name="edit" id="edit" value=
 </td></tr>
 </table>
 <fieldset style="margin-left:-5px;"><legend>Собственник:</legend>
-<table><tr><td align="right" width="150">
+<table>
+<tr>
+  <td align="right" width="150">Тип владения:</td><td>
+    <select name="car_owner_type" id="car_owner_type" class="select">
+      <option value="1">Собственность</option>
+      <option value="2">Аренда</option>
+      <option value="3">Лизинг</option>
+    </select>
+</td>
+</tr>
+
+  <tr><td align="right" width="150">
 Ф.И.О.:</td><td><input name="car_owner" id="car_owner" style="width: 200px;"  placeholder="Укажите Ф.И.О. полностью" class="input"></td></tr><tr>
 <td align="right">Свидетельство ТС:</td><td><input name="car_owner_doc" id="car_owner_doc" style="width: 200px;"  placeholder="Укажите номер и серию" class="input"></td>
 </tr>
 
-<tr><td align="right" width="150">Статус:</td><td>
-<select name="car_owner_check" id="car_owner_check" class="select">
-<option value="0" onclick="$('#car_check_mail').val(0);">не проверялся</option>
-<option value="1" onclick="$('#car_check_mail').val(1);">ожидает проверки</option>
-<option value="2" onclick="$('#car_check_mail').val(1);">подтвержден</option>
-<option value="3" onclick="$('#car_check_mail').val(1);">недостоверные данные</option>
-</select>
-</td>
-</tr>
+
 <tr><td colspan="2">
 <?php if ($car_id!=0){
 echo '<table cellspacing="5" width="290"><tr><td valign="middle"><b>СТС:</b></td><td valign="middle" width="170">
@@ -218,6 +221,9 @@ echo '</div></td><td valign="top" width="100"><div id="file-uploader_sts_dop" st
 </td></tr>
 <tr><td align="right">Когда выдан:</td><td>
 <input name="car_driver_doc3" id="car_driver_doc3" style="width: 100px;"  placeholder="Паспорт" class="input">
+</td></tr>
+<tr><td align="right"><b>ИНН:</b></td><td>
+<input name="car_driver_inn" id="car_driver_inn" style="width: 150px;"  placeholder="Укажите Инн" class="input">
 </td></tr>
 <tr><td align="right"><b>Телефон:</b></td><td>
 <input name="car_driver_phone" id="car_driver_phone" style="width: 150px;"  placeholder="Укажите телефон" class="input">

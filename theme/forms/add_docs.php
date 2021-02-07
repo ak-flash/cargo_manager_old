@@ -185,7 +185,7 @@ if(is_dir("../../Uploads/".$row['order']."/cl/")){
 $dir = opendir("../../Uploads/".$row['order']."/cl");
 while(($file = readdir($dir))) 
   { 
-   if($file!="."&&$file!="..") echo '<a href="../../Uploads/'.$row['order'].'/cl/'.iconv('windows-1251', 'UTF-8', $file).'" target="_blank" style="color:#000;">'.iconv('windows-1251', 'UTF-8', $file)."</a><br><br>";
+   if($file!="."&&$file!="..") echo '<a href="../../Uploads/'.$row['order'].'/cl/'.$file.'" target="_blank" style="color:#000;">'.$file."</a><br><br>";
   } 
   closedir($dir);    
 }
@@ -199,7 +199,7 @@ if(is_dir("../../Uploads/".$row['order']."/tr/")){
 $dir = opendir("../../Uploads/".$row['order']."/tr");
 while(($file = readdir($dir))) 
   { 
-   if($file!="."&&$file!="..") echo '<a href="../../Uploads/'.$row['order'].'/tr/'.iconv('windows-1251', 'UTF-8', $file).'" target="_blank" style="color:#000;">'.iconv('windows-1251', 'UTF-8', $file)."</a><br>";
+   if($file!="."&&$file!="..") echo '<a href="../../Uploads/'.$row['order'].'/tr/'.$file.'" target="_blank" style="color:#000;">'.$file."</a><br>";
   } 
   closedir($dir);    
 }

@@ -192,7 +192,7 @@ $x=0;
 while ($x<=(count($str_in)-2)) {$ways[]=$str_in[$x];$x++;}
  }
  }
-  if(count($ways)>=1){
+  if(!empty($ways)&&count($ways)>=1){
 $query_adress = "SELECT `city`,`obl` FROM `adress` WHERE `id` IN (".implode(',' ,  $ways).") ";
 $result_adress = mysql_query($query_adress) or die(mysql_error());
 while($row_adr= mysql_fetch_row($result_adress)) {

@@ -2,6 +2,8 @@
 session_start();
 include "../../config.php";
 
+
+
 if (!empty($_GET['order'])) {
 
     $order = (int)$_GET['order'];
@@ -14,6 +16,8 @@ if (!empty($_GET['order'])) {
     $result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
     $str_auto = explode('&', $row['tr_auto']);
+} else {
+    $order = '';
 }
 ?>
 
@@ -835,7 +839,7 @@ if (!empty($_GET['order'])) {
 
     <div id="order_tabs">
         <ul>
-            <li><a href="#order_tabs-1" <?php if ($_GET['gruz_id'] != '') echo 'style="display:none;"'; ?>>Клиент</a>
+            <li><a href="#order_tabs-1" <?php if (isset($_GET['gruz_id'])&&$_GET['gruz_id']!='') echo 'style="display:none;"'; ?> >Клиент</a>
             </li>
             <li><a href="#order_tabs-2">Перевозчик</a></li>
             <li><a href="#order_tabs-3">Адреса</a></li>
@@ -1021,10 +1025,8 @@ $("#fa_cl").dialog({ title: "Редактировать клиента №"+$("#
 
             <fieldset>
                 <legend>Дополнительно:</legend>
-                <input type="checkbox" name="krugoreis" id="krugoreis" <?php if ($row['krugoreis'] == '1') {
-                    echo 'checked';
-                } ?> value="<?php echo $row['krugoreis']; ?>"
-                       onclick="if(this.checked){$('#krugoreis').val(1);} else {$('#krugoreis').val(0);}"> кругорейс
+                <input type="checkbox" name="krugoreis" id="krugoreis"  
+                <?=(!empty($row)&&$row['krugoreis'] == '1') ? 'checked' : '' ?> value="<?=!empty($row) ? $row['krugoreis'] : ''?>" onclick="if(this.checked){$('#krugoreis').val(1);} else {$('#krugoreis').val(0);}"> кругорейс
                 <div id="ati_km"></div>
             </fieldset>
 

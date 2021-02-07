@@ -370,4 +370,10 @@ if(isset($_GET['groupping']))
     }
 }
 
+if(@$_GET['mode']=="delete_file")
+{
+	$filename = $_GET['filename'];
+
+}
+
 ?>

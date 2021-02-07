@@ -10,7 +10,7 @@ $storage = new StorageClient([
     'keyFile' => json_decode(file_get_contents('../'.GOOGLE_CLOUD_STORAGE.'.json'), true)
 ]);
 
-$bucket = $storage->bucket('ak-flash-bucket');
+$bucket = $storage->bucket('cargo-manager');
 
 $tables = '*';
 

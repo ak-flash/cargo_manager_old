@@ -42,24 +42,28 @@ if($car_load1=="1"&&$car_load2=="2"&&$car_load3=="3") $car_load_save=7;
 $car_extra_name=mysql_real_escape_string(stripslashes($_POST['car_extra_name']));
 $car_extra_number=mysql_real_escape_string(stripslashes($_POST['car_extra_number']));
 $car_driver_name=mysql_real_escape_string(stripslashes($_POST['car_driver_name']));
+
+$car_driver_inn=(int)$_POST['car_driver_inn'];
+
 $car_driver_doc=mysql_real_escape_string(stripslashes($_POST['car_driver_doc1'])).'|'.mysql_real_escape_string(stripslashes($_POST['car_driver_doc2'])).'|'.mysql_real_escape_string(stripslashes($_POST['car_driver_doc3']));
 $car_driver_phone=mysql_real_escape_string(stripslashes($_POST['car_driver_phone']));
 $car_owner=mysql_real_escape_string(stripslashes($_POST['car_owner']));
 $car_owner_doc=mysql_real_escape_string(stripslashes($_POST['car_owner_doc']));
 $car_owner_check=mysql_real_escape_string(stripslashes($_POST['car_owner_check']));
 
-$car_check_mail=(int)$_POST['car_check_mail'];
 
+
+$car_owner_type=(int)$_POST['car_owner_type'];
 
 
 $car_notify=mysql_real_escape_string(stripslashes($_POST['car_notify']));
 
 if(@$_POST['edit']=="1"){
-$query = "UPDATE `tr_autopark` SET `transporter`='$transporter',`car_name`='$car_name',`car_number`='$car_number',`car_m`='$car_m',`car_v`='$car_v',`car_load`='$car_load_save',`car_extra_name`='$car_extra_name',`car_extra_number`='$car_extra_number',`car_driver_name`='$car_driver_name',`car_driver_doc`='$car_driver_doc',`car_driver_phone`='$car_driver_phone',`car_kuzov`='$car_kuzov',`car_owner`='$car_owner',`car_owner_doc`='$car_owner_doc',`check`='$car_owner_check',`car_notify`='$car_notify',`check_mail`='$car_check_mail' WHERE `id`='".mysql_escape_string($_POST['car_idd'])."'";
+$query = "UPDATE `tr_autopark` SET `transporter`='$transporter',`car_name`='$car_name',`car_number`='$car_number',`car_m`='$car_m',`car_v`='$car_v',`car_load`='$car_load_save',`car_extra_name`='$car_extra_name',`car_extra_number`='$car_extra_number',`car_driver_name`='$car_driver_name',`car_driver_doc`='$car_driver_doc',`car_driver_phone`='$car_driver_phone',`car_kuzov`='$car_kuzov',`car_owner`='$car_owner',`car_owner_doc`='$car_owner_doc',`car_notify`='$car_notify',`car_owner_type`='$car_owner_type',`car_driver_inn`='$car_driver_inn' WHERE `id`='".mysql_escape_string($_POST['car_idd'])."'";
 }
 else
 {
-$query = "INSERT INTO `tr_autopark` (`transporter`,`car_name`,`car_number`,`car_m`,`car_v`,`car_load`,`car_extra_name`,`car_extra_number`,`car_driver_name`,`car_driver_doc`,`car_driver_phone`,`car_kuzov`,`car_owner`,`car_owner_doc`,`check`,`car_notify`) VALUES ('$transporter','$car_name','$car_number','$car_m','$car_v','$car_load_save','$car_extra_name','$car_extra_number','$car_driver_name','$car_driver_doc','$car_driver_phone','$car_kuzov','$car_owner','$car_owner_doc','$car_owner_check','$car_notify')";
+$query = "INSERT INTO `tr_autopark` (`transporter`,`car_name`,`car_number`,`car_m`,`car_v`,`car_load`,`car_extra_name`,`car_extra_number`,`car_driver_name`,`car_driver_doc`,`car_driver_phone`,`car_kuzov`,`car_owner`,`car_owner_doc`,`car_notify`,`car_driver_inn`,`car_owner_type`) VALUES ('$transporter','$car_name','$car_number','$car_m','$car_v','$car_load_save','$car_extra_name','$car_extra_number','$car_driver_name','$car_driver_doc','$car_driver_phone','$car_kuzov','$car_owner','$car_owner_doc','$car_notify','$car_driver_inn','$car_owner_type')";
 }
 $result = mysql_query($query) or die(mysql_error());
 

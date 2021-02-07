@@ -826,7 +826,7 @@
         highlightMatches: true, // whether all matches within the string should be highlighted with matchClass
         highlightMatchesRegExModifier: 'i', // 'i' for case-insensitive, 'g' for global (all occurrences), or combine
 		matchAny: true, // for client-side filtering ONLY, match any occurrence of the search term in the result (e.g. "ar" would find "area" and "cart")
-        minChars: 1, // the minimum number of characters the user must enter before a search is executed
+        minChars: 3, // the minimum number of characters the user must enter before a search is executed
         showArrow: true, // set to false to simulate google suggest
         arrowQuery: '', // the query to run when the arrow is clicked
         onSelect: false, // function to run when a result is selected

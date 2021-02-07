@@ -116,7 +116,7 @@ case '3': $pref_cont='Индивидуальный предпринимател�
 if($print_okpo==0)$print_okpo="";
 
 $d = getdate();
-switch ($d[mon]) {
+switch ($d["mon"]) {
 case '1': $month='января';break;
 case '2': $month='февраля';break;
 case '3': $month='марта';break;
@@ -162,13 +162,13 @@ $output = file_get_contents($filename);
 
 
 $output = str_replace("<<id>>",convert($contract),$output);
-$output = str_replace("<<date>>",convert($d[mday].$d[mon].$d[year]),$output);
-$output = str_replace("<<mday>>",$d[mday],$output);
+$output = str_replace("<<date>>",convert($d["mday"].$d["mon"].$d["year"]),$output);
+$output = str_replace("<<mday>>",$d["mday"],$output);
 $output = str_replace("<<month>>",convert($month),$output);
-$output = str_replace("<<year>>",$d[year],$output);
+$output = str_replace("<<year>>",$d["year"],$output);
 
 
-$output = str_replace("<<year>>",$d[year],$output);
+$output = str_replace("<<year>>",$d["year"],$output);
 $output = str_replace("<<next_year>>",'2021',$output);
 
 

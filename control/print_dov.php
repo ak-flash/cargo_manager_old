@@ -144,7 +144,9 @@ case '2': $pref_print='ОАО';break;
 case '3': $pref_print='ИП';break;
 case '4': $pref_print='ЗАО';break;
 case '5': $pref_print='';break;
-case '6': $pref_print='';break;}
+case '6': $pref_print='';break;
+case '7': $pref_print='АО';break;
+}
 
 if($row['transp']=='2'||$row['transp']=='-1'){
 $car_id=explode('&',$row['tr_auto']);
@@ -265,7 +267,7 @@ $chief=$pieces[0]." ".substr($pieces[1],0,2).". ".substr($pieces[2],0,2).".";
 
 $output = str_replace("<<chief>>",convert($chief),$output);
 
-if($row['cl_cont']==2) $output = str_replace("<<buh>>",convert("Гришкевич И.А."),$output); else $output = str_replace("<<buh>>",convert($chief),$output);
+$output = str_replace("<<buh>>",convert($chief),$output);
 
 $output = str_replace("<<rs>>",convert($company['rs']),$output);
 $output = str_replace("<<bank>>",convert($company['bank']),$output);
