@@ -445,7 +445,7 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
 
         if($row['cl_cont']==2 || $row['tr_cont']==2)
         { 
-            $adress_in .= ($f + 1) . ') ' . $res_adr_in . ' {' . $adress[15] . '} (' . $adr_in_cont . $adr_in_phone . ')';
+            $adress_in .= ($f + 1) . ') ' . $res_adr_in . ' {' . $adress[15] . '} (' . $adr_in_cont . $adr_in_phone . ')'."\r\n";
         } else {
             if ($f == $str_adr_in) $par = ''; else $par = '\par ';
                 $adress_in .= ($f + 1) . ') ' . $res_adr_in . ' { \b ' . $adress[15] . '} (' . $adr_in_cont . $adr_in_phone . ')' . $par;
@@ -501,7 +501,7 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
 
         if($row['cl_cont']==2 || $row['tr_cont']==2)
         {
-            $adress_out .= ($f + 1) . ') ' . $res_adr_out . ' {' . $adress[15] . '} (' . $adr_out_cont . $adr_out_phone . ')';
+            $adress_out .= ($f + 1) . ') ' . $res_adr_out . ' {' . $adress[15] . '} (' . $adr_out_cont . $adr_out_phone . ')'."\r\n";;
         } else {
 
             if ($f == $str_adr_out) $par = ''; else $par = '\par ';
