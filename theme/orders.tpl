@@ -293,33 +293,33 @@ if($("#show_hide").val()=='0'){
       .trigger("reloadGrid");
   }
 
-  function showRussian() {
+function showRussian() {
     $('#table').jqGrid('groupingRemove', true);
     jQuery("#table")
       .setGridParam({url:"control/orders.php?mode=orders&international=0", page:1})
       .trigger("reloadGrid");
-  }
+}
 
-   function showGroups() {
-        $('#table').jqGrid(
-            'groupingGroupBy',
-            ['group_id'],
-            { groupText: ['<b>Группа: {0}</b>'], groupColumnShow: [false], groupOrder : ['desc'] });
-        }
+function showGroups() {
+    $('#table').jqGrid(
+        'groupingGroupBy',
+        ['group_id'],
+        { groupText: ['<b>Группа: {0}</b>'], groupColumnShow: [false], groupOrder : ['desc'] });
+    }
 
-        function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
-            $('#dialogpr').dialog(
-                    {title: 'Распечатать заявку №' + order_id},
-                    {width: 350, height: 140, modal: true, resizable: false}
-            );
-            if (only_cl_print_btn == 1) $('#print_btn_tr').css('display', 'none');
+function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
+    $('#dialogpr').dialog(
+            {title: 'Распечатать заявку №' + order_id},
+            {width: 350, height: 140, modal: true, resizable: false}
+    );
+    if (only_cl_print_btn == 1) $('#print_btn_tr').css('display', 'none');
 
-            print_btn_cl.onclick = function () {
-        window.open('control/print.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+    print_btn_cl.onclick = function () {
+        window.open('control/print_order.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
     };
 
     print_btn_tr.onclick = function () {
-        window.open('control/print.php?mode=tr&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+        window.open('control/print_order.php?mode=tr&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
     };
 }
 
