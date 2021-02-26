@@ -109,7 +109,7 @@ myGrid.jqGrid('setCell',id,'id_d','',{'background-color':'#FFD06B'});
                 myGrid.jqGrid('setCell',id,'cl_cash_receive','',{'background-image':'url(data/images/check_ord.png)'});
             }
 
-            <?php if($_SESSION["group"]==2) echo '$("#"+id+"").mouseenter(function() {$("#popup_info").hide();}).mouseleave(function(){  $("#popup_info").hide();  });$("#"+id+">td[aria-describedby=table_id_d]").mouseenter(function() {$("#popup_info").load("/control/popup_ord.php?mode=popup&id="+id,function() {$("#popup_info").show();});  }).mouseleave(function(){    $("#popup_info").hide();  });'; ?>
+            /*<?php if($_SESSION["group"]==2) echo '$("#"+id+"").mouseenter(function() {$("#popup_info").hide();}).mouseleave(function(){  $("#popup_info").hide();  });$("#"+id+">td[aria-describedby=table_id_d]").mouseenter(function() {$("#popup_info").load("/control/popup_ord.php?mode=popup&id="+id,function() {$("#popup_info").show();});  }).mouseleave(function(){    $("#popup_info").hide();  });'; ?>*/
 
             if(row_data[i].stat_cl=='2'){
                 myGrid.jqGrid('setCell',id,'cl_cash','',{'background-color':'#C7FFA3'});
@@ -315,11 +315,11 @@ function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
     if (only_cl_print_btn == 1) $('#print_btn_tr').css('display', 'none');
 
     print_btn_cl.onclick = function () {
-        window.open('control/print_order.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+        window.open('control/print.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
     };
 
     print_btn_tr.onclick = function () {
-        window.open('control/print_order.php?mode=tr&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+        window.open('control/print.php?mode=tr&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
     };
 }
 

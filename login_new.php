@@ -42,8 +42,8 @@ function get_client_ip()
 
 if (@$_GET['mode'] == "logout") {
     session_unset();
-    unset($_COOKIE["authcode"]);
-    setcookie('authcode', null, -1, '/');
+    //unset($_COOKIE["authcode"]);
+    //setcookie('authcode', null, -1, '/');
 }
 
 $error_message = '';
@@ -69,6 +69,7 @@ if (isset($_SESSION['user_id'])) {
             $auth_code_from_email = (isset($_POST['authcode'])) ? mysql_real_escape_string($_POST['authcode']) : '';
             $auth_code = isset($_COOKIE['authcode']) ? mysql_real_escape_string($_COOKIE['authcode']) : "";
 
+			
             if ($username == 0) $username = 1;
 
             $query = "SELECT * FROM `workers` WHERE id='{$username}' LIMIT 1";

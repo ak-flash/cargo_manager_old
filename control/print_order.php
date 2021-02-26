@@ -41,8 +41,9 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
         $print_currency = $row['cl_currency'];
         
         $printContract = $client['contract'];
-        $clientSupportName = $client['cl_support'];
-        $clientPhone = $client['cl_phone'];
+        
+        $print_support = $client['cl_support'];
+
 
         $print_cont = $row['cl_cont'];
         $print_pref = $row['cl_pref'];
@@ -559,7 +560,7 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
         $name = 'Клиенту';
         $orderTitle = 'Заказчик:';
 
-        $clientSupport = $clientSupportName.', тел. '.$clientPhone;
+        $clientSupport = $print_support.', тел. '.$print_phone;
         $transporterSupport = $manager_name.', тел. '.$manager_phone;
 
         $clientChief = $print_chief;
@@ -638,7 +639,7 @@ if($row['cl_cont']==2 || $row['tr_cont']==2)
     $sheet->setCellValue('D17', $car[9] . ", " . $car_info[0] . '   Выдан: ' . $car_info[1] . ' (' . $car_info[2] . 'г.)'.', тел. ' . $car[11]);
 
 
-    $cash = $print_cash . ' ' . $print_currency.' ( <b>' .$plural_info->asString((int)$print_cash, plural::FEMALE, array('', '', '')). '</b> )';
+    $cash = $print_cash . ' ' . $print_currency.' ( <b>' .$plural_info->asString((int)$print_cash, plural::FEMALE, array('', '', '')). '</b> ) '.$print_nds;
         $wizard = new PHPExcel_Helper_HTML;
         $sheet->setCellValue('D18', $wizard->toRichTextObject($cash));
 
@@ -656,6 +657,9 @@ if($row['cl_cont']==2 || $row['tr_cont']==2)
     $sheet->setCellValue('F37', 'м.п. _____________________ '.$transporterChief);
 
     $sheet->setTitle("Заявка-" . $name . "-№".$id);
+
+    $sheet->getPageSetup()->setPrintArea('A1:J40');
+    $sheet->getPageSetup()->setFitToPage(true);
 
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="Заявка-' . $name . '-№'.$id.'.xlsx"');
@@ -818,8 +822,6 @@ if($row['cl_cont']==2 || $row['tr_cont']==2)
     $output = str_replace("<<manger_n>>", convert($manager_name), $output);
     //$output = str_replace("<<manger_f>>",convert($manager_f),$output);
     $output = str_replace("<<manger_phone_a>>", $manager_phone, $output);
-
-
     
 
     header('Content-Type: application/msword;');
