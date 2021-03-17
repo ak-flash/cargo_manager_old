@@ -236,10 +236,12 @@ $tr_cont=(int)$_POST['vtl_cont_select'];
 }
 
 $gruz_name=mysql_real_escape_string(stripslashes($_POST['gruz_name'])); 
-$gruz_m=(float)$_POST['gruz_m'];
-$gruz_v=(int)$_POST['gruz_v'];
-$gruz_num=(int)$_POST['gruz_num'];
-$gruz_load=(int)$_POST['gruz_load'];
+
+
+$gruz_m = (float)str_replace(",", ".", $_POST['gruz_m']);
+$gruz_v = (int)$_POST['gruz_v'];
+$gruz_num = (int)$_POST['gruz_num'];
+$gruz_load = (int)$_POST['gruz_load'];
 
 $in_elements  = explode("/",$_POST['in_data1']);
 $in_data1=date("Y-m-d",strtotime($in_elements[2]."-".$in_elements[1]."-".$in_elements[0]));

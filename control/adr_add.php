@@ -29,11 +29,14 @@ if ($_SESSION["group"] != 4) {
         echo $error . '"улица"' . $err;
         $validate = false;
     }
-    if (@$_POST['ttn'] != "on" && @$_POST['building'] == "") {
-        echo $error . '"дом"' . $err;
+    
+    /*if (@$_POST['ttn'] != "on" && @$_POST['building'] == "") {
+        echo $error . '"строение"' . $err;
         $validate = false;
-    }
-//if(@$_POST['flat']==""||!intval($_POST['flat'])){echo $error.'"квартира(офис)"'.$err; $validate=false;} 
+    }*/
+
+    //if(@$_POST['flat']==""||!intval($_POST['flat'])){echo $error.'"квартира(офис)"'.$err; $validate=false;} 
+
     if (@$_POST['adr_mode'] == "" || !intval($_POST['adr_mode'])) {
         echo $error . '"вид адреса"' . $err;
         $validate = false;
@@ -69,6 +72,8 @@ if($validate) {
     $adr_mode_cl_tr = (int)$_POST['adr_mode_cl_tr'];
     $adr_place = mysql_real_escape_string(stripslashes($_POST['adr_place']));
 
+    $adr_place_info = mysql_real_escape_string(stripslashes($_POST['adr_place_info']));
+
     if ($adr_mode == 3 || $adr_mode == 4 || $adr_mode == 5) {
         $select = $postcode . ' ';
     }
@@ -79,13 +84,13 @@ if($contact_name!="") $c_name=' ('.$contact_name.')'; else $c_name="";
 	
 if(@$_POST['edit']=="1")
 {
-	$query = "UPDATE `adress` SET `postcode`='$postcode',`country`='$country',`obl`='$obl',`city`='$city',`street`='$street',`dom`='$dom',`dom_extra`='$dom_extra',`flat`='$flat',`contact_name`='$contact_name',`contact_phone`='$contact_phone',`adr_mode`='$adr_mode',`adr_mode_cl_tr`='$adr_mode_cl_tr',`adr_place`='$adr_place' WHERE `id`='".mysql_real_escape_string($adr_id)."'";
+	$query = "UPDATE `adress` SET `postcode`='$postcode',`country`='$country',`obl`='$obl',`city`='$city',`street`='$street',`dom`='$dom',`dom_extra`='$dom_extra',`flat`='$flat',`contact_name`='$contact_name',`contact_phone`='$contact_phone',`adr_mode`='$adr_mode',`adr_mode_cl_tr`='$adr_mode_cl_tr',`adr_place`='$adr_place',`adr_place_info`='$adr_place_info' WHERE `id`='".mysql_real_escape_string($adr_id)."'";
 $query_block = "SELECT `block` FROM `adress` WHERE `Id`='".mysql_real_escape_string($adr_id)."'";
 $result_block = mysql_query($query_block) or die(mysql_error());
 $block = mysql_fetch_row($result_block);
 	
 } else {
-$query = "INSERT INTO `adress` (`postcode`,`country`,`obl`,`city`,`street`,`dom`,`dom_extra`,`flat`,`contact_name`,`contact_phone`,`adr_mode`,`adr_mode_cl_tr`,`adr_place`) VALUES ('$postcode','$country','$obl','$city','$street','$dom','$dom_extra','$flat','$contact_name','$contact_phone','$adr_mode','$adr_mode_cl_tr','$adr_place')";
+$query = "INSERT INTO `adress` (`postcode`,`country`,`obl`,`city`,`street`,`dom`,`dom_extra`,`flat`,`contact_name`,`contact_phone`,`adr_mode`,`adr_mode_cl_tr`,`adr_place`,`adr_place_info`) VALUES ('$postcode','$country','$obl','$city','$street','$dom','$dom_extra','$flat','$contact_name','$contact_phone','$adr_mode','$adr_mode_cl_tr','$adr_place','$adr_place_info')";
 }
 
 if($block[0]!='1')

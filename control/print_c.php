@@ -207,8 +207,9 @@ $output = str_replace("<<cont_bik>>",$cont['bik'],$output);
 $output = str_replace("<<cont_rs>>",$cont['rs'],$output);
 $output = str_replace("<<cont_ks>>",$cont['ks'],$output);
 $output = str_replace("<<cont_okpo>>",$cont['okpo'],$output);
+$output = str_replace("<<cont_ogrn>>",$cont['ogrn'],$output);
 $output = str_replace("<<cont_bank>>",convert($cont['bank']),$output);
-$output = str_replace("<<cont_phone>>",$cont['phone'],$output);
+$output = str_replace("<<cont_phone>>", '('.$cont['pref_phone'].') '.$cont['phone'],$output);
 $output = str_replace("<<cont_email>>",$cont['email'],$output);
 
 $output = str_replace("<<chief>>",convert($print_chief),$output);

@@ -193,7 +193,7 @@ if (!empty($_GET['order'])) {
     $("#btnAdd_adress_in").click(function () {
         $("#fa_adr").load("theme/forms/add_adr.php?adr_mode=1&fmod=0", function () {
             $("#fa_adr").dialog({title: 'Новый адрес'}, {
-                width: 510, height: 650,
+                width: 500, height: 500,
                 modal: true, resizable: false
             });
 
@@ -203,7 +203,7 @@ if (!empty($_GET['order'])) {
     $("#btnAdd_adress_out").click(function () {
         $("#fa_adr").load("theme/forms/add_adr.php?adr_mode=2&fmod=0", function () {
             $("#fa_adr").dialog({title: 'Новый адрес'}, {
-                width: 510, height: 650,
+                width: 500, height: 500,
                 modal: true, resizable: false
             });
         });
@@ -467,7 +467,7 @@ if (!empty($_GET['order'])) {
                 var $value = $('#in_adr_select_hidden').val();
                 $('#adr_in_validate').html('');
 
-                $('#adr_in_value').append('<div style="padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%; " id="adr' + $value + '"><input type="hidden" name="in_adr[]" id="in_adr' + $value + '" value="' + $value + '">' + this.value + '&nbsp;&nbsp;<div style="float:right;"><a href="#" onClick=\'javascript: $("#fa_adr").load("theme/forms/add_adr.php?adr_id=' + $value + '");$("#fa_adr").dialog({ title: "Редактировать адрес №' + $value + '" },{width: 470,height: 650,modal: true,resizable: false});$("#adr' + $value + '").remove();$("#in_adr' + $value + '").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" onClick=\'javascript: $("#adr' + $value + '").remove();$("#in_adr' + $value + '").remove();$(this).remove();\'>[удалить]</a></div></div>');
+                $('#adr_in_value').append('<div style="padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%; " id="adr' + $value + '"><input type="hidden" name="in_adr[]" id="in_adr' + $value + '" value="' + $value + '">' + this.value + '&nbsp;&nbsp;<div style="float:right;"><a href="#" onClick=\'javascript: $("#fa_adr").load("theme/forms/add_adr.php?adr_id=' + $value + '");$("#fa_adr").dialog({ title: "Редактировать адрес №' + $value + '" },{width: 500,height: 500,modal: true,resizable: false});$("#adr' + $value + '").remove();$("#in_adr' + $value + '").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" onClick=\'javascript: $("#adr' + $value + '").remove();$("#in_adr' + $value + '").remove();$(this).remove();\'>[удалить]</a></div></div>');
 
                 $('#in_adr_select').setValue('');
 
@@ -490,7 +490,7 @@ if (!empty($_GET['order'])) {
                 var $value = $('#out_adr_select_hidden').val();
                 $('#adr_out_validate').html('');
 
-                $('#adr_out_value').append('<div style="padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%; " id="adr' + $value + '"><input type="hidden" name="out_adr[]" id="out_adr' + $value + '" value="' + $value + '">' + this.value + '&nbsp;&nbsp;<div style="float:right;"><a href="#" onClick=\'javascript: $("#fa_adr").load("theme/forms/add_adr.php?adr_id=' + $value + '");$("#fa_adr").dialog({ title: "Редактировать адрес №' + $value + '" },{width: 470,height: 650,modal: true,resizable: false});$("#adr' + $value + '").remove();$("#out_adr' + $value + '").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" onClick="javascript: $(\'#adr' + $value + '\').remove();$(\'#out_adr' + $value + '\').remove();$(this).remove();">[удалить]</a></div></div>');
+                $('#adr_out_value').append('<div style="padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%; " id="adr' + $value + '"><input type="hidden" name="out_adr[]" id="out_adr' + $value + '" value="' + $value + '">' + this.value + '&nbsp;&nbsp;<div style="float:right;"><a href="#" onClick=\'javascript: $("#fa_adr").load("theme/forms/add_adr.php?adr_id=' + $value + '");$("#fa_adr").dialog({ title: "Редактировать адрес №' + $value + '" },{width: 500,height: 500,modal: true,resizable: false});$("#adr' + $value + '").remove();$("#out_adr' + $value + '").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" onClick="javascript: $(\'#adr' + $value + '\').remove();$(\'#out_adr' + $value + '\').remove();$(this).remove();">[удалить]</a></div></div>');
 
                 $('#out_adr_select').setValue('');
 
@@ -718,7 +718,7 @@ if (!empty($_GET['order'])) {
 
         $i = 0;
         while ($i <= $str_adr_in) {
-            echo '$("#adr_temp").load("control/adr_search.php?adr_id=' . $str_in[($str_adr_in - $i)] . '",function(data){$("#adr_in_value").append("<div style=\"padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%;\" id=\"adr' . $str_in[($str_adr_in - $i)] . '\">' . ($i + 1) . ') <input type=\"hidden\" name=\"in_adr[]\" id=\"in_adr' . $str_in[($str_adr_in - $i)] . '\" value=\"' . $str_in[($str_adr_in - $i)] . '\">"+data+"&nbsp;&nbsp;<div style=\"float:right;\"><a href=\"#\" onClick=\'javascript: $(\"#fa_adr\").load(\"theme/forms/add_adr.php?adr_id=' . $str_in[($str_adr_in - $i)] . '\");$(\"#fa_adr\").dialog({ title: \"Редактировать адрес №' . $str_in[($str_adr_in - $i)] . '\" },{width: 470,height: 650,modal: true,resizable: false});$(\"#adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(\"#in_adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href=\"#\" onClick=\'javascript: $(\"#adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(\"#in_adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(this).remove();\'>[удалить]</a></div></div>"); });';
+            echo '$("#adr_temp").load("control/adr_search.php?adr_id=' . $str_in[($str_adr_in - $i)] . '",function(data){$("#adr_in_value").append("<div style=\"padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%;\" id=\"adr' . $str_in[($str_adr_in - $i)] . '\">' . ($i + 1) . ') <input type=\"hidden\" name=\"in_adr[]\" id=\"in_adr' . $str_in[($str_adr_in - $i)] . '\" value=\"' . $str_in[($str_adr_in - $i)] . '\">"+data+"&nbsp;&nbsp;<div style=\"float:right;\"><a href=\"#\" onClick=\'javascript: $(\"#fa_adr\").load(\"theme/forms/add_adr.php?adr_id=' . $str_in[($str_adr_in - $i)] . '\");$(\"#fa_adr\").dialog({ title: \"Редактировать адрес №' . $str_in[($str_adr_in - $i)] . '\" },{width: 500,height: 500,modal: true,resizable: false});$(\"#adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(\"#in_adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href=\"#\" onClick=\'javascript: $(\"#adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(\"#in_adr' . $str_in[($str_adr_in - $i)] . '\").remove();$(this).remove();\'>[удалить]</a></div></div>"); });';
             $i++;
         }
 
@@ -727,7 +727,7 @@ if (!empty($_GET['order'])) {
 
         $i = 0;
         while ($i <= $str_adr_out) {
-            echo '$("#adr_temp").load("control/adr_search.php?adr_id=' . $str_out[$i] . '",function(data){$("#adr_out_value").append("<div style=\"padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%;\" id=\"adr' . $str_out[$i] . '\">' . ($i + 1) . ') <input type=\"hidden\" name=\"out_adr[]\" id=\"out_adr' . $str_out[$i] . '\" value=\"' . $str_out[$i] . '\">"+data+"&nbsp;&nbsp;<div style=\"float:right;\"><a href=\"#\" onClick=\'javascript: $(\"#fa_adr\").load(\"theme/forms/add_adr.php?adr_id=' . $str_out[$i] . '\");$(\"#fa_adr\").dialog({ title: \"Редактировать адрес №' . $str_out[$i] . '\" },{width: 470,height: 650,modal: true,resizable: false});$(\"#adr' . $str_out[$i] . '\").remove();$(\"#out_adr' . $str_out[$i] . '\").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href=\"#\" onClick=\'javascript: $(\"#adr' . $str_out[$i] . '\").remove();$(\"#out_adr' . $str_out[$i] . '\").remove();$(this).remove();\'>[удалить]</a></div></div>"); });';
+            echo '$("#adr_temp").load("control/adr_search.php?adr_id=' . $str_out[$i] . '",function(data){$("#adr_out_value").append("<div style=\"padding: 10px 10px 10px 10px;background: #ddd;border: 1px solid #bbb;width: 99%;\" id=\"adr' . $str_out[$i] . '\">' . ($i + 1) . ') <input type=\"hidden\" name=\"out_adr[]\" id=\"out_adr' . $str_out[$i] . '\" value=\"' . $str_out[$i] . '\">"+data+"&nbsp;&nbsp;<div style=\"float:right;\"><a href=\"#\" onClick=\'javascript: $(\"#fa_adr\").load(\"theme/forms/add_adr.php?adr_id=' . $str_out[$i] . '\");$(\"#fa_adr\").dialog({ title: \"Редактировать адрес №' . $str_out[$i] . '\" },{width: 500,height: 500,modal: true,resizable: false});$(\"#adr' . $str_out[$i] . '\").remove();$(\"#out_adr' . $str_out[$i] . '\").remove();$(this).remove();\'>[редактировать]</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href=\"#\" onClick=\'javascript: $(\"#adr' . $str_out[$i] . '\").remove();$(\"#out_adr' . $str_out[$i] . '\").remove();$(this).remove();\'>[удалить]</a></div></div>"); });';
             $i++;
         }
         if ($row['transp'] == 2 || $row['transp'] == 462) {

@@ -22,7 +22,7 @@
             $('#btnSetPretenz').button();
             $('#btnCl_info').button();
             $('#btnNDSTr').button();
-    $('#btnGroupping').button();
+            $('#btnGroupping').button();
 
     <?php
         //if($_SESSION["group"]!=2&&$_SESSION["group"]!=1) echo '$("#info_text").load("/control/load_info_text.php?mode=random", function(data) {  if(data!="") $("#information").fadeIn(1000);});';
@@ -263,18 +263,18 @@ jQuery("#table").trigger("reloadGrid");});
     }
 
 function reg_event(event){
-//обработка события
-if(event.ctrlKey&&event.keyCode==81){
-if($("#show_hide").val()=='0'){
-    $("#show_hide").val("1");document.getElementById('main_container').style.visibility = 'hidden';
-    } else
-    {
-    $("#show_hide").val("0");
-    document.getElementById('main_container').style.visibility = 'visible';
+    //обработка события
+    if(event.ctrlKey&&event.keyCode==81){
+    if($("#show_hide").val()=='0'){
+        $("#show_hide").val("1");document.getElementById('main_container').style.visibility = 'hidden';
+        } else
+        {
+        $("#show_hide").val("0");
+        document.getElementById('main_container').style.visibility = 'visible';
+        }
+     event.preventDefault();//запрет на дальнейшее распространение
+         return false;//возвращаем false
     }
- event.preventDefault();//запрет на дальнейшее распространение
-     return false;//возвращаем false
-}
 
 } 
 
@@ -310,17 +310,44 @@ function showGroups() {
 function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
     $('#dialogpr').dialog(
             {title: 'Распечатать заявку №' + order_id},
-            {width: 350, height: 140, modal: true, resizable: false}
+            {width: 400, height: 140, modal: true, resizable: false}
     );
     if (only_cl_print_btn == 1) $('#print_btn_tr').css('display', 'none');
 
+    let print_type = '';
+    
+    
+
     print_btn_cl.onclick = function () {
-        window.open('control/print.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+        if ($('input[name="print_template_type"]:checked').val()==3) {
+            print_type = '_xls';
+        } else print_type = '';
+        window.open('control/print' + print_type + '.php?mode=cl&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
     };
 
     print_btn_tr.onclick = function () {
-        window.open('control/print.php?mode=tr&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
+        if ($('input[name="print_template_type"]:checked').val()==3) {
+            print_type = '_xls';
+        } else print_type = '';
+        window.open('control/print' + print_type + '.php?mode=tr&type=' + $('input[name="print_template_type"]:checked').val() + '&id=' + order_hash);
     };
+}
+
+function show_TN_dialog(order_id, order_hash) {
+    $('#dialogTN').dialog(
+            {title: 'Сформировать ТН к заявке №' + order_id},
+            {width: 500, height: 200, modal: true, resizable: false}
+    );
+
+    $("#TN_adress").load('control/print_tn.php?mode=load_adress&id=' + order_hash); 
+   
+    TN_btn.onclick = function () {
+        window.open('control/print_tn.php?mode=tn&id=' + order_hash + '&adress_in=' + $('#tnAdressIn').val() + '&adress_out=' + $('#tnAdressOut').val());
+
+        $("#dialogTN").dialog("close");
+    };
+
+
 }
 
 </script>
@@ -365,8 +392,12 @@ function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
 <div id="dialog" style="display: none;">Выберите запись для удаления!</div>
 
 <div id="dialogpr" style="display: none;text-align: center;">
-    <input type="radio" value="1" name="print_template_type" style="margin-right: 10px;" checked>Заявка<input
-            type="radio" value="2" name="print_template_type" style="margin-left: 30px; margin-right: 7px;">Договор-заявка
+    <input type="radio" value="1" name="print_template_type" style="margin-right: 10px;" checked>Заявка
+
+    <input type="radio" value="2" name="print_template_type" style="margin-left: 30px; margin-right: 7px;">Договор-заявка
+
+    <input type="radio" value="3" name="print_template_type" style="margin-left: 30px; margin-right: 7px;">XLS
+
     <br>
     <button class="button4" id="print_btn_cl" style="width: 140px; margin-top: 15px; height: 45px; font-size:  1.3em;">
         Клиенту
@@ -374,7 +405,19 @@ function load_print_dialog(order_id, order_hash, only_cl_print_btn) {
     <button class="button3" id="print_btn_tr"
             style="width:  140px; height: 45px; margin-left: 20px; font-size:  1.3em;">Перевозчику
     </button>
+</div>
 
+<div id="dialogTN" style="display: none;text-align: center;">
+    
+    
+    <div id="TN_adress"></div>
+
+    <button class="button3" id="TN_btn"
+            style="width:  140px; height: 45px; margin-left: 20px; font-size:  1.3em;">Скачать
+    </button>
+
+    <button class="button4" onclick='$("#dialogTN").dialog("close");' style="width:120px;">Закрыть
+    </button>
 
 </div>
 

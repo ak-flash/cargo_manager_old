@@ -553,9 +553,9 @@ while ($f<=$str_adr_in) {
     if ($adress[6] == "" || $adress[6] == "0") $dom = ""; else $dom = " д." . $adress[6];
     if ($adress[7] == "" || $adress[7] == "0") $dom_extra = ""; else $dom_extra = '/' . $adress[7];
 
-    if ($adress[15] == "") $adr_place = ""; else $adr_place = '<br><b style="margin-left:17px;">Комментарий:</b> <i>' . $adress[15] . '</i>';
+    if ($adress[15] == "") $adr_place = ""; else $adr_place = '<b style="margin-left:17px;">Место:</b> <i>' . $adress[15] . '</i>';
 
-    $res_adr_in = $res_adr_in . "<div style='padding: 5px;margin: 10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>" . ($f + 1) . ") " . $adress[2] . ', ' . $obl . ' ' . $adress[4] . ' ул. ' . $adress[5] . $dom . $dom_extra . $flat . ' (' . $adress[9] . ' - ' . $adress[10] . ') ' . $adr_place . '</div>';
+    $res_adr_in = $res_adr_in . "<div style='padding: 5px;margin: 10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>" . ($f + 1) . ") " . $adress[2] . ', ' . $obl . ' ' . $adress[4] . ' ул. ' . $adress[5] . $dom . $dom_extra . $flat . '<br>&nbsp;&nbsp;&nbsp;<b>Контактное лицо:</b> ' . $adress[9] . ' - ' . $adress[10] . '<br>' . $adr_place . '</div>';
 
 
     if ($city != $adress[4]) $bill_adr_in .= $obl . ", " . $adress[4] . " - ";
@@ -582,9 +582,9 @@ while ($f<=$str_adr_out) {
     if ($adress[6] == "" || $adress[6] == "0") $dom = ""; else $dom = " д." . $adress[6];
     if ($adress[7] == "" || $adress[7] == "0") $dom_extra = ""; else $dom_extra = '/' . $adress[7];
 
-    if ($adress[15] == "") $adr_place = ""; else $adr_place = '<br><b style="margin-left:17px;">Комментарий:</b> <i>' . $adress[15] . '</i>';
+    if ($adress[15] == "") $adr_place = ""; else $adr_place = '<b style="margin-left:17px;">Место:</b> <i>' . $adress[15] . '</i>';
 
-    $res_adr_out = $res_adr_out . "<div style='padding: 5px;margin:10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>" . ($f + 1) . ") " . $adress[2] . ', ' . $obl . ' ' . $adress[4] . ' ул. ' . $adress[5] . $dom . $dom_extra . $flat . ' (' . $adress[9] . ' - ' . $adress[10] . ') ' . $adr_place . '</div>';
+    $res_adr_out = $res_adr_out . "<div style='padding: 5px;margin:10px;margin-left: 40px;background: #ddd;border: 1px solid #bbb;width: 90%;'>" . ($f + 1) . ") " . $adress[2] . ', ' . $obl . ' ' . $adress[4] . ' ул. ' . $adress[5] . $dom . $dom_extra . $flat . '<br>&nbsp;&nbsp;&nbsp;<b>Контактное лицо:</b> ' . $adress[9] . ' - ' . $adress[10] . '<br>' . $adr_place . '</div>';
 
     if ($city != $adress[4]) $bill_adr_in .= $obl . ", " . $adress[4] . " - ";
 
@@ -728,7 +728,7 @@ $tr_events = mysql_fetch_row($result_docs);
 
 //Для бухгалтеров
                 if ($_SESSION["group"] != 5) {
-                    $navigation = "<a class=\"button\" id=\"btnDocs\" href=\"#\" onclick=\"window.location.href='docs?doc_id=" . $docs[0] . "'\">Документы</a><br><button class=\"button\" id=\"btnEdit\" onclick=\"$('#fa').load('theme/forms/add_order.php?order=" . $row['id'] . "');$('#fa').dialog({ title: 'Редактировать заявку №" . $row['id'] . "' },{width: 970,position:[150,50],modal: true,resizable: false});\" style=\"height: 45px; font-size: 1.2em;\"><b>Редактировать</b></button><br><a  class=\"button6\" id=\"btnPrint\" href=\"javascript:;\" onclick='load_print_dialog(" . $row['id'] . ", \"" . base64_encode($row['id']) . "\", " . $only_cl_print_btn . ");' style=\"font-size: 1.1em;\">Распечатать</a><br><a  class=\"button\" id=\"btnPrint_tn\" href=\"javascript:;\" onclick=\"window.open('control/print_tn.php?mode=tn&id=" . base64_encode($row['id']) . "');\" style=\"font-size: 1.2em;\">Печать ТН</a><br><a  class=\"button\" id=\"btnPrint_dov\" href=\"javascript:;\" onclick=\"window.open('control/print_dov.php?mode=dov&id=" . base64_encode($row['id']) . "');\">Доверенность</a><hr style=\"width: 100%; height: 2px;\" /><button class=\"button3\" id=\"btnDelete\" onclick=\"$('#result').html('Удалить выбранную заявку?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {\$.post('control/orders.php?mode=delete&id=" . $row['id'] . "', function(data) {jQuery('#table').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 400 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {\$(this).dialog('close');}}] });\" style=\"font-size: 1.2em;width:140px;\">Удалить</button><br>";
+                    $navigation = "<a class=\"button\" id=\"btnDocs\" href=\"#\" onclick=\"window.location.href='docs?doc_id=" . $docs[0] . "'\">Документы</a><br><button class=\"button\" id=\"btnEdit\" onclick=\"$('#fa').load('theme/forms/add_order.php?order=" . $row['id'] . "');$('#fa').dialog({ title: 'Редактировать заявку №" . $row['id'] . "' },{width: 970,position:[150,50],modal: true,resizable: false});\" style=\"height: 45px; font-size: 1.2em;\"><b>Редактировать</b></button><br><a  class=\"button6\" id=\"btnPrint\" href=\"javascript:;\" onclick='load_print_dialog(" . $row['id'] . ", \"" . base64_encode($row['id']) . "\", " . $only_cl_print_btn . ");' style=\"font-size: 1.1em;\">Распечатать</a><br><a  class=\"button\" id=\"btnPrint_tn\" href=\"javascript:;\" onclick='show_TN_dialog(" . $row['id'] . ", \"" . base64_encode($row['id']) . "\");' style=\"font-size: 1.2em;\">Печать ТН</a><br><a  class=\"button\" id=\"btnPrint_dov\" href=\"javascript:;\" onclick=\"window.open('control/print_dov.php?mode=dov&id=" . base64_encode($row['id']) . "');\">Доверенность</a><hr style=\"width: 100%; height: 2px;\" /><button class=\"button3\" id=\"btnDelete\" onclick=\"$('#result').html('Удалить выбранную заявку?');$('#result').dialog({ title: 'Внимание' },{ modal: true },{ resizable: false },{ buttons: [{text: 'Да',click: function() {\$.post('control/orders.php?mode=delete&id=" . $row['id'] . "', function(data) {jQuery('#table').trigger('reloadGrid');$('#result').dialog('close');$('#result_temp').html(data);$('#result_temp').dialog({ title: 'Внимание' },{ height: 90 },{ width: 400 },{ modal: true },{ resizable: false });});}},{text: 'Нет',click: function() {\$(this).dialog('close');}}] });\" style=\"font-size: 1.2em;width:140px;\">Удалить</button><br>";
 
 
                 } else {

@@ -415,6 +415,9 @@ if (@$_GET['id'] != "" && isset($_SESSION['user_id'])) {
 // Client || Transporter info
     $output = str_replace("<<print_name>>", convert($print_pref . " «" . $print_name . "»"), $output);
 
+
+    $output = str_replace("<<print_contract>>", convert($print_contract), $output);
+
     $output = str_replace("<<print_adr_u>>", convert($print_adr_u), $output);
     $output = str_replace("<<print_adr_f>>", convert($print_adr_f), $output);
     $output = str_replace("<<print_nds>>", convert($print_nds), $output);

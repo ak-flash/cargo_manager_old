@@ -81,10 +81,16 @@ if (isset($_GET['new'])) {
         case 'region':
             $fmode = 'obl';
             break;
+        case 'adr_place':
+            $fmode = 'adr_place';
+            break;
+        case 'adr_place_info':
+            $fmode = 'adr_place_info';
+            break;
     }
 
 
-    $query_adress = "SELECT * FROM adress WHERE " . $fmode . " LIKE '%" . mysql_escape_string($s_query) . "%'";
+    $query_adress = "SELECT " . $fmode . " FROM adress WHERE " . $fmode . " LIKE '%" . mysql_escape_string($s_query) . "%'";
     $result_adress = mysql_query($query_adress) or die(mysql_error());
 
 

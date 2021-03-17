@@ -60,7 +60,7 @@ $('#table').jqGrid('setCell',row_id,'id','',{'background-color':'#C7FFA3'});
                 }],
                 rownumbers: false,
                 pager: $('#tablePager'),
-                ondblClickRow: function (id) {$("#fa_adr").load("theme/forms/add_adr.php?adr_id="+id);$("#fa_adr").dialog({ title: 'Редактировать адрес №'+id },{width: 470,height: 650,modal: true,resizable: false});
+                ondblClickRow: function (id) {$("#fa_adr").load("theme/forms/add_adr.php?adr_id="+id);$("#fa_adr").dialog({ title: 'Редактировать адрес №'+id },{width: 500,height: 500,modal: true,resizable: false});
 
 
             // jQuery('#table').jqGrid('viewGridRow', id,{"modal":true,"drag":true,"resize":true,"closeOnEscape":true,"dataheight":"auto","width":400});
@@ -94,7 +94,7 @@ function updateTable(value) {
 $("#btnAdd").click(function(){
 $("#fa_adr").load("theme/forms/add_adr.php"); 
     $("#fa_adr").dialog({ title: 'Новый адрес' },{
-			width: 470,height: 650,
+			width: 500,height: 500,
 			modal: true,resizable: false
 });
 });
