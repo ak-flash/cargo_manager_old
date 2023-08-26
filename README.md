@@ -1,15 +1,14 @@
-# cargo_manager_vtl
+# cargo_manager
 
-Add columns to mysql base:
-'fake_name' to 'workers' table
-'international' in 'orders' table
-'tr_gruz_worker' in 'orders' table
-default value to 1 for 'active' in 'company' table
+### Very LEGACY project 2010-2011!
+### Система была написана в 2010-2011 годах. Пожалуйста, не судите по этому коду мои навыки на текущий момент)))
 
-$db_host = "127.0.0.1";
-$db_name = "cargo_ak_vps_tk";
-$db_user = "cargo_ak_vps_tk";
-$db_pass = "TKteEKizGHJxGZFn";
+CRM для транспортной компании. Оформление заявок на перевозки. База клиентов, перевозчиков, документов, платежных поручений. Распечатка заявок в xls, doc, pdf форматах. Различные отчеты с фильтрами.
 
-Export changed files: 
-git diff --diff-filter=ACMRT --name-only | xargs tar -rf update.tar
+### Стек: Vanilla php (в процедурном стиле) | Jquery,  vanilla JS (Ajax) | Mysql
+
+Но к слову сказать, система на текущий 2023 год используется до сих пор в 3-х транспортных фирмах Волгограда и Москвы.
+
+Есть желание переписать (но нет времени) на современный стек: Laravel (RestAPI или Livewire или Filamnent) или Symphony (предпочтительней, RestAPI) и VueJs
+
+
